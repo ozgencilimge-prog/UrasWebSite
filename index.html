@@ -611,6 +611,25 @@ tr.cur td{background:#fff6d6}
   .pnum{width:38px;height:38px;font-size:18px}
   .photo-edit{grid-template-columns:1fr}
 }
+.brand{cursor:pointer}
+/* Weeks panel: number buttons + sub-tabs for the chosen week */
+.wk-nums{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;margin-top:12px}
+.wk-num{padding:10px 2px;border-radius:16px;border:3px solid #22d3ee;background:#140a2e;color:#fff;display:grid;place-items:center;align-content:center;gap:2px;cursor:pointer;box-shadow:0 4px 0 #0d0420,0 0 12px rgba(34,211,238,.3);min-width:0}
+.wk-num b{font-family:var(--display);font-weight:400;font-size:clamp(28px,6vw,40px);line-height:1}
+.wk-num small{font-weight:900;font-size:12px;color:#d8c8f0}
+.wk-num.cur{border-color:#ffc93c}
+.wk-num.on{background:var(--sun);color:var(--ink);border-color:#fff;box-shadow:0 4px 0 #0d0420,0 0 18px rgba(255,201,60,.8)}
+.wk-num.on small{color:#4a3500}
+.wk-num:disabled{opacity:.5;cursor:not-allowed}
+.wk-detail{display:grid;gap:14px}
+.wk-detail-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wk-detail-h h3{font-size:26px}
+.sub-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.sub-tab{background:var(--paper-2);border:3px solid var(--ink);border-radius:999px;padding:8px 16px;font-family:var(--display);font-size:17px;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.sub-tab.on{background:var(--sun)}
+@media (max-width:900px){.wk-nums{grid-template-columns:repeat(6,1fr)}}
+@media (max-width:640px){.wk-nums{grid-template-columns:repeat(4,1fr)}}
+.tbtn.home{background:#22d3ee;color:#0d0420;border-color:#fff}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
 }
@@ -618,10 +637,11 @@ tr.cur td{background:#fff6d6}
 
 <header class="topbar">
   <div class="in">
-    <div class="brand">
+    <div class="brand" id="brand-home" role="link" tabindex="0" title="Ana sayfa">
       <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#fff" stroke="#ffc93c" stroke-width="3"/><polygon points="20,11 28,17 25,27 15,27 12,17" fill="#132029"/></svg>
       Uras English Cup
     </div>
+    <button class="tbtn home" id="go-home" title="Ana sayfaya dön">🏠 Home</button>
     <span class="pill" title="Day streak">🔥 <span id="st-streak">0</span> days</span>
     <span class="pill pts" title="Total points · toplam puan">🏆 <b data-pts>0</b> pts</span>
     <span class="pill" title="Stars">⭐ <span id="st-stars">0</span></span>
@@ -646,18 +666,17 @@ tr.cur td{background:#fff6d6}
 
   <div class="panel" data-panel="weeks" hidden>
     <section>
-      <div class="sec-h"><h2>Weeks</h2><p>12 hafta · kolaydan zora · bir hafta seç</p></div>
-      <div class="levels" id="levels"></div>
+      <div class="sec-h"><h2>Weeks</h2><p>Bir haftaya dokun · kolaydan zora</p></div>
+      <div class="wk-nums" id="levels"></div>
     </section>
-    <section>
-      <div class="sec-h"><h2 id="fx-title">This Week's Missions</h2><p>Günde 1 görev · 2–3 etkinlik</p></div>
-      <div class="fixtures mtrack" id="fixtures"></div>
-    </section>
-    <div class="card" id="week-chunk"></div>
-    <section>
-      <div class="sec-h"><h2>Word Wall</h2><p>Dokun: kelimeyi ve cümleyi dinle</p></div>
-      <div class="wall" id="wall" style="margin-top:12px"></div>
-    </section>
+    <!-- Opens when a week number is tapped: sub-tabs for that week -->
+    <div class="card wk-detail" id="week-detail" hidden>
+      <div class="wk-detail-h"><h3 id="fx-title">Week 1</h3><button class="link" data-w-close="1">Kapat ✕</button></div>
+      <div class="sub-tabs" id="week-subtabs" role="tablist"></div>
+      <div data-sub="missions"><div class="fixtures mtrack" id="fixtures"></div></div>
+      <div data-sub="sentence" id="week-chunk"></div>
+      <div data-sub="wall"><p class="note" style="margin-bottom:10px">Dokun: kelimeyi ve cümleyi dinle</p><div class="wall" id="wall"></div></div>
+    </div>
   </div>
 
   <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
@@ -669,7 +688,7 @@ tr.cur td{background:#fff6d6}
 <div class="overlay" id="play" hidden>
   <div class="play-in">
     <div class="phead">
-      <button class="xbtn" id="play-close">✕ Exit</button>
+      <button class="xbtn" id="play-close" title="Ana sayfaya dön">🏠 Home</button>
       <h2 id="play-title">Görev</h2>
       <span class="pill pts" title="Total points · toplam puan">🏆 <b data-pts>0</b></span>
       <div class="prog" id="prog"></div>
@@ -1054,9 +1073,12 @@ function renderHome(){
  renderCard();renderSbCard();renderTypingCard();renderTowerCard();renderWordBank();renderPoints();
  const Wk=WEEKS[view-1];const lv=lvOf(view);
 
- $('#levels').innerHTML=LEVELS.map(L=>`<div><div class="lvl-h"><b>Level ${L.n} · ${L.name}</b><span>${L.sub}</span></div><div class="weeks">${WEEKS.filter(x=>x.lv===L.n).map(x=>{
-   const open=weekOpen(x.n);const dn=PLAN.filter((_,d)=>dayComplete(x.n,d)).length;
-   return `<button class="wtab ${x.n===view?'on':''}" data-w="${x.n}" ${open?'':'disabled'}><span class="wnum">Week ${x.n}${weekComplete(x.n)?' · 🏆':''}</span><span class="wname">${open?'':'🔒 '}${esc(x.en)}</span><span class="wbar"><i style="width:${dn*20}%"></i></span></button>`}).join('')}</div></div>`).join('');
+ /* Weeks as plain numbers; tapping one opens its sub-tabs below */
+ $('#levels').innerHTML=WEEKS.map(x=>{const open=weekOpen(x.n),dn=PLAN.filter((_,d)=>dayComplete(x.n,d)).length,on=x.n===view&&weekDetail;
+  return `<button class="wk-num${on?' on':''}${x.n===view?' cur':''}" data-w="${x.n}" ${open?'':'disabled'} aria-expanded="${on}" title="Week ${x.n} · ${esc(x.en)}"><b>${open?x.n:'🔒'}</b><small>${weekComplete(x.n)?'🏆':dn+'/5'}</small></button>`}).join('');
+ $('#week-detail').hidden=!weekDetail;
+ $('#week-subtabs').innerHTML=[['missions','🎯 Missions'],['sentence','🗣️ Sentence'],['wall','🧱 Word Wall']].map(([id,t])=>`<button class="sub-tab${weekSub===id?' on':''}" data-wsub="${id}" role="tab" aria-selected="${weekSub===id}">${t}</button>`).join('');
+ document.querySelectorAll('#week-detail [data-sub]').forEach(d=>{d.hidden=d.dataset.sub!==weekSub});
 
  const nd=nextDay(view);const m=$('#mission');
  const ci=Math.min(completedDays(),NCARS-1);const nc=carAt(ci);
@@ -1077,7 +1099,7 @@ function renderHome(){
  }
  renderMenu();
 
- $('#fx-title').textContent=`Week ${view} Missions · ${Wk.en}`;
+ $('#fx-title').textContent=`Week ${view} · ${Wk.en} (${Wk.tr})`;
  $('#fixtures').innerHTML=PLAN.map((day,d)=>{
   const done=dayComplete(view,d);const cur=d===nd&&!waitsTomorrow(view,d);
   const open=!done&&!cur&&S.openAll;
@@ -1090,7 +1112,7 @@ function renderHome(){
 }
 
 /* Home menu: one tile per part of the site; tapping a tile opens that part (only one open at a time) */
-let openPanel=null;
+let openPanel=null,weekDetail=false,weekSub='missions';
 function renderMenu(){
  const Wk=WEEKS[view-1],dn=PLAN.filter((_,d)=>dayComplete(view,d)).length;
  const ps=vqPacks(VOCAB_LEVELS[vbLevel-1]),pd=ps.filter((_,p)=>vqStars(vbLevel,p)>0).length;
@@ -1110,7 +1132,10 @@ document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.dataset.panel){openPanel=openPanel===b.dataset.panel&&b.classList.contains('mtile')?null:b.dataset.panel;renderMenu();
   if(openPanel){const p=document.querySelector(`.panel[data-panel="${openPanel}"]`);if(p)p.scrollIntoView({behavior:'smooth',block:'start'})}return}
- if(b.dataset.w){view=+b.dataset.w;renderHome();return}
+ if(b.dataset.w){const w=+b.dataset.w;if(w===view&&weekDetail)weekDetail=false;else{view=w;weekDetail=true}renderHome();
+  if(weekDetail){const d=$('#week-detail');if(d)d.scrollIntoView({behavior:'smooth',block:'nearest'})}return}
+ if(b.dataset.wClose){weekDetail=false;renderHome();return}
+ if(b.dataset.wsub){weekSub=b.dataset.wsub;renderHome();return}
  if(b.dataset.vb){vbLevel=+b.dataset.vb;renderWordBank();return}
  if(b.dataset.vqp!==undefined){startPack(vbLevel,+b.dataset.vqp);return}
  if(b.dataset.say!==undefined){const w=WEEKS[view-1].words[+b.dataset.say];say([w.en,w.ex]);return}
@@ -1147,7 +1172,17 @@ function closePlay(){
  try{speechSynthesis.cancel()}catch(e){}
  session=null;typingKey=null;save();renderHome();
 }
-$('#play-close').onclick=closePlay;
+$('#play-close').onclick=()=>goHome();
+/* Back to the home page from anywhere: close a game or window, close the open menu part, scroll to the top */
+function goHome(){
+ if(!$('#play').hidden)closePlay();
+ if(!$('#sheet').hidden)closeSheet();
+ openPanel=null;renderMenu();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#go-home').onclick=goHome;
+$('#brand-home').onclick=goHome;
+$('#brand-home').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();goHome()}};
 
 function startDay(w,d,replay){
  if(d<0)return;
