@@ -519,6 +519,11 @@ body::before{background:#0d0420}
 .pc-dash{font-size:28px;color:#fff}
 .pc-marks{display:flex;justify-content:space-between;gap:12px;font-size:18px;min-height:26px;padding:0 4px}
 .pc-final{font-family:var(--display);font-size:34px !important;color:#ffc93c !important}
+.pc-role{justify-self:center;font-family:var(--display);font-size:20px;padding:6px 18px;border-radius:999px;border:3px solid #0d0420}
+.pc-role.kick{background:#ffc93c;color:#132029}
+.pc-role.keep{background:#2f6fed;color:#fff}
+.golt.pc-good{color:#4ade80;font-size:clamp(34px,7vw,58px);text-align:center}
+.golt.pc-bad{color:#ff4d6d;font-size:clamp(34px,7vw,58px);text-align:center}
 .hero{align-items:start}
 /* Game menu in the left column, under the player card */
 .side{display:grid;gap:14px;align-content:start;min-width:0}
@@ -1494,8 +1499,11 @@ function startCup(w){
  session={cup:true};openPlay();stage.classList.add('neon');
  let me=0,rival=0,turn=0,ki=0,si=0;const mk=[],rk=[];
  const kicks=fillTo(words,8),saves=fillTo(words,8);
- const board=()=>`<div class="pc-board"><span class="pc-team">URAS</span><b>${me}</b><span class="pc-dash">–</span><b>${rival}</b><span class="pc-team">RIVAL</span></div>
+ const boardInner=()=>`<div class="pc-board"><span class="pc-team">URAS</span><b>${me}</b><span class="pc-dash">–</span><b>${rival}</b><span class="pc-team">RIVAL</span></div>
   <div class="pc-marks"><span>${mk.map(x=>x?'⚽':'❌').join(' ')||'&nbsp;'}</span><span>${rk.map(x=>x?'⚽':'🧤').join(' ')||'&nbsp;'}</span></div>`;
+ /* Role banner says clearly whose turn it is, so "save" never looks like a miss */
+ const board=role=>`<div id="pc-bw">${boardInner()}</div><div class="pc-role ${role==='kick'?'kick':'keep'}">${role==='kick'?'⚽ YOUR KICK · şut sende':'🧤 YOU ARE THE GOALKEEPER · kaleci sensin'}</div>`;
+ const updBoard=()=>{const b=$('#pc-bw');if(b)b.innerHTML=boardInner()};
  const label=()=>turn>=10?'Sudden death':`${turn%2===0?'Kick':'Save'} ${Math.floor(turn/2)+1} / 5`;
  const scene=keeper=>`<div class="pen"><div class="goal"><div class="keeper" id="keeper">${keeper}</div></div><div class="spot"></div><div class="ball" id="ball">⚽</div><div class="golt" id="golt"></div></div>`;
  function next(){
@@ -1504,34 +1512,35 @@ function startCup(w){
   $('#play-title').textContent=`Penalty Cup · Week ${w} · ${label()}`;
   turn%2===0?kick():keep();
  }
- function flash(t){const g=$('#golt');if(g){g.textContent=t;g.classList.remove('on');void g.offsetWidth;g.classList.add('on')}}
+ /* Big result text: green when Uras did well, red when not */
+ function flash(t,ok){const g=$('#golt');if(g){g.textContent=t;g.className='golt '+(ok?'pc-good':'pc-bad');void g.offsetWidth;g.classList.add('on')}}
  function kick(){
   const t=kicks[ki++%kicks.length],opts=shuffle([t,...sample(words.filter(x=>x!==t),2)]);
-  stage.innerHTML=board()+scene(KEEPER)+`<div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Your kick! Bu ne? Doğru kelimeyi seç.</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
+  stage.innerHTML=board('kick')+scene(KEEPER)+`<div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Bu ne? Doğru kelimeyi seç ve şutunu çek!</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
    <div class="opts">${opts.map((o,k)=>`<button class="opt word" data-k="${k}">${esc(o.en)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
   $('#g-hint').onclick=()=>say(t.en);
   let locked=false;
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
    if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
    if(ok){b.classList.add('ok');me++;mk.push(1);ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;
-    later(()=>{flash('GOAL!');cheer();say(t.en);showFb(t,null)},450)}
+    later(()=>{flash('GOAL! ⚽',true);updBoard();cheer();say(t.en);showFb(t,null)},450)}
    else{b.classList.add('no');mk.push(0);miss(t);bad();ball.style.transform=`translate(calc(-50% + ${side*60}px),-120px) scale(.65)`;k.style.transform=`translateX(calc(-50% + ${side*60}px))`;
-    later(()=>{flash('SAVED!');f.innerHTML=`<span>Saved! It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+    later(()=>{flash('MISSED!',false);updBoard();f.innerHTML=`<span>The keeper stopped it. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
    later(()=>{turn++;next()},2100);
   });
  }
  function keep(){
   const t=saves[si++%saves.length],opts=shuffle([t,...sample(words.filter(x=>x!==t),2)]);
-  stage.innerHTML=board()+scene(KEEPER_BLUE)+`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="hint">Rival kicks! Dinle, doğru resme dokun ve topu kurtar!</p></div>
+  stage.innerHTML=board('keep')+scene(KEEPER_BLUE)+`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="hint">Rakip şut çekiyor! Dinle, doğru resme dokun ve topu tut!</p></div>
    <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${pic(o.p)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
   $('#g-speak').onclick=()=>say(t.en);later(()=>say(t.en),350);
   let locked=false;
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
    if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
    if(ok){b.classList.add('ok');rk.push(0);k.style.transform=`translateX(calc(-50% + ${side*60}px))`;ball.style.transform=`translate(calc(-50% + ${side*60}px),-110px) scale(.7)`;
-    later(()=>{flash('SAVE!');good();say(t.en);showFb(t,null)},450)}
+    later(()=>{flash('GREAT SAVE! 🧤',true);updBoard();good();say(t.en);showFb(t,null)},450)}
    else{b.classList.add('no');rival++;rk.push(1);miss(t);bad();k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;
-    later(()=>{flash('GOAL!');f.innerHTML=`<span>Rival scores! It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+    later(()=>{flash('RIVAL SCORES!',false);updBoard();f.innerHTML=`<span>The rival scored. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
    later(()=>{turn++;next()},2100);
   });
  }
