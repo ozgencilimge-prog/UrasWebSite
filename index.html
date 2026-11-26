@@ -451,14 +451,59 @@ body::before{background:#0d0420}
 .vb-tab.on{background:var(--sun)}
 .vb-wall{margin-top:10px}
 .vb-wall .wcard b{font-size:17px;line-height:1.15}
-/* Word Bank cards start closed: picture + "?", tap to reveal the word */
-.vb-card:not(.open){background:var(--paper-2);border-style:dashed}
-.vb-card .vb-q{font-family:var(--display);font-size:28px;color:var(--muted);line-height:1}
-.vb-card .vb-q small{display:block;font-family:var(--body);font-size:12px;font-weight:800}
-.vb-card .vb-a{display:none}
-.vb-card.open .vb-q{display:none}
-.vb-card.open .vb-a{display:grid;gap:2px;justify-items:center;animation:cuppop .35s ease-out}
-.vb-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+/* Simple home: short mission card + menu tiles that open one part at a time */
+.mission{grid-template-columns:1fr !important}
+.m-tasks{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.m-chip{background:var(--paper-2);border-radius:999px;padding:7px 14px;font-weight:900;font-size:15px}
+.m-chip.done{opacity:.5;text-decoration:line-through}
+.m-go{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.btn.big{font-size:28px;padding:16px 34px}
+.m-prize{display:inline-flex;gap:10px;align-items:center;background:#140a2e;color:#fff;border-radius:16px;padding:6px 14px 6px 8px;box-shadow:inset 0 0 0 2px #22d3ee}
+.m-prize svg{width:78px;height:auto}
+.m-prize small{display:block;color:#c9d6ce;font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.1em}
+.m-prize b{font-family:var(--display);font-weight:400;font-size:18px;color:var(--sun)}
+.menu{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.mtile{background:#140a2e;color:#fff;border:3px solid #22d3ee;border-radius:18px;padding:16px 10px;display:grid;gap:4px;justify-items:center;text-align:center;cursor:pointer;box-shadow:0 4px 0 #0d0420,0 0 14px rgba(34,211,238,.35);min-width:0}
+.mtile .mt-ic{font-size:38px;line-height:1.1}
+.mtile b{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.1}
+.mtile small{color:#d8c8f0;font-weight:800;font-size:12.5px}
+.mtile.on{background:var(--sun);color:var(--ink);border-color:#fff;box-shadow:0 4px 0 #0d0420,0 0 20px rgba(255,201,60,.8)}
+.mtile.on small{color:#4a3500}
+.panel{display:grid;gap:24px}
+@media (max-width:900px){.menu{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.menu{grid-template-columns:1fr 1fr}.mtile:first-child{grid-column:1 / -1}.btn.big{font-size:24px;padding:14px 26px}}
+
+/* Word Quest: level tabs, pack map, flip card */
+.vb-tab:disabled{cursor:not-allowed;background:#dfe7e2;color:var(--muted);box-shadow:none}
+.vb-tab .wbar{margin-top:6px}
+.vq-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:14px;margin-top:10px}
+.vq-pack{aspect-ratio:1;border-radius:50%;border:3px solid var(--ink);background:var(--paper-2);display:grid;place-items:center;align-content:center;cursor:pointer;box-shadow:0 4px 0 var(--ink);padding:6px;min-width:0}
+.vq-pack .vq-ic{font-size:26px;line-height:1}
+.vq-pack b{font-family:var(--display);font-weight:400;font-size:20px;line-height:1.1}
+.vq-pack small{font-weight:900;font-size:12px;color:var(--muted)}
+.vq-pack.done{background:#dcfce7;border-color:var(--ok)}
+.vq-pack.done small{color:#b8860b;font-size:14px;letter-spacing:1px}
+.vq-pack.cur{background:var(--sun);animation:pulse 1.6s ease-in-out infinite;box-shadow:0 4px 0 var(--ink),0 0 18px rgba(255,201,60,.8)}
+.vq-pack.cur small{color:var(--ink)}
+.vq-pack:disabled{cursor:not-allowed;opacity:.5;box-shadow:none}
+.vq-card{justify-self:center;width:min(320px,100%);min-height:340px;border:4px solid #ffc93c;border-radius:24px;background:#fffdf5;color:var(--ink);display:grid;place-items:center;align-content:center;gap:12px;cursor:pointer;box-shadow:0 8px 0 #0d0420,0 0 26px rgba(255,201,60,.45);padding:16px}
+.vq-card .vq-pic .pic{height:140px}
+.vq-card .vq-pic .pic.emo{font-size:110px}
+.vq-card .vq-pic .pic svg{width:180px;height:100%}
+.vq-card .vq-q{font-family:var(--display);font-size:56px;color:#7a1f7a;line-height:1}
+.vq-card .vq-q small{display:block;font-family:var(--body);font-size:15px;font-weight:900;color:var(--muted)}
+.vq-card .vq-a{display:none}
+.vq-card.open{animation:flip .45s ease-out}
+.vq-card.open .vq-q{display:none}
+.vq-card.open .vq-a{display:grid;gap:4px;justify-items:center}
+.vq-card .vq-a b{font-family:var(--display);font-weight:400;font-size:clamp(32px,8vw,48px);color:#132029;line-height:1.1}
+.vq-card .vq-a small{font-size:20px;font-weight:800;color:#55665c}
+@keyframes flip{0%{transform:rotateY(90deg)}100%{transform:none}}
+.vq-count{font-weight:900;color:#e9d5ff}
+.vq-stars{font-size:46px !important;letter-spacing:6px}
+.vq-stars .on{color:#ffc93c;text-shadow:0 0 12px rgba(255,201,60,.7)}
+.vq-stars .off{color:#4b3d6b}
+#stage.neon .opt.word{color:var(--ink)}
 @media (max-width:640px){.vb-tabs{grid-template-columns:1fr 1fr}}
 
 /* Points + badges */
@@ -596,29 +641,29 @@ tr.cur td{background:#fff6d6}
     <section class="card mission" id="mission" aria-live="polite"></section>
   </div>
 
-  <section>
-    <div class="sec-h"><h2 id="fx-title">This Week's Missions</h2><p>1 mission a day · 2–3 tasks · every mission has Fill the Gap ✍️</p></div>
-    <div class="fixtures mtrack" id="fixtures"></div>
-  </section>
+  <!-- Simple home: one menu; each part opens only when its button is tapped -->
+  <nav class="menu" id="menu" aria-label="Menü"></nav>
 
-  <section>
-    <div class="sec-h"><h2>Season Roadmap</h2><p>12 weeks · easy to hard · Grade 1 &amp; 2 topics</p></div>
-    <div class="levels" id="levels"></div>
-  </section>
+  <div class="panel" data-panel="weeks" hidden>
+    <section>
+      <div class="sec-h"><h2>Weeks</h2><p>12 hafta · kolaydan zora · bir hafta seç</p></div>
+      <div class="levels" id="levels"></div>
+    </section>
+    <section>
+      <div class="sec-h"><h2 id="fx-title">This Week's Missions</h2><p>Günde 1 görev · 2–3 etkinlik</p></div>
+      <div class="fixtures mtrack" id="fixtures"></div>
+    </section>
+    <div class="card" id="week-chunk"></div>
+    <section>
+      <div class="sec-h"><h2>Word Wall</h2><p>Dokun: kelimeyi ve cümleyi dinle</p></div>
+      <div class="wall" id="wall" style="margin-top:12px"></div>
+    </section>
+  </div>
 
-
-  <section class="card typing-card" id="sb-card"></section>
-
-  <section class="card typing-card" id="typing-card"></section>
-
-  <section class="card typing-card" id="tower-card"></section>
-
-  <section>
-    <div class="sec-h"><h2>Word Wall</h2><p>Tap a card to hear the word and the sentence</p></div>
-    <div class="wall" id="wall" style="margin-top:12px"></div>
-  </section>
-
-  <section class="card" id="vbank"></section>
+  <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
+  <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
+  <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
+  <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
 </main>
 
 <div class="overlay" id="play" hidden>
@@ -735,6 +780,7 @@ if(!S.sb)S.sb={};
 if(S.points==null)S.points=(S.stars||0)*10+Math.max(0,(S.typing.best||1)-1)*20+Math.floor((S.tower.best||0)/5)*2;
 if(!S.badges)S.badges={};
 if(!S.vbSeen)S.vbSeen={};
+if(!S.vq)S.vq={}; /* Word Quest: best stars per pack, key "level-pack" */
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
 function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const today=()=>fmt(new Date());
@@ -929,7 +975,8 @@ const BADGES=[
  {id:'tower50',name:'Rooftop Runner',tr:"Word Tower'da 50 m'ye çık",ic:'🏢',c:['#ff7ab8','#22d3ee'],prog:()=>[S.tower.best,50]},
  {id:'tower300',name:'Helicopter Pilot',tr:"Word Tower'ın tepesine çık (300 m)",ic:'🚁',c:['#22d3ee','#14b8a6'],prog:()=>[S.tower.best,300]},
  {id:'story',name:'Story Writer',tr:'Bir hikaye paragrafı yaz',ic:'📖',c:['#fda4af','#ff2e88'],prog:()=>[Object.values(S.sb||{}).some(v=>v)?1:0,1]},
- {id:'words50',name:'Word Detective',tr:"Word Bank'te 50 kart aç",ic:'🔍',c:['#a3e635','#2f6fed'],prog:()=>[Object.keys(S.vbSeen).length,50]}
+ {id:'words50',name:'Word Detective',tr:"Word Quest'te 50 kart aç",ic:'🔍',c:['#a3e635','#2f6fed'],prog:()=>[Object.keys(S.vbSeen).length,50]},
+ {id:'quest1',name:'Quest Master',tr:"Word Quest'te bir seviyeyi bitir",ic:'🗺️',c:['#ffd166','#22d3ee'],prog:()=>[VOCAB_LEVELS.some(L=>vqLevelDone(L.n))?1:0,1]}
 ];
 let badgeUid=0;
 function badgeSVG(b,on){
@@ -1013,21 +1060,22 @@ function renderHome(){
 
  const nd=nextDay(view);const m=$('#mission');
  const ci=Math.min(completedDays(),NCARS-1);const nc=carAt(ci);
- const chunk=`<div class="chunk"><button class="speak" data-chunk="1" aria-label="Haftanın cümlesini dinle">🔊</button><span><small>Sentence of the week</small><b>${esc(Wk.chunk)}</b><small>${esc(Wk.chunkTr)}</small></span></div>`;
- const head=`<p class="eyebrow">Week ${view} · ${esc(Wk.en)} (<span lang="tr">${esc(Wk.tr)}</span>)${nd>=0?` · Mission ${nd+1}${nd===4?' · Final':''}`:''}</p>`;
+ /* Sentence of the week lives in the Weeks panel; the mission card stays short */
+ $('#week-chunk').innerHTML=`<div class="chunk" style="margin:0"><button class="speak" data-chunk="1" aria-label="Haftanın cümlesini dinle">🔊</button><span><small>Sentence of the week · Week ${view}</small><b>${esc(Wk.chunk)}</b><small>${esc(Wk.chunkTr)}</small></span></div>`;
+ const head=`<p class="eyebrow">Week ${view} · ${esc(Wk.en)}${nd>=0?` · ${nd===4?'Final Mission':'Mission '+(nd+1)}`:''}</p>`;
+ const prize=lbl=>`<span class="m-prize">${carSVG(nc.color,ci+1,nc.v)}<span><small>${lbl}</small><b>${esc(nc.name)}</b></span></span>`;
  if(nd===-1){
-  m.innerHTML=`<div>${head}<h1>Week complete! The cup is yours 🏆</h1><p class="meta" style="margin:12px 0">${view<NW?'Sıradaki hafta açıldı, yol haritasından seç!':'Bütün sezonu bitirdin. Şampiyonsun!'}</p>${chunk}</div>
-   <div class="reward"><p class="eyebrow">Cars in your garage</p><p class="nm">${completedDays()} / ${NCARS}</p><button class="btn small" data-act="garage">Open Garage</button></div>`;
+  m.innerHTML=`<div>${head}<h1>Week complete! 🏆</h1><p class="meta" style="margin:10px 0 16px">${view<NW?'Yeni bir hafta seç ve devam et!':'Bütün sezonu bitirdin. Şampiyonsun!'}</p>
+   <div class="m-go"><button class="btn big" data-panel="weeks">Choose a week ▶</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div></div>`;
  }else if(waitsTomorrow(view,nd)){
-  m.innerHTML=`<div>${head}<h1>Training done for today. Great job, Uras!</h1><p class="meta" style="margin:12px 0">Beynin de dinlenmeli. Yarın ${nd+1}. maç seni bekliyor.</p>${chunk}</div>
-   <div class="reward"><p class="eyebrow">Tomorrow's prize</p>${carSVG(nc.color,ci+1,nc.v)}<p class="nm">${nc.name}</p></div>`;
+  m.innerHTML=`<div>${head}<h1>Done for today. Great job, Uras!</h1><p class="meta" style="margin:10px 0 16px">Yarın ${nd+1}. görev seni bekliyor. Şimdilik oyunlardan birini oynayabilirsin.</p>${prize("Tomorrow's prize")}</div>`;
  }else{
   const started=dayStarted(view,nd);
-  m.innerHTML=`<div>${head}<h1>${started?"Let's keep going, Uras!":"Hello Uras! Today's mission is ready."}</h1>
-   <ul class="tasks">${PLAN[nd].map((s,t)=>`<li class="${S.done[tk(view,nd,t)]?'done':''}"><span class="ic">${TASKS[s.t].ic}</span><span><b>${TASKS[s.t].name}${s.hard?' (hard)':''}</b><small>${TASKS[s.t].desc}</small></span></li>`).join('')}</ul>
-   ${chunk}<div class="meta"><button class="btn" data-act="start">${started?'Continue ▶':'Kick off ▶'}</button><span>⏱ about 10 minutes</span></div></div>
-   <div class="reward"><p class="eyebrow">Finish the mission, win this car</p>${carSVG(nc.color,ci+1,nc.v)}<p class="nm">${nc.name}</p></div>`;
+  m.innerHTML=`<div>${head}<h1>${started?"Let's keep going, Uras!":"Today's mission is ready!"}</h1>
+   <div class="m-tasks">${PLAN[nd].map((s,t)=>`<span class="m-chip${S.done[tk(view,nd,t)]?' done':''}">${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div>
+   <div class="m-go"><button class="btn big" data-act="start">${started?'Continue ▶':'Kick off ▶'}</button>${prize('Prize · ödül')}</div></div>`;
  }
+ renderMenu();
 
  $('#fx-title').textContent=`Week ${view} Missions · ${Wk.en}`;
  $('#fixtures').innerHTML=PLAN.map((day,d)=>{
@@ -1041,12 +1089,30 @@ function renderHome(){
  $('#wall').innerHTML=Wk.words.map((w,i)=>`<button class="wcard" data-say="${i}">${pic(w.p)}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small>${lv.n>=2?`<em>${esc(w.ex)}</em>`:''}</button>`).join('');
 }
 
+/* Home menu: one tile per part of the site; tapping a tile opens that part (only one open at a time) */
+let openPanel=null;
+function renderMenu(){
+ const Wk=WEEKS[view-1],dn=PLAN.filter((_,d)=>dayComplete(view,d)).length;
+ const ps=vqPacks(VOCAB_LEVELS[vbLevel-1]),pd=ps.filter((_,p)=>vqStars(vbLevel,p)>0).length;
+ const ST=storyOf(view),sd=Math.min(sbDone(view),ST.length);
+ const items=[
+  ['weeks','📅','Weeks & Missions',`Week ${view} · ${Wk.en} · ${dn}/5`],
+  ['quest','🗺️','Word Quest',`Level ${vbLevel} · ${pd}/${ps.length} paket`],
+  ['typing','⌨️','Typing Turbo',`Level ${S.typing.level}`],
+  ['tower','🏔','Word Tower',`Best: ${S.tower.best} m`],
+  ['story','📖','Story Time',`Week ${view} · ${sd}/${ST.length}`]
+ ];
+ $('#menu').innerHTML=items.map(([id,ic,t,s])=>`<button class="mtile${openPanel===id?' on':''}" data-panel="${id}" aria-expanded="${openPanel===id}"><span class="mt-ic" aria-hidden="true">${ic}</span><b>${t}</b><small>${esc(s)}</small></button>`).join('');
+ document.querySelectorAll('.panel').forEach(p=>{p.hidden=p.dataset.panel!==openPanel});
+}
+
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.panel){openPanel=openPanel===b.dataset.panel&&b.classList.contains('mtile')?null:b.dataset.panel;renderMenu();
+  if(openPanel){const p=document.querySelector(`.panel[data-panel="${openPanel}"]`);if(p)p.scrollIntoView({behavior:'smooth',block:'start'})}return}
  if(b.dataset.w){view=+b.dataset.w;renderHome();return}
- if(b.dataset.vb){vbLevel=+b.dataset.vb;vbOpen.clear();renderWordBank();return}
- if(b.dataset.vbsay!==undefined){const i=+b.dataset.vbsay;const vw=VOCAB_LEVELS[vbLevel-1].words[i];if(!vbOpen.has(i)){vbOpen.add(i);b.classList.add('open');good();$('#vb-count').textContent=vbOpen.size;$('#vb-close').hidden=false;if(!S.vbSeen[vw.en]){S.vbSeen[vw.en]=1;addPoints(1)}}say(vw.en);return}
- if(b.dataset.vbclose){vbOpen.clear();renderWordBank();return}
+ if(b.dataset.vb){vbLevel=+b.dataset.vb;renderWordBank();return}
+ if(b.dataset.vqp!==undefined){startPack(vbLevel,+b.dataset.vqp);return}
  if(b.dataset.say!==undefined){const w=WEEKS[view-1].words[+b.dataset.say];say([w.en,w.ex]);return}
  if(b.dataset.chunk){say(WEEKS[view-1].chunk);return}
  const a=b.dataset.act;
@@ -1357,13 +1423,76 @@ const VOCAB_LEVELS=[
 const VOCAB_ALL=VOCAB_LEVELS.flatMap(L=>L.words);
 /* Word Bank words also feed Typing Turbo, sorted into its pools by length / phrase / sentence */
 VOCAB_ALL.forEach(w=>{const s=w.en,i=/[.?!]$/.test(s)?5:/ /.test(s)?4:s.length<=3?0:s.length===4?1:s.length===5?2:3;if(!TYPE_POOLS[i].includes(s))TYPE_POOLS[i].push(s)});
-let vbLevel=1;const vbOpen=new Set();
+/* ---------- Word Quest (the Word Bank as a game) ----------
+   Each Word Bank level is split into packs of 10 words. A pack: flip the 10 cards one by one
+   (picture first, tap to reveal + hear the word), then a 5-question quiz -> 1-3 stars.
+   Finishing a pack opens the next one; finishing every pack of a level opens the next level. */
+const VQ_PACK=10;
+let vbLevel=1;
+const vqPacks=L=>{const out=[];for(let i=0;i<L.words.length;i+=VQ_PACK)out.push(L.words.slice(i,i+VQ_PACK));return out};
+const vqKey=(n,p)=>n+'-'+p;
+const vqStars=(n,p)=>S.vq[vqKey(n,p)]||0;
+const vqLevelDone=n=>vqPacks(VOCAB_LEVELS[n-1]).every((_,p)=>vqStars(n,p)>0);
+const vqLevelOpen=n=>n===1||S.openAll||vqLevelDone(n-1);
+const vqPackOpen=(n,p)=>vqLevelOpen(n)&&(p===0||S.openAll||vqStars(n,p-1)>0);
+const vqStarStr=s=>'★'.repeat(s)+'☆'.repeat(3-s);
 function renderWordBank(){
- const L=VOCAB_LEVELS[vbLevel-1];
- $('#vbank').innerHTML=`<div class="vb-head"><div><p class="eyebrow">Word Bank · <span lang="tr">kelime bankası</span></p><h2>New Words</h2><p class="meta">${VOCAB_ALL.length} yeni kelime ve ifade, 4 seviye. Resme bak, kelimeyi tahmin et, sonra karta dokun ve aç! Bu kelimeler Typing Turbo ve Word Tower'da da çıkar.</p></div><a class="btn small ghost" href="kelime-listesi.pdf" target="_blank" rel="noopener">📄 PDF</a></div>
-  <div class="vb-tabs">${VOCAB_LEVELS.map(x=>`<button class="vb-tab ${x.n===vbLevel?'on':''}" data-vb="${x.n}">Level ${x.n} · ${esc(x.name)}<small>${esc(x.tr)} · ${x.words.length} kelime</small></button>`).join('')}</div>
-  <div class="vb-tools"><p class="note">${esc(L.sub)} · Açılan: <b><span id="vb-count">${vbOpen.size}</span> / ${L.words.length}</b></p><button class="link" data-vbclose="1" id="vb-close" ${vbOpen.size?'':'hidden'}>Kartları kapat</button></div>
-  <div class="wall vb-wall">${L.words.map((w,i)=>`<button class="wcard vb-card${vbOpen.has(i)?' open':''}" data-vbsay="${i}" aria-label="Kart ${i+1}">${w.p?pic(w.p):'<span class="pic emo">🔤</span>'}<span class="vb-q">?<small>Dokun</small></span><span class="vb-a"><b>${esc(w.en)}</b><small>${esc(w.tr)}</small></span></button>`).join('')}</div>`;
+ if(!vqLevelOpen(vbLevel))vbLevel=1;
+ const L=VOCAB_LEVELS[vbLevel-1],packs=vqPacks(L);
+ const doneN=packs.filter((_,p)=>vqStars(vbLevel,p)>0).length,cur=packs.findIndex((_,p)=>!vqStars(vbLevel,p));
+ $('#vbank').innerHTML=`<div class="vb-head"><div><p class="eyebrow">Word Quest · <span lang="tr">kelime macerası</span></p><h2>New Words</h2><p class="meta">${VOCAB_ALL.length} kelime, 4 seviye. Her pakette 10 kart var: kartı çevir, kelimeyi öğren, sonra mini sınavı geç ve yıldızları topla!</p></div><a class="btn small ghost" href="kelime-listesi.pdf" target="_blank" rel="noopener">📄 PDF</a></div>
+  <div class="vb-tabs">${VOCAB_LEVELS.map(x=>{const op=vqLevelOpen(x.n),ps=vqPacks(x),d=ps.filter((_,p)=>vqStars(x.n,p)>0).length;
+   return `<button class="vb-tab ${x.n===vbLevel?'on':''}" data-vb="${x.n}" ${op?'':'disabled'}>${op?'':'🔒 '}Level ${x.n} · ${esc(x.name)}<small>${d===ps.length?'🏆 tamamlandı':`${d} / ${ps.length} paket`}</small><span class="wbar"><i style="width:${Math.round(d/ps.length*100)}%"></i></span></button>`}).join('')}</div>
+  <p class="note">${esc(L.sub)} · ${doneN} / ${packs.length} paket tamam${doneN===packs.length?' · Seviye bitti! 🏆':''}</p>
+  <div class="vq-map">${packs.map((pk,p)=>{const st=vqStars(vbLevel,p),op=vqPackOpen(vbLevel,p),isCur=p===cur&&op;
+   return `<button class="vq-pack${st?' done':''}${isCur?' cur':''}" data-vqp="${p}" ${op?'':'disabled'} aria-label="Paket ${p+1}"><span class="vq-ic">${op?(pk[0].p&&pk[0].p.e?pk[0].p.e:'🔤'):'🔒'}</span><b>${p+1}</b><small>${st?vqStarStr(st):op?(isCur?'Play ▶':'Open'):'Kilitli'}</small></button>`}).join('')}</div>`;
+}
+function startPack(n,p){
+ const L=VOCAB_LEVELS[n-1],pack=vqPacks(L)[p];
+ session={vq:true};openPlay();stage.classList.add('neon');
+ let i=0,mist=0,qs,qi;
+ const title=()=>`Word Quest · Level ${n} · Pack ${p+1}`;
+ function card(){
+  $('#play-title').textContent=title()+' · Learn';setProg(i,pack.length);
+  const w=pack[i];
+  stage.innerHTML=`<p class="hint center">Resme bak, kelimeyi tahmin et. Sonra karta dokun!</p>
+   <button class="vq-card" id="vq-card" aria-label="Kartı çevir"><span class="vq-pic">${w.p?pic(w.p):'<span class="pic emo">🔤</span>'}</span><span class="vq-q">?<small>Dokun ve aç</small></span><span class="vq-a"><b>${esc(w.en)}</b><small>${esc(w.tr)}</small></span></button>
+   <div class="row"><button class="speak" id="vq-say" hidden>🔊 Listen</button><button class="btn" id="vq-next" hidden>${i+1<pack.length?'Next card ▶':'Quiz time! ▶'}</button></div>
+   <p class="center vq-count">Card ${i+1} / ${pack.length}</p>`;
+  const c=$('#vq-card');
+  c.onclick=()=>{if(!c.classList.contains('open')){c.classList.add('open');good();if(!S.vbSeen[w.en]){S.vbSeen[w.en]=1;addPoints(1)}$('#vq-say').hidden=false;$('#vq-next').hidden=false;later(()=>{const b=$('#vq-next');if(b)b.focus()},60)}say(w.en)};
+  $('#vq-say').onclick=()=>say(w.en);
+  $('#vq-next').onclick=()=>{i++;i<pack.length?card():quizStart()};
+ }
+ function quizStart(){qs=sample(pack,Math.min(5,pack.length));qi=0;quiz()}
+ function quiz(){
+  $('#play-title').textContent=title()+' · Quiz';setProg(qi,qs.length);
+  const t=qs[qi],opts=shuffle([t,...sample(pack.filter(w=>w!==t),2)]),usePics=opts.every(o=>o.p);
+  stage.innerHTML=`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="saytxt" lang="en">${esc(t.en)}</p><p class="hint">${usePics?'Doğru resme dokun!':'Doğru Türkçe anlamı seç!'}</p></div>
+   <div class="opts">${opts.map((o,k)=>`<button class="opt${usePics?'':' word'}" data-k="${k}">${usePics?pic(o.p):esc(o.tr)}</button>`).join('')}</div><div class="fb" id="fb"></div><p class="center vq-count">Question ${qi+1} / ${qs.length}</p>`;
+  $('#g-speak').onclick=()=>say(t.en);later(()=>say(t.en),300);
+  let locked=false;
+  stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+   if(locked)return;const o=opts[+b.dataset.k];
+   if(o===t){locked=true;b.classList.add('ok');good();showFb(t,null);later(()=>{qi++;qi<qs.length?quiz():finish()},1100)}
+   else{b.classList.add('no');bad();mist++;miss(t);later(()=>b.classList.remove('no'),450)}
+  });
+ }
+ function finish(){
+  const stars=mist===0?3:mist<=2?2:1,key=vqKey(n,p),first=!S.vq[key];
+  if(stars>(S.vq[key]||0))S.vq[key]=stars;save();
+  addPoints(first?15:5);
+  const lvlDone=first&&vqLevelDone(n),packs=vqPacks(L),nextP=p+1<packs.length?p+1:-1;
+  setProg(1,1);
+  stage.innerHTML=`<div class="res"><div class="fw-space"></div><h2>${lvlDone?`Level ${n} complete!`:`Pack ${p+1} complete!`}</h2><p class="vq-stars" aria-label="${stars} / 3 yıldız"><span class="on">${'★'.repeat(stars)}</span><span class="off">${'★'.repeat(3-stars)}</span></p><p>${mist?`${mist} hata · tekrar oynayıp 3 yıldız alabilirsin!`:'Hiç hata yok, mükemmel!'} · +${first?15:5} puan</p>
+   <div class="row">${nextP>=0?'<button class="btn" id="vq-nextp">Next pack ▶</button>':lvlDone&&n<VOCAB_LEVELS.length?`<button class="btn" id="vq-nextl">Level ${n+1} ▶</button>`:''}<button class="btn ghost" id="vq-again">Play again</button><button class="btn ghost" id="vq-map">Map</button></div></div>`;
+  celebrate(lvlDone?['Level complete, Uras! New words unlocked!','Seviye bitti Uras! Yeni kelimeler açıldı!']:praise());
+  const np=$('#vq-nextp');if(np)np.onclick=()=>startPack(n,nextP);
+  const nl=$('#vq-nextl');if(nl)nl.onclick=()=>{vbLevel=n+1;startPack(n+1,0)};
+  $('#vq-again').onclick=()=>startPack(n,p);
+  $('#vq-map').onclick=()=>{vbLevel=n;openPanel='quest';closePlay();$('#vbank').scrollIntoView({behavior:'smooth'})};
+ }
+ card();
 }
 const TOWER_STAGES=[['Warm-up','hafta kelimeleri + 3–4 harf'],['Rookie','5 harf'],['Pro','6–7 harf'],['Star','8+ harf'],['Captain','iki kelime'],['Legend','tam cümle']];
 const TOWER_PER=10,TOWER_TOP=TOWER_PER*TOWER_STAGES.length;
@@ -1720,7 +1849,7 @@ function renderParent(){
  $('#sheet-in').querySelectorAll('[data-word]').forEach(b=>b.onclick=()=>say(b.dataset.word));
  $('#p-reset').onclick=()=>{$('#p-confirm').hidden=false};
  $('#p-reset-no').onclick=()=>{$('#p-confirm').hidden=true};
- $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1},tower:{best:0},sb:{},points:0,badges:{},vbSeen:{}});view=1;save();renderParent()};
+ $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1},tower:{best:0},sb:{},points:0,badges:{},vbSeen:{},vq:{}});view=1;save();renderParent()};
 }
 
 checkBadges(true); /* badges already earned before this feature existed, without pop-ups */
