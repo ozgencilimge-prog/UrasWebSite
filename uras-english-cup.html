@@ -113,11 +113,10 @@ button{font:inherit;color:inherit}
 
 /* Word wall */
 .wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
-.wcard{background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:10px;display:grid;gap:4px;justify-items:center;align-content:start;cursor:pointer;box-shadow:0 3px 0 var(--ink);text-align:center}
+.wcard{background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:10px;display:grid;gap:4px;justify-items:center;align-content:start;cursor:pointer;box-shadow:0 3px 0 var(--ink);text-align:center;min-width:0;overflow:hidden}
 .wcard .pic{height:70px}
-.wcard .pic svg{width:90px}
+.wcard .pic svg{width:100%;height:100%;max-width:110px}
 .wcard .pic.emo{font-size:46px}
-.wcard .count{font-size:13px;max-width:90px}
 .wcard b{font-family:var(--display);font-size:20px;font-weight:400}
 .wcard small{color:var(--muted)}
 .wcard em{font-style:normal;font-size:13px;color:var(--ink);background:var(--paper-2);border-radius:8px;padding:3px 6px}
@@ -126,9 +125,8 @@ button{font:inherit;color:inherit}
 .pic{display:grid;place-items:center;width:100%;line-height:1}
 .pic svg{width:min(140px,85%);height:auto;display:block}
 .pic.emo{font-size:clamp(46px,11vw,70px)}
-.count{display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:2px;max-width:160px;margin:0 auto;font-size:26px}
-.count i{font-style:normal}
-.count[data-n="1"],.count[data-n="2"],.count[data-n="3"]{font-size:42px}
+.pic.count{height:96px}
+.pic.count svg{width:100%;height:100%;max-width:none}
 
 /* Play overlay */
 .overlay{position:fixed;inset:0;z-index:50;overflow-y:auto;background:var(--pitch) repeating-linear-gradient(90deg,var(--pitch) 0 90px,var(--pitch-2) 90px 180px)}
@@ -141,6 +139,7 @@ button{font:inherit;color:inherit}
 .xbtn{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:6px 12px;font-weight:900;cursor:pointer}
 #stage{background:var(--paper);border:3px solid var(--ink);border-radius:24px;box-shadow:var(--shadow);padding:22px;display:grid;gap:18px}
 .hint{font-weight:800;font-size:18px}
+.saytxt{font-family:var(--display);font-size:clamp(28px,6vw,42px);line-height:1.1;color:var(--ink);background:var(--paper-2);border:3px dashed var(--ink);border-radius:14px;padding:6px 18px}
 .center{text-align:center}
 .q{display:grid;justify-items:center;gap:10px;text-align:center}
 .speak{background:var(--sky);color:#fff;border:3px solid var(--ink);border-radius:14px;padding:8px 16px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
@@ -157,7 +156,9 @@ button{font:inherit;color:inherit}
 .fb small{font-size:17px;color:var(--muted)}
 .qrow{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
 .qrow > div{display:grid;gap:8px;justify-items:center}
-.qpic{width:170px;height:130px;background:var(--paper-2);border-radius:18px;border:3px solid var(--ink);display:grid;place-items:center}
+.qpic{width:170px;height:130px;background:var(--paper-2);border-radius:18px;border:3px solid var(--ink);display:grid;place-items:center;overflow:hidden}
+.qpic .pic{height:100%}
+.qpic .pic svg{width:85%;height:85%}
 
 /* Penalty */
 .pen{position:relative;height:210px;border-radius:18px;border:3px solid var(--ink);overflow:hidden;background:var(--pitch) repeating-linear-gradient(90deg,var(--pitch) 0 50px,var(--pitch-2) 50px 100px)}
@@ -200,7 +201,7 @@ button{font:inherit;color:inherit}
 .mcard .face b{font-family:var(--display);font-weight:400;font-size:clamp(16px,4.2vw,28px);word-break:break-word}
 .mcard .pic svg{width:90%}
 .mcard .pic.emo{font-size:clamp(30px,8vw,52px)}
-.mcard .count{font-size:clamp(11px,2.6vw,18px);max-width:100%}
+.mcard .pic.count{height:auto;aspect-ratio:1}
 
 /* Fill the Gap (writing) */
 .gapword{display:inline-flex;gap:6px;vertical-align:middle;flex-wrap:wrap;justify-content:center}
@@ -223,7 +224,8 @@ button{font:inherit;color:inherit}
 .tt-pic{height:90px;display:grid;place-items:center}
 .tt-pic .pic svg{width:120px}
 .tt-pic .pic.emo{font-size:64px}
-.tt-pic .count{font-size:22px}
+.tt-pic .pic{height:100%}
+.tt-pic .pic svg{height:100%}
 .tt-word{display:flex;flex-wrap:wrap;justify-content:center;font-family:var(--display);font-size:clamp(36px,9vw,68px);gap:2px;min-height:1.2em}
 .tt-word span{padding:0 2px;border-bottom:5px solid transparent;color:#9fb0a6}
 .tt-word span.d{color:var(--ok)}
@@ -239,6 +241,173 @@ button{font:inherit;color:inherit}
   .typing-card{grid-template-columns:1fr}
   .gapfix,.gapbox{width:40px;height:50px;font-size:27px}
   .key{height:46px;font-size:19px}
+}
+
+/* Word Tower */
+.tower{position:relative;height:clamp(260px,46vh,400px);border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:linear-gradient(#071a3a,#0f3a73);box-shadow:inset 8px 0 0 #1d6fa5,inset -8px 0 0 #1d6fa5}
+.tw-snow{position:absolute;inset:0;background-image:radial-gradient(circle,#fff 1px,transparent 1.6px),radial-gradient(circle,rgba(255,255,255,.55) 1px,transparent 1.6px);background-size:61px 61px,37px 37px;background-position:0 0,15px 20px;opacity:.6}
+.tw-world{position:absolute;inset:0;transition:transform .6s ease-out}
+.tw-ground{position:absolute;left:0;right:0;bottom:-200px;height:214px;background:#fff;border-top:4px solid #bfe3ff}
+.tw-plat{position:absolute;height:12px;border-radius:4px;background:linear-gradient(#d9f3ff,#5cc3f5);border:2px solid #e6f7ff;box-shadow:0 3px 0 #1d6fa5}
+.tw-plat.done{opacity:.55}
+.tw-plat.done .tw-lab{display:none}
+.tw-plat.next{background:linear-gradient(#fff3c4,#ffc93c);border-color:#fff;box-shadow:0 3px 0 #b8860b}
+.tw-lab{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font-family:var(--display);color:#fff;font-size:17px;white-space:nowrap;text-shadow:0 2px 0 var(--ink);opacity:.85}
+.tw-plat.next .tw-lab{color:var(--sun);font-size:24px;opacity:1}
+.tw-kid{position:absolute;left:calc(50% - 23px);bottom:14px;width:46px;z-index:2;transition:left .5s ease-in-out,bottom .5s cubic-bezier(.3,1.7,.55,1)}
+.tw-kid svg{width:100%;height:auto;display:block;transform-origin:50% 100%}
+.tw-kid.hop svg{animation:hop .5s}
+.tw-kid.oops svg{animation:shake .35s}
+@keyframes hop{0%{transform:scaleY(.8)}35%{transform:scaleY(1.12) rotate(-10deg)}100%{transform:none}}
+.tw-q{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.tw-q .tt-pic{width:110px}
+.tw-plat.gold{background:linear-gradient(#fff,#ffd76a);box-shadow:0 3px 0 #b8860b}
+.tw-lab.long{font-size:14px;white-space:normal;width:min(260px,70vw);text-align:center;line-height:1.15}
+.tw-plat.next .tw-lab.long{font-size:17px}
+.tt-word.long{font-size:clamp(22px,5vw,38px)}
+.tw-tr{text-align:center;color:var(--muted);font-weight:800;margin-top:4px;min-height:1.2em}
+.tw-banner{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);z-index:5;background:var(--sun);border:3px solid var(--ink);border-radius:16px;padding:10px 18px;text-align:center;display:grid;gap:2px;box-shadow:0 5px 0 var(--ink);animation:gol 1.9s ease-out forwards;white-space:nowrap}
+.tw-banner b{font-family:var(--display);font-weight:400;font-size:26px}
+.tw-banner small{font-weight:800}
+/* Word Tower: neon city */
+.tower{background:linear-gradient(#0b0320 0%,#2a0b4f 45%,#7a1f7a 78%,#ff5e7a 100%);border-color:#0d0420;box-shadow:inset 6px 0 0 #ff2e88,inset -6px 0 0 #22d3ee,0 0 22px rgba(255,46,136,.5)}
+.tw-snow{opacity:1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 160' preserveAspectRatio='none'%3E%3Cg fill='%231b0838'%3E%3Crect x='0' y='70' width='34' height='90'/%3E%3Crect x='38' y='40' width='26' height='120'/%3E%3Crect x='68' y='90' width='40' height='70'/%3E%3Crect x='112' y='55' width='22' height='105'/%3E%3Crect x='138' y='100' width='50' height='60'/%3E%3Crect x='212' y='85' width='44' height='75'/%3E%3Crect x='260' y='35' width='28' height='125'/%3E%3Crect x='292' y='75' width='40' height='85'/%3E%3Crect x='336' y='50' width='26' height='110'/%3E%3Crect x='366' y='95' width='34' height='65'/%3E%3C/g%3E%3Cg fill='%23ffd166' opacity='.8'%3E%3Crect x='44' y='50' width='4' height='5'/%3E%3Crect x='54' y='66' width='4' height='5'/%3E%3Crect x='44' y='86' width='4' height='5'/%3E%3Crect x='118' y='64' width='4' height='5'/%3E%3Crect x='266' y='46' width='4' height='5'/%3E%3Crect x='276' y='70' width='4' height='5'/%3E%3Crect x='266' y='98' width='4' height='5'/%3E%3Crect x='342' y='62' width='4' height='5'/%3E%3Crect x='350' y='84' width='4' height='5'/%3E%3Crect x='10' y='84' width='4' height='5'/%3E%3Crect x='300' y='90' width='4' height='5'/%3E%3C/g%3E%3Cg fill='%2322d3ee' opacity='.8'%3E%3Crect x='76' y='100' width='4' height='5'/%3E%3Crect x='222' y='96' width='4' height='5'/%3E%3Crect x='150' y='112' width='4' height='5'/%3E%3C/g%3E%3C/svg%3E"),radial-gradient(circle,#fff 1px,transparent 1.6px);background-size:100% 55%,53px 53px;background-repeat:no-repeat,repeat;background-position:bottom,0 0}
+.tw-ground{background:repeating-linear-gradient(90deg,#ffc93c 0 30px,transparent 30px 60px) 0 8px/100% 4px no-repeat,#1d1530;border-top:4px solid #22d3ee;box-shadow:0 0 16px #22d3ee}
+.tw-plat{background:linear-gradient(#4a1a80,#1c0838);border:2px solid #ff2e88;box-shadow:0 0 8px #ff2e88,0 0 20px rgba(255,46,136,.55)}
+.tw-plat.gold{background:linear-gradient(#0e4a5c,#08202b);border-color:#22d3ee;box-shadow:0 0 8px #22d3ee,0 0 20px rgba(34,211,238,.6)}
+.tw-plat.next{background:linear-gradient(#ffe48a,#ffb020);border-color:#fff;box-shadow:0 0 10px #ffc93c,0 0 26px rgba(255,201,60,.8)}
+.tw-plat.done{opacity:.45}
+.tw-lab{color:#fff;opacity:1;text-shadow:0 2px 0 #0d0420}
+.tw-plat.next .tw-lab{color:#ffe48a;text-shadow:0 2px 0 #0d0420}
+.tw-kid svg{filter:drop-shadow(0 0 6px rgba(34,211,238,.85))}
+.tw-banner{background:#0d0420;color:#fff;border-color:#ff2e88;box-shadow:0 0 14px #ff2e88,0 0 30px rgba(255,46,136,.6)}
+.tw-banner b{color:var(--sun);text-shadow:0 0 10px #ff8c1a}
+/* Neon game stage (Typing Turbo + Word Tower) */
+#stage.neon{background:#140a2e;color:#fff;border-color:#0d0420;box-shadow:0 0 0 2px #ff2e88,0 0 26px rgba(255,46,136,.55)}
+/* Word being typed: calm, glow-free panel that is easy on young eyes */
+#stage.neon .tt-word{background:#fffdf5;border:3px solid #0d0420;border-radius:16px;padding:4px 16px}
+#stage.neon .tt-word span{color:#a3a9b5;text-shadow:none}
+#stage.neon .tt-word span.d{color:#15803d;text-shadow:none}
+#stage.neon .tt-word span.c{color:#132029;border-bottom-color:#ffc93c;text-shadow:none}
+#stage.neon .tw-tr,#stage.neon .hint,#stage.neon .tt-count,#stage.neon .res p{color:#e9d5ff}
+#stage.neon .carname{color:#fff !important;text-shadow:0 0 10px #ff2e88}
+#stage.neon .lvl-badge{background:#0d0420;border:1px solid #ffc93c;box-shadow:0 0 10px rgba(255,201,60,.7)}
+#stage.neon .key{background:#1c0f3a;color:#fff;border-color:#22d3ee;box-shadow:0 3px 0 #ff2e88,0 0 8px rgba(34,211,238,.35)}
+#stage.neon .key:active{box-shadow:0 1px 0 #ff2e88}
+/* Neon street for racing cars */
+.road{height:120px;border-color:#0d0420;background:linear-gradient(#0b0320 0%,#3b0f5c 45%,#a3247a 78%,#1d1530 78%);box-shadow:0 0 0 2px #22d3ee,0 0 18px rgba(34,211,238,.5)}
+.road .tw-snow{bottom:26px;background-size:100% 75%,53px 53px}
+.road::after{content:"";position:absolute;left:0;right:0;bottom:25px;height:3px;background:#ff2e88;box-shadow:0 0 10px #ff2e88}
+.lane{top:auto;bottom:9px;height:4px;transform:none;background:repeating-linear-gradient(90deg,#ffc93c 0 22px,transparent 22px 44px);opacity:.9}
+.finish{z-index:1;box-shadow:0 0 12px #fff}
+.racer{bottom:6px;z-index:2}
+.racer svg{filter:drop-shadow(0 0 6px #22d3ee)}
+
+/* Neon city sunset theme */
+body{background:#14072e}
+.cityscape{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#14072e 0%,#2d0b55 28%,#7a1f7a 52%,#d93a7a 72%,#ff9a56 100%)}
+.cityscape svg{position:absolute;inset:0;width:100%;height:100%}
+.topbar{background:#0d0420;box-shadow:0 3px 0 #ff2e88,0 0 22px rgba(255,46,136,.6)}
+body::before{background:#0d0420}
+.brand{text-shadow:0 0 10px #ff2e88,0 0 2px #fff}
+.pill{background:rgba(255,46,136,.18);border:1px solid rgba(255,122,184,.6)}
+.tbtn.alt{border-color:#22d3ee;color:#bff6ff}
+.card,.pcard{box-shadow:0 5px 0 var(--ink),0 0 28px rgba(255,46,136,.45)}
+.pcard{background:#140a2e repeating-linear-gradient(135deg,rgba(34,211,238,.08) 0 14px,transparent 14px 28px)}
+.reward{background:#140a2e;box-shadow:inset 0 0 0 2px #22d3ee}
+.sec-h h2{color:#fff;text-shadow:0 0 12px #ff2e88,0 0 3px #ff2e88,0 3px 0 var(--ink)}
+.lvl-h b{background:#0d0420;box-shadow:0 0 12px rgba(34,211,238,.7);border:1px solid #22d3ee}
+.wtab.on{background:var(--sun);box-shadow:0 4px 0 var(--ink),0 0 18px rgba(255,201,60,.8)}
+.overlay{background:linear-gradient(180deg,#14072e 0%,#3b0f5c 45%,#a3247a 80%,#ff7a59 100%)}
+.phead h2{text-shadow:0 0 10px #ff2e88,0 2px 0 var(--ink)}
+.prize{background:#140a2e;box-shadow:inset 0 0 0 2px #22d3ee,0 0 24px rgba(34,211,238,.5)}
+.slotcar{background:#1c0f3a;border-color:#22d3ee;color:#fff}
+.slotcar.lock{background:var(--paper-2);color:var(--ink);border-color:var(--ink)}
+.road{background:#2a2140;box-shadow:0 0 16px rgba(255,46,136,.5)}
+
+/* Level-up fireworks + trophy */
+.fw{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}
+.fw-cup{position:absolute;left:50%;top:120px;width:96px;opacity:0;transform:translate(-50%,-50%) scale(0);animation:cupin 6.5s ease-out forwards;filter:drop-shadow(0 0 14px rgba(255,201,60,.8))}
+.fw-cup svg{width:100%;height:auto;display:block}
+@keyframes cupin{0%{opacity:1;transform:translate(-50%,-50%) scale(0) rotate(-25deg)}7%{opacity:1;transform:translate(-50%,-50%) scale(1.3) rotate(8deg)}12%{transform:translate(-50%,-50%) scale(1) rotate(0)}20%{transform:translate(-50%,-56%) scale(1)}28%{transform:translate(-50%,-50%) scale(1)}92%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-62%) scale(.9)}}
+.fw-burst{position:absolute;width:0;height:0}
+.fw-burst i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c);opacity:0;animation:fwp 1.2s cubic-bezier(.12,.7,.3,1) both}
+@keyframes fwp{0%{opacity:0;transform:translate(0,0) scale(1)}6%{opacity:1;transform:translate(0,0) scale(1.2)}75%{opacity:1}100%{opacity:0;transform:translate(var(--dx),calc(var(--dy) + 40px)) scale(.3)}}
+@media (prefers-reduced-motion:reduce){.fw-cup{animation:none !important;opacity:1;transform:translate(-50%,-50%)}}
+.fw-msg{position:absolute;left:50%;top:172px;transform:translateX(-50%);background:#0d0420;color:#fff;border:3px solid #ffc93c;border-radius:16px;padding:8px 18px;text-align:center;display:grid;gap:2px;width:max-content;max-width:90vw;opacity:0;animation:msgin 7s ease-out forwards}
+.fw-msg b{font-family:var(--display);font-weight:400;font-size:clamp(22px,5vw,32px);line-height:1.1}
+.fw-msg small{font-weight:800;font-size:15px;color:#e9d5ff}
+@keyframes msgin{0%{opacity:0;transform:translateX(-50%) scale(.6)}6%{opacity:1;transform:translateX(-50%) scale(1.08)}10%{transform:translateX(-50%) scale(1)}93%{opacity:1;transform:translateX(-50%) scale(1)}100%{opacity:0}}
+.res .praise{font-family:var(--display);font-size:clamp(24px,5vw,32px) !important;color:var(--ink)}
+#stage.neon .res .praise{color:#fff}
+
+/* Sentence Builder */
+.sb-para{background:#fffdf5;border:3px solid var(--ink);border-radius:16px;padding:12px 16px;text-align:left;font-size:20px;line-height:1.6;font-weight:800;justify-self:stretch}
+.sb-para .eyebrow{margin-bottom:2px}
+.sb-done{color:var(--ok)}
+.sb-cur{background:var(--sun);border-radius:6px;padding:0 6px}
+.sb-todo{color:#a3a9b5}
+.sb-tr{text-align:center;color:var(--muted);font-weight:800;font-size:17px}
+.sb-zone{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;min-height:84px;border-radius:16px;padding:12px;border:3px solid transparent;transition:background .15s}
+.sb-answer{border:3px dashed var(--ink);background:#f4f9ff}
+.sb-answer:empty::before{content:"Kelimeleri buraya sürükle ↓";color:#8a95a3;font-weight:800}
+.sb-bank{background:var(--paper-2)}
+.sb-zone.over{background:#fff3c4;border-color:var(--sun)}
+.sb-tile{font-family:var(--display);font-size:clamp(22px,4.6vw,30px);padding:8px 16px;border:3px solid var(--ink);border-radius:14px;background:var(--sun);color:var(--ink);box-shadow:0 4px 0 var(--ink);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;line-height:1.1}
+.sb-answer .sb-tile{background:#fff}
+.sb-tile.sb-hold{opacity:.3}
+.sb-ghost{position:fixed;z-index:95;pointer-events:none;margin:0;transform:rotate(-3deg) scale(1.08);box-shadow:0 10px 22px rgba(0,0,0,.3)}
+.sb-tile.ok{background:#bbf7d0;border-color:var(--ok);cursor:default}
+.sb-tile.no{background:#fee2e2;animation:shake .4s}
+.sb-para{max-height:240px;overflow-y:auto}
+.sb-para p+p{margin-top:8px}
+.sb-dots{display:flex;gap:4px}
+.sb-dots i{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:#fff}
+.sb-dots i.on{background:var(--ok)}
+/* Celebration sits at the top; screen content starts below it */
+.fw-inline{display:grid;justify-items:center;gap:12px;width:100%}
+.fw-inline .fw-cup{position:static;width:150px;opacity:1;transform:none;animation:cuppop .9s ease-out both}
+.fw-inline .fw-msg{position:static;left:auto;transform:none;opacity:1;max-width:100%;animation:cuppop .9s .15s ease-out both}
+@keyframes cuppop{0%{transform:scale(0) rotate(-15deg)}60%{transform:scale(1.15) rotate(5deg)}100%{transform:none}}
+.fw-cup{width:130px !important;top:130px !important}
+.fw-msg{top:205px}
+.fw-msg b{font-size:clamp(28px,6.5vw,44px) !important}
+.fw-msg small{font-size:19px !important}
+.sb-para{text-align:center}
+/* Result screens sit in the middle of the screen */
+.play-in:has(.res){min-height:100vh;min-height:100dvh;grid-template-rows:auto 1fr}
+.play-in:has(.res) #stage{align-self:center}
+.tw-banner{left:0;right:0;margin:0 auto;width:max-content;top:auto;bottom:18px;transform:none}
+
+/* Weekly missions: neon mission track under the player card */
+.mtrack{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:12px}
+.mtrack::before{content:"";position:absolute;left:8%;right:8%;top:36px;height:4px;background:repeating-linear-gradient(90deg,#ffc93c 0 16px,transparent 16px 30px);z-index:0}
+.mtrack .fx{position:relative;z-index:1;background:#140a2e;color:#fff;border:2px solid #22d3ee;border-radius:18px;padding:14px 12px;display:grid;gap:8px;justify-items:center;align-content:start;text-align:center;box-shadow:0 0 14px rgba(34,211,238,.35)}
+.mtrack .mnum{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:22px;background:#0d0420;border:3px solid #22d3ee;color:#fff}
+.mtrack .fx h3{font-size:18px;color:#fff}
+.mtrack .fx .ti{color:#d8c8f0;font-size:13px}
+.mtrack .fx .st{background:#22d3ee;color:#0d0420;justify-self:center}
+.mtrack .fx.done{border-color:#4ade80;box-shadow:0 0 12px rgba(74,222,128,.35)}
+.mtrack .fx.done .mnum{border-color:#4ade80;background:#14532d}
+.mtrack .fx.done .st{background:#4ade80;color:#0d0420}
+.mtrack .fx.cur{background:#241446;border-color:#ffc93c;box-shadow:0 0 20px rgba(255,201,60,.65)}
+.mtrack .fx.cur .mnum{background:#ffc93c;color:#132029;border-color:#fff}
+.mtrack .fx.cur .st{background:#ffc93c;color:#132029}
+.mtrack .fx.lock{background:#1c1235;color:#cbbde0;border-color:#6b5b8a;box-shadow:none;opacity:.75}
+.mtrack .fx.lock .mnum{border-color:#6b5b8a}
+.mtrack .fx.lock .st{background:#6b5b8a;color:#fff}
+.mtrack .fx.boss{border-width:3px;border-color:#ff2e88;box-shadow:0 0 18px rgba(255,46,136,.55)}
+.mtrack .fx.boss .mnum{border-color:#ff2e88;color:#ffc93c}
+.mtrack .fx.boss.done{border-color:#4ade80}
+.mtrack .fx button{justify-self:center}
+@media (max-width:900px){.mtrack{grid-template-columns:1fr 1fr}.mtrack::before{display:none}}
+@media (max-width:640px){
+ .mtrack{grid-template-columns:1fr}
+ .mtrack .fx{grid-template-columns:auto 1fr auto;justify-items:start;text-align:left;align-items:center}
+ .mtrack .fx .mnum{grid-column:1;grid-row:1 / span 2}
+ .mtrack .fx h3{grid-column:2;grid-row:1}
+ .mtrack .fx .ti{grid-column:2;grid-row:2}
+ .mtrack .fx button,.mtrack .fx > span[aria-hidden="true"]:not(.mnum){grid-column:3;grid-row:1 / span 2;justify-self:end}
 }
 
 /* Break + result */
@@ -346,6 +515,8 @@ tr.cur td{background:#fff6d6}
 
 <input type="file" id="photo-in" accept="image/*" class="vh" tabindex="-1" aria-hidden="true">
 
+<div class="cityscape" aria-hidden="true"><svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMax slice"><defs><linearGradient id="cs-sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe066"/><stop offset=".55" stop-color="#ff7a59"/><stop offset="1" stop-color="#ff2e88"/></linearGradient><linearGradient id="cs-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b1f78"/><stop offset="1" stop-color="#1a0838"/></linearGradient><clipPath id="cs-clip"><circle cx="600" cy="470" r="190"/></clipPath></defs><g fill="#fff" opacity=".7"><circle cx="90" cy="70" r="1.6"/><circle cx="260" cy="130" r="1.2"/><circle cx="420" cy="50" r="1.5"/><circle cx="760" cy="90" r="1.3"/><circle cx="930" cy="40" r="1.6"/><circle cx="1110" cy="120" r="1.2"/><circle cx="600" cy="150" r="1"/><circle cx="1010" cy="200" r="1"/><circle cx="160" cy="220" r="1"/></g><circle cx="600" cy="470" r="190" fill="url(#cs-sun)"/><g fill="#7a1f7a" clip-path="url(#cs-clip)"><rect x="400" y="430" width="400" height="7"/><rect x="400" y="458" width="400" height="10"/><rect x="400" y="490" width="400" height="13"/><rect x="400" y="525" width="400" height="16"/></g><g fill="#2a0d4a"><rect x="0" y="470" width="60" height="230"/><rect x="66" y="420" width="44" height="280"/><rect x="116" y="490" width="70" height="210"/><rect x="192" y="440" width="38" height="260"/><rect x="236" y="500" width="80" height="200"/><rect x="860" y="480" width="64" height="220"/><rect x="930" y="410" width="46" height="290"/><rect x="982" y="460" width="72" height="240"/><rect x="1060" y="430" width="40" height="270"/><rect x="1106" y="490" width="94" height="210"/></g><g fill="#ffd166" opacity=".75"><rect x="76" y="440" width="6" height="8"/><rect x="92" y="470" width="6" height="8"/><rect x="200" y="460" width="5" height="8"/><rect x="940" y="430" width="6" height="8"/><rect x="956" y="480" width="6" height="8"/><rect x="1070" y="455" width="5" height="8"/><rect x="996" y="490" width="6" height="8"/></g><rect x="0" y="560" width="1200" height="140" fill="url(#cs-sea)"/><g stroke="#ff7ab8" stroke-width="3" opacity=".55"><path d="M470 585h260M500 610h200M530 635h140M560 660h80"/></g><g fill="#12051f"><path d="M150 700 Q160 560 205 430 l8 2 Q172 560 168 700Z"/><path d="M209 432 q-60 -30 -120 5 q55 -12 120 -5Z M209 432 q-20 -60 -80 -70 q50 25 80 70Z M209 432 q40 -55 100 -50 q-60 15 -100 50Z M209 432 q70 -5 110 40 q-55 -30 -110 -40Z M209 432 q-55 10 -90 65 q40 -45 90 -65Z"/><path d="M1060 700 Q1048 590 1000 470 l-8 3 Q1035 590 1042 700Z"/><path d="M996 472 q60 -32 120 2 q-55 -10 -120 -2Z M996 472 q18 -60 78 -72 q-48 27 -78 72Z M996 472 q-40 -55 -100 -48 q60 14 100 48Z M996 472 q-70 -4 -108 42 q53 -32 108 -42Z M996 472 q55 12 88 66 q-38 -46 -88 -66Z"/></g></svg></div>
+
 <main class="wrap">
   <div class="hero">
     <aside class="pcard" id="pcard" aria-label="Uras'ın oyuncu kartı"></aside>
@@ -353,16 +524,21 @@ tr.cur td{background:#fff6d6}
   </div>
 
   <section>
+    <div class="sec-h"><h2 id="fx-title">This Week's Missions</h2><p>1 mission a day · 2–3 tasks · every mission has Fill the Gap ✍️</p></div>
+    <div class="fixtures mtrack" id="fixtures"></div>
+  </section>
+
+  <section>
     <div class="sec-h"><h2>Season Roadmap</h2><p>12 weeks · easy to hard · Grade 1 &amp; 2 topics</p></div>
     <div class="levels" id="levels"></div>
   </section>
 
-  <section>
-    <div class="sec-h"><h2 id="fx-title">This Week's Matches</h2><p>1 match a day · 2 tasks · about 10 minutes</p></div>
-    <div class="fixtures" id="fixtures" style="margin-top:12px"></div>
-  </section>
+
+  <section class="card typing-card" id="sb-card"></section>
 
   <section class="card typing-card" id="typing-card"></section>
+
+  <section class="card typing-card" id="tower-card"></section>
 
   <section>
     <div class="sec-h"><h2>Word Wall</h2><p>Tap a card to hear the word and the sentence</p></div>
@@ -450,18 +626,18 @@ const TASKS={
 };
 /* 5 maç x 2 görev = haftada 10 görev */
 const PLAN=[
- [{t:'listen',part:'a'},{t:'memory',part:'a'}],
+ [{t:'listen',part:'a'},{t:'memory',part:'a'},{t:'write',part:'all'}],
  [{t:'listen',part:'b'},{t:'write',part:'a'}],
- [{t:'penalty',part:'all'},{t:'race',part:'a'}],
+ [{t:'penalty',part:'all'},{t:'race',part:'a'},{t:'write',part:'all'}],
  [{t:'memory',part:'b'},{t:'write',part:'b'}],
- [{t:'listen',part:'all',hard:true},{t:'penalty',part:'all',hard:true}]
+ [{t:'listen',part:'all',hard:true},{t:'penalty',part:'all',hard:true},{t:'write',part:'all',hard:true}]
 ];
-const BASECARS=[['Red Rocket','#e63946'],['Blue Bolt','#2f6fed'],['Green Gecko','#2a9d4b'],['Yellow Flash','#ffd23f'],['Orange Tiger','#ff8c1a'],
- ['Purple Storm','#8e44ad'],['Black Shadow','#1f2329'],['White Ghost','#f4f4f4'],['Pink Turbo','#ff6fae'],['Silver Wolf','#aeb6bf'],
- ['Gold Champion','#e0b13a'],['Sky Jet','#4cc9f0'],['Lime Racer','#a3e635'],['Brown Bear','#8d5a3b'],['Navy Captain','#1d3557'],
- ['Mint Drift','#64dfdf'],['Ruby Star','#b5172f'],['Sunset Racer','#ff7b54'],['Ice Blue','#bde0fe'],['Grand Final','#14b8a6']];
+const TOTAL=WEEKS.length*PLAN.reduce((s,d)=>s+d.length,0);
+/* Original car designs: 5 body styles x 12 neon colours x 3 trims = 60 unique cars */
+const CAR_COLORS=[['Neon Pink','#ff2e88'],['Ocean Blue','#2f6fed'],['Sunset Orange','#ff8c1a'],['Lime','#a3e635'],['Purple','#8e44ad'],['Gold','#e0b13a'],['Midnight','#1f2329'],['Pearl','#f4f4f4'],['Aqua','#22d3ee'],['Racing Red','#e63946'],['Silver','#aeb6bf'],['Mint','#64dfdf']];
+const CAR_BODIES=['Speedster','Muscle','Cabrio','Off-Roader','Retro GT'];
 const NCARS=NW*ND;
-const carAt=i=>{const b=BASECARS[i%20],v=Math.floor(i/20)%3;return {name:b[0]+['',' Turbo',' GT'][v],color:b[1],v}};
+const carAt=i=>{const c=CAR_COLORS[i%12],t=Math.floor(i/20)%3;return {name:c[0]+' '+CAR_BODIES[i%5]+['',' Turbo',' Night Edition'][t],color:c[1],v:i}};
 const BREAKS=[
  {en:'Jump! Jump! Jump!',tr:'Ayağa kalk ve 5 kere zıpla!',ic:'🦘'},
  {en:'Run, run, run!',tr:'Olduğun yerde koş!',ic:'🏃'},
@@ -477,13 +653,15 @@ let S;
 try{S=Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){S=Object.assign({},DEF)}
 if(!S.ph)S.ph=Object.assign({},DEF.ph);
 if(!S.typing)S.typing={level:1,best:1};
+if(!S.tower)S.tower={best:0};
+if(!S.sb)S.sb={};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
 function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const today=()=>fmt(new Date());
 const tk=(w,d,t)=>`w${w}d${d}t${t}`;
 const dk=(w,d)=>`w${w}d${d}`;
 const lvOf=w=>LEVELS[WEEKS[w-1].lv-1];
-const dayComplete=(w,d)=>PLAN[d].every((_,t)=>S.done[tk(w,d,t)]);
+const dayComplete=(w,d)=>!!S.dayDone[dk(w,d)]||PLAN[d].every((_,t)=>S.done[tk(w,d,t)]);
 const dayStarted=(w,d)=>PLAN[d].some((_,t)=>S.done[tk(w,d,t)]);
 const weekComplete=w=>PLAN.every((_,d)=>dayComplete(w,d));
 const weekOpen=()=>true; /* all 12 weeks are open */
@@ -511,7 +689,26 @@ const normKey=k=>(k==='ı'||k==='İ')?'i':String(k).toLowerCase();
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function findWord(en){for(const x of WEEKS)for(const w of x.words)if(w.en===en)return w;return null}
 
-function carSVG(c,num,v){v=v||0;return `<svg viewBox="0 0 124 64" aria-hidden="true">${v>=2?`<rect x="10" y="25" width="4" height="8" fill="#132029"/><rect x="3" y="20" width="20" height="5" rx="2" fill="${c}" stroke="#132029" stroke-width="2.5"/>`:''}<path d="M8 44 Q8 32 22 30 L38 28 L50 13 Q54 9 62 9 L86 9 Q93 9 97 15 L106 28 Q118 30 118 40 L118 46 Q118 50 114 50 L12 50 Q8 50 8 46 Z" fill="${c}" stroke="#132029" stroke-width="3.5" stroke-linejoin="round"/>${v>=1?`<rect x="10" y="37" width="106" height="5" fill="#ffffff" opacity=".9"/>`:''}<path d="M56 15 L48 28 L74 28 L74 15 Z" fill="#cfe8ff" stroke="#132029" stroke-width="3" stroke-linejoin="round"/><path d="M80 15 L80 28 L100 28 L94 17 Q92 15 89 15 Z" fill="#cfe8ff" stroke="#132029" stroke-width="3" stroke-linejoin="round"/>${num?`<circle cx="62" cy="39" r="7.5" fill="#fff" stroke="#132029" stroke-width="2"/><text x="62" y="42.6" text-anchor="middle" font-size="${num>9?8:10}" font-family="Arial,sans-serif" font-weight="700" fill="#132029">${num}</text>`:''}<rect x="110" y="34" width="8" height="5" rx="2" fill="#ffe27a"/><circle cx="34" cy="50" r="10" fill="#132029"/><circle cx="34" cy="50" r="4" fill="#c9d1d9"/><circle cx="92" cy="50" r="10" fill="#132029"/><circle cx="92" cy="50" r="4" fill="#c9d1d9"/></svg>`}
+function carSVG(c,num,v){v=v||0;const body=v%5,t=Math.floor(v/20)%3,K='#132029',G='#cfe8ff';
+ const B=[
+  {p:'M6 46 L8 38 Q10 34 20 33 L44 30 Q56 18 70 17 L84 17 Q96 18 104 28 L114 31 Q120 33 120 40 L120 46 Q120 50 116 50 L10 50 Q6 50 6 46Z',w:['M52 30 Q61 21 70 20 L76 20 L76 30Z','M80 20 L84 20 Q92 21 98 29 L80 30Z'],x:`<path d="M66 37 L84 35 L82 42 L68 43Z" fill="${K}" opacity=".55"/>`,r:10,f:1},
+  {p:'M6 46 L6 36 Q6 32 12 32 L36 31 L46 18 Q48 15 54 15 L80 15 Q85 15 88 19 L96 30 L114 31 Q120 31 120 37 L120 46 Q120 50 116 50 L10 50 Q6 50 6 46Z',w:['M50 19 L44 30 L66 30 L66 19Z','M70 19 L70 30 L92 30 L86 20 Q85 19 83 19Z'],x:`<rect x="14" y="27" width="14" height="5" rx="1.5" fill="${K}"/>`,r:10,f:1},
+  {p:'M6 46 L8 37 Q10 32 22 31 L104 30 Q118 31 120 38 L120 46 Q120 50 116 50 L10 50 Q6 50 6 46Z',w:['M86 31 L80 18 L83 18 L92 31Z'],x:`<rect x="50" y="23" width="10" height="9" rx="3" fill="${K}"/><rect x="64" y="23" width="10" height="9" rx="3" fill="${K}"/><path d="M42 31 Q46 20 56 20" stroke="${K}" stroke-width="3" fill="none"/>`,r:10},
+  {p:'M8 46 L8 28 Q8 24 14 24 L28 23 L36 9 Q38 7 42 7 L98 7 Q104 7 106 12 L112 24 Q118 25 118 32 L118 46 Q118 50 114 50 L12 50 Q8 50 8 46Z',w:['M40 11 L34 23 L62 23 L62 11Z','M66 11 L66 23 L94 23 L94 11Z','M98 11 L98 23 L108 23 L103 12Z'],x:`<rect x="40" y="2" width="56" height="4" rx="2" fill="${K}"/>`,r:12},
+  {p:'M6 44 Q6 34 18 32 L34 30 Q44 14 62 13 Q82 12 92 26 L108 29 Q120 31 120 42 L120 46 Q120 50 116 50 L10 50 Q6 50 6 46Z',w:['M42 29 Q50 17 60 16 L62 29Z','M66 16 Q80 16 88 28 L66 29Z'],x:`<rect x="8" y="44" width="112" height="3" rx="1.5" fill="#e5e7eb" stroke="${K}" stroke-width="1"/>`,r:10,f:1}
+ ][body];
+ const rim=t>=2?'#ffc93c':'#c9d1d9',wy=50;
+ let s='<svg viewBox="0 0 124 64" aria-hidden="true">';
+ if(t>=2)s+='<ellipse cx="62" cy="57" rx="54" ry="5" fill="#22d3ee" opacity=".55"/><rect x="9" y="24" width="4" height="9" fill="'+K+'"/><rect x="2" y="20" width="20" height="5" rx="2" fill="'+c+'" stroke="'+K+'" stroke-width="2.5"/>';
+ const g0=B.f?'<g transform="matrix(-1 0 0 1 126 0)">':'<g>';
+ s+=g0+`<path d="${B.p}" fill="${c}" stroke="${K}" stroke-width="3.5" stroke-linejoin="round"/></g>`;
+ if(t>=1)s+=`<path d="M10 41 L118 41" stroke="#fff" stroke-width="4" opacity=".9"/><path d="M10 45 L118 45" stroke="${K}" stroke-width="1.5" opacity=".5"/>`;
+ s+=g0+B.w.map(d=>`<path d="${d}" fill="${G}" stroke="${K}" stroke-width="3" stroke-linejoin="round"/>`).join('')+B.x+'</g>';
+ if(num)s+=`<circle cx="56" cy="40" r="7.5" fill="#fff" stroke="${K}" stroke-width="2"/><text x="56" y="43.6" text-anchor="middle" font-size="${num>9?8:10}" font-family="Arial,sans-serif" font-weight="700" fill="${K}">${num}</text>`;
+ s+=`<rect x="112" y="34" width="8" height="5" rx="2" fill="#ffe27a" stroke="${K}" stroke-width="1"/><rect x="6" y="36" width="5" height="5" rx="1.5" fill="#ef4444"/>`;
+ [30,94].forEach(x=>{s+=`<circle cx="${x}" cy="${wy}" r="${B.r}" fill="${K}"/><circle cx="${x}" cy="${wy}" r="${B.r*.45}" fill="${rim}"/><circle cx="${x}" cy="${wy}" r="1.6" fill="${K}"/>`});
+ return s+'</svg>';
+}
 function dpadSVG(dir){
  const arm={up:[38,4,24,36],down:[38,60,24,36],left:[4,38,36,24],right:[60,38,36,24]};
  const tri={up:'50,10 42,25 58,25',down:'50,90 42,75 58,75',left:'10,50 25,42 25,58',right:'90,50 75,42 75,58'};
@@ -520,20 +717,37 @@ function dpadSVG(dir){
  return s+'<rect x="36" y="36" width="28" height="28" fill="#3a4452"/></svg>';
 }
 const KEEPER='<svg viewBox="0 0 52 72" aria-hidden="true"><rect x="15" y="50" width="9" height="20" rx="3" fill="#132029"/><rect x="28" y="50" width="9" height="20" rx="3" fill="#132029"/><rect x="2" y="26" width="48" height="9" rx="4.5" fill="#ff8c1a" stroke="#132029" stroke-width="2"/><rect x="12" y="22" width="28" height="32" rx="8" fill="#ff8c1a" stroke="#132029" stroke-width="2.5"/><circle cx="4" cy="30" r="5" fill="#fff" stroke="#132029" stroke-width="2"/><circle cx="48" cy="30" r="5" fill="#fff" stroke="#132029" stroke-width="2"/><circle cx="26" cy="12" r="10" fill="#f2c29b" stroke="#132029" stroke-width="2.5"/></svg>';
+/* Number pictures: balls in neat rows inside an SVG that always scales to fit its box */
+function countSVG(n){const c=n<=3?n:n===4?2:n<=6?3:n<=8?4:5,r=Math.ceil(n/c),Z=24,Wd=Math.max(c,2)*Z,H=Math.max(r,2)*Z,oy=(H-r*Z)/2;let s='';
+ for(let i=0;i<n;i++){const row=Math.floor(i/c),inRow=Math.min(c,n-row*c),col=i-row*c,ox=(Wd-inRow*Z)/2;s+=`<text x="${ox+col*Z+12}" y="${oy+row*Z+12}" font-size="19" text-anchor="middle" dominant-baseline="central">⚽</text>`}
+ return `<svg viewBox="0 0 ${Wd} ${H}" aria-hidden="true">${s}</svg>`}
 function pic(p){
  if(p.car)return `<span class="pic">${carSVG(p.car)}</span>`;
  if(p.dpad)return `<span class="pic">${dpadSVG(p.dpad)}</span>`;
- if(p.count)return `<span class="pic count" data-n="${p.count}">${'<i>⚽</i>'.repeat(p.count)}</span>`;
+ if(p.count)return `<span class="pic count" data-n="${p.count}">${countSVG(p.count)}</span>`;
  return `<span class="pic emo">${p.e}</span>`;
 }
 
 /* ---------- Sound ---------- */
 let voice=null;
-function pickVoice(){try{const v=speechSynthesis.getVoices();voice=v.find(x=>x.lang==='en-US'&&/female|samantha|aria|jenny|zira|google us/i.test(x.name))||v.find(x=>x.lang==='en-US')||v.find(x=>/^en/i.test(x.lang))||null}catch(e){}}
+/* Only real English voices. Android reports en_US, others en-US. */
+const enVoices=()=>{try{return speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang))}catch(e){return []}};
+function voiceScore(v){const n=v.name,l=v.lang.replace('_','-');let s=0;
+ if(/en-US/i.test(l))s+=30;else if(/en-GB/i.test(l))s+=20;
+ if(/natural|neural|online|premium|enhanced/i.test(n))s+=40;
+ if(/google us english/i.test(n))s+=35;
+ if(/aria|jenny|ava|samantha|allison|zira|emma/i.test(n))s+=15;
+ return s}
+function pickVoice(){const vs=enVoices();if(S.voiceName){const m=vs.find(v=>v.name===S.voiceName);if(m){voice=m;return}}voice=vs.sort((a,b)=>voiceScore(b)-voiceScore(a))[0]||null}
 if('speechSynthesis' in window){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
+/* English voices misread Turkish names; spell them the way they sound */
+const NAME_SAY={'Uras':'','İmge':'Eemgeh','Halit':'Hahlit','Ela':'Ella','Beyazıt':'Bayahzut','Pars':'Parss','Defne':'Defneh','Elisa':'Eleesa','Ayaz':'Ahyahz','Aras':'Ahrahss','Mirel':'Meerel','Bade':'Bahdeh','Buse':'Booseh','İrem':'Eerem','Birsen':'Beersen','Selahattin':'Selahatteen','Pınar':'Punahr','Balıkesir':'Bahlukeseer','Bilnet':'Beelnet'};
+const NAME_RE=new RegExp('(^|[^\\p{L}])('+Object.keys(NAME_SAY).join('|')+')(?=[^\\p{L}]|$)','gu');
+const sayFix=t=>String(t).replace(NAME_RE,(m,pre,n)=>pre+(n==='Uras'?(S.urasSay||'Oorahss'):NAME_SAY[n]));
 function say(texts){
  if(!('speechSynthesis' in window))return;
- try{speechSynthesis.cancel();[].concat(texts).forEach(t=>{const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=S.rate;if(voice)u.voice=voice;speechSynthesis.speak(u)})}catch(e){}
+ if(!voice)pickVoice();
+ try{speechSynthesis.cancel();[].concat(texts).forEach(t=>{const u=new SpeechSynthesisUtterance(sayFix(t));u.lang=voice?voice.lang.replace('_','-'):'en-US';u.rate=S.rate;if(voice)u.voice=voice;speechSynthesis.speak(u)})}catch(e){}
 }
 let actx=null;
 function tone(f,dur,type,vol,when){
@@ -554,6 +768,57 @@ function bell(f,when){
    o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+1.6)})}catch(e){}
 }
 const dingDong=()=>{bell(784,0);bell(587,.5)};
+/* Level-up celebration: fanfare + fireworks sounds, a small trophy and fireworks */
+function noiseBurst(when,dur,freq,vol){
+ if(!S.sfx)return;
+ try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+  const n=Math.floor(actx.sampleRate*dur),buf=actx.createBuffer(1,n,actx.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);
+  const src=actx.createBufferSource(),f=actx.createBiquadFilter(),g=actx.createGain();
+  src.buffer=buf;f.type='bandpass';f.frequency.value=freq;f.Q.value=.7;g.gain.value=vol;
+  src.connect(f);f.connect(g);g.connect(actx.destination);src.start(actx.currentTime+when)}catch(e){}
+}
+function whistle(when){
+ if(!S.sfx)return;
+ try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain(),t0=actx.currentTime+when;
+  o.type='sine';o.frequency.setValueAtTime(500,t0);o.frequency.exponentialRampToValueAtTime(1900,t0+.42);
+  g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(.05,t0+.05);g.gain.exponentialRampToValueAtTime(.0001,t0+.45);
+  o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+.5)}catch(e){}
+}
+function fanfare(){
+ [523,659,784,1047].forEach((f,i)=>{tone(f,.15,'square',.05,i*.1);tone(f,.18,'triangle',.11,i*.1)});
+ [523,659,784,1047].forEach(f=>tone(f,.9,'triangle',.07,.45));tone(1568,.8,'sine',.05,.45);
+ [1,1.45,1.9].forEach((t,i)=>{whistle(t-.45);noiseBurst(t,.45,900+i*350,.9);noiseBurst(t+.06,1,3200,.25)});
+}
+const CUP_SVG='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 8 H46 V22 Q46 38 32 40 Q18 38 18 22Z" fill="#ffc93c" stroke="#132029" stroke-width="3" stroke-linejoin="round"/><path d="M18 13 H9 Q8 26 20 29 M46 13 H55 Q56 26 44 29" fill="none" stroke="#132029" stroke-width="3" stroke-linecap="round"/><path d="M24 12 V24" stroke="#fff6c9" stroke-width="3" stroke-linecap="round"/><rect x="28" y="40" width="8" height="8" fill="#e0a92a" stroke="#132029" stroke-width="2.5"/><rect x="19" y="48" width="26" height="8" rx="2" fill="#ffc93c" stroke="#132029" stroke-width="3"/><path d="M32 16 l2.2 4.5 5 .7 -3.6 3.5 .9 5 -4.5 -2.4 -4.5 2.4 .9 -5 -3.6 -3.5 5 -.7Z" fill="#fff"/></svg>';
+const PRAISE=[
+ ['Amazing, Uras! You leveled up!','Harikasın Uras! Seviye atladın!'],
+ ['Great job, Uras! Next level!','Çok iyi Uras! Sıradaki seviye!'],
+ ['Well done, Uras! You are a star!','Aferin Uras! Sen bir yıldızsın!'],
+ ['Super, Uras! Level up!','Süpersin Uras! Seviye atladın!'],
+ ['Fantastic, Uras! Keep going!','Muhteşemsin Uras! Devam et!'],
+ ['You did it, Uras! You are a champion!','Başardın Uras! Sen bir şampiyonsun!']
+];
+const praise=()=>PRAISE[Math.floor(Math.random()*PRAISE.length)];
+function fireworks(msg){
+ const box=document.createElement('div');box.className='fw';
+ const cupHTML=`<div class="fw-cup">${CUP_SVG}</div>${msg?`<div class="fw-msg" lang="en"><b>${esc(msg[0])}</b><small lang="tr">${esc(msg[1])}</small></div>`:''}`;
+ /* On a result screen the trophy + message sit inside the screen (no gap); elsewhere they float on top */
+ const slot=document.querySelector('#play:not([hidden]) #stage .fw-space');
+ if(slot){slot.classList.add('fw-inline');slot.innerHTML=cupHTML}else box.innerHTML=cupHTML;
+ const calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(!calm){
+  const cols=['#ffc93c','#ff2e88','#22d3ee','#a3e635','#ff8c1a','#ffffff'];
+  [[16,14,1],[84,12,1.45],[50,7,1.9],[30,26,2.2],[70,26,2.4]].forEach(([x,y,t],b)=>{
+   const s=document.createElement('div');s.className='fw-burst';s.style.left=x+'%';s.style.top=y+'%';
+   const c1=cols[b%cols.length],c2=cols[(b+2)%cols.length];
+   for(let i=0;i<34;i++){const a=i/34*Math.PI*2,r=70+Math.random()*50,p=document.createElement('i');
+    p.style.setProperty('--dx',Math.cos(a)*r+'px');p.style.setProperty('--dy',Math.sin(a)*r+'px');p.style.setProperty('--c',i%2?c1:c2);p.style.animationDelay=t+'s';s.appendChild(p)}
+   box.appendChild(s)});
+ }
+ document.body.appendChild(box);setTimeout(()=>box.remove(),7400);
+}
+function celebrate(msg){fanfare();fireworks(msg);confetti();if(msg)later(()=>say(msg[0]),2300)}
 function confetti(){
  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  const box=document.createElement('div');box.className='confetti';
@@ -572,7 +837,7 @@ function stickerHTML(){
  return `<div class="sticker"><div class="ph">${inner}</div><div class="pname">URAS</div><div class="pnum">10</div></div>`;
 }
 function renderCard(){
- const lv=lvOf(view);const td=tasksDone();const total=NW*ND*2;
+ const lv=lvOf(view);const td=tasksDone();const total=TOTAL;
  $('#pcard').innerHTML=`${stickerHTML()}<div class="pinfo"><span class="eyebrow">Level ${lv.n} · ${lv.name}</span><b>Week ${view} / ${NW}</b><small>${lv.sub}</small><small>${td} / ${total} tasks done</small><div class="pbar"><i style="width:${Math.round(td/total*100)}%"></i></div></div>`;
 }
 $('#photo-in').addEventListener('change',e=>{
@@ -594,7 +859,7 @@ function renderHome(){
  $('#st-stars').textContent=S.stars;
  $('#st-cars').textContent=completedDays()+'/'+NCARS;
  $('#st-streak').textContent=streak();
- renderCard();renderTypingCard();
+ renderCard();renderSbCard();renderTypingCard();renderTowerCard();
  const Wk=WEEKS[view-1];const lv=lvOf(view);
 
  $('#levels').innerHTML=LEVELS.map(L=>`<div><div class="lvl-h"><b>Level ${L.n} · ${L.name}</b><span>${L.sub}</span></div><div class="weeks">${WEEKS.filter(x=>x.lv===L.n).map(x=>{
@@ -604,7 +869,7 @@ function renderHome(){
  const nd=nextDay(view);const m=$('#mission');
  const ci=Math.min(completedDays(),NCARS-1);const nc=carAt(ci);
  const chunk=`<div class="chunk"><button class="speak" data-chunk="1" aria-label="Haftanın cümlesini dinle">🔊</button><span><small>Sentence of the week</small><b>${esc(Wk.chunk)}</b><small>${esc(Wk.chunkTr)}</small></span></div>`;
- const head=`<p class="eyebrow">Week ${view} · ${esc(Wk.en)} (<span lang="tr">${esc(Wk.tr)}</span>)${nd>=0?` · Match ${nd+1}${nd===4?' · Final':''}`:''}</p>`;
+ const head=`<p class="eyebrow">Week ${view} · ${esc(Wk.en)} (<span lang="tr">${esc(Wk.tr)}</span>)${nd>=0?` · Mission ${nd+1}${nd===4?' · Final':''}`:''}</p>`;
  if(nd===-1){
   m.innerHTML=`<div>${head}<h1>Week complete! The cup is yours 🏆</h1><p class="meta" style="margin:12px 0">${view<NW?'Sıradaki hafta açıldı, yol haritasından seç!':'Bütün sezonu bitirdin. Şampiyonsun!'}</p>${chunk}</div>
    <div class="reward"><p class="eyebrow">Cars in your garage</p><p class="nm">${completedDays()} / ${NCARS}</p><button class="btn small" data-act="garage">Open Garage</button></div>`;
@@ -613,20 +878,20 @@ function renderHome(){
    <div class="reward"><p class="eyebrow">Tomorrow's prize</p>${carSVG(nc.color,ci+1,nc.v)}<p class="nm">${nc.name}</p></div>`;
  }else{
   const started=dayStarted(view,nd);
-  m.innerHTML=`<div>${head}<h1>${started?"Let's keep going, Uras!":"Hello Uras! Today's match is ready."}</h1>
+  m.innerHTML=`<div>${head}<h1>${started?"Let's keep going, Uras!":"Hello Uras! Today's mission is ready."}</h1>
    <ul class="tasks">${PLAN[nd].map((s,t)=>`<li class="${S.done[tk(view,nd,t)]?'done':''}"><span class="ic">${TASKS[s.t].ic}</span><span><b>${TASKS[s.t].name}${s.hard?' (hard)':''}</b><small>${TASKS[s.t].desc}</small></span></li>`).join('')}</ul>
    ${chunk}<div class="meta"><button class="btn" data-act="start">${started?'Continue ▶':'Kick off ▶'}</button><span>⏱ about 10 minutes</span></div></div>
-   <div class="reward"><p class="eyebrow">Finish the match, win this car</p>${carSVG(nc.color,ci+1,nc.v)}<p class="nm">${nc.name}</p></div>`;
+   <div class="reward"><p class="eyebrow">Finish the mission, win this car</p>${carSVG(nc.color,ci+1,nc.v)}<p class="nm">${nc.name}</p></div>`;
  }
 
- $('#fx-title').textContent=`Week ${view} Matches · ${Wk.en}`;
+ $('#fx-title').textContent=`Week ${view} Missions · ${Wk.en}`;
  $('#fixtures').innerHTML=PLAN.map((day,d)=>{
   const done=dayComplete(view,d);const cur=d===nd&&!waitsTomorrow(view,d);
   const open=!done&&!cur&&S.openAll;
   const cls=done?'done':cur?'cur':open?'open':'lock';
   const st=done?'Completed ✓':cur?'Up next':open?'Open':(d===nd?'Tomorrow':'Locked');
   const btn=done?`<button class="btn small ghost" data-act="replay" data-d="${d}">Replay</button>`:(cur||open)?`<button class="btn small${open?' ghost':''}" data-act="playday" data-d="${d}">Play</button>`:`<span aria-hidden="true" style="font-size:24px">🔒</span>`;
-  return `<div class="fx ${cls}"><h3>${d===4?'Final':'Match '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('');
+  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('');
 
  $('#wall').innerHTML=Wk.words.map((w,i)=>`<button class="wcard" data-say="${i}">${pic(w.p)}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small>${lv.n>=2?`<em>${esc(w.ex)}</em>`:''}</button>`).join('');
 }
@@ -642,6 +907,8 @@ document.addEventListener('click',e=>{
  else if(a==='playday')startDay(view,+b.dataset.d,false);
  else if(a==='garage')openGarage();
  else if(a==='typing')startTyping();
+ else if(a==='tower')startTower();
+ else if(a==='sb')startSb();
 });
 $('#open-garage').onclick=openGarage;
 $('#open-parent').onclick=openGate;
@@ -658,7 +925,7 @@ function openPlay(){
  if(!clock){let n=0;clock=setInterval(()=>{const k=today();S.secs[k]=(S.secs[k]||0)+1;if(++n%5===0)save()},1000)}
 }
 function closePlay(){
- $('#play').hidden=true;document.body.style.overflow='';
+ $('#play').hidden=true;document.body.style.overflow='';stage.classList.remove('neon');
  timers.forEach(clearTimeout);timers=[];clearInterval(clock);clock=null;
  if(session&&session.iv)clearInterval(session.iv);
  try{speechSynthesis.cancel()}catch(e){}
@@ -675,7 +942,7 @@ function startDay(w,d,replay){
 function runTask(t){
  const {w,d}=session;const spec=PLAN[d][t];const Wk=WEEKS[w-1];
  session.t=t;
- $('#play-title').textContent=`Week ${w} · ${d===4?'Final':'Match '+(d+1)} · ${TASKS[spec.t].name}`;
+ $('#play-title').textContent=`Week ${w} · ${d===4?'Final Mission':'Mission '+(d+1)} · ${TASKS[spec.t].name}`;
  const ctx={words:partOf(Wk,spec.part),all:Wk.words,hard:!!spec.hard,lv:lvOf(w),wk:Wk};
  GAMES[spec.t](ctx,()=>finishTask());
 }
@@ -693,7 +960,7 @@ function finishTask(){
  confetti();cheer();setProg(1,1);
  const nextT=replay?(t+1<PLAN[d].length?t+1:-1):PLAN[d].findIndex((_,j)=>!S.done[tk(w,d,j)]);
  if(nextT!==-1){
-  stage.innerHTML=`<div class="res"><div class="stars" aria-hidden="true">⭐⭐⭐</div><h2>Great job, Uras!</h2><p>+${first?3:1} ${first?'stars':'star'} · Bir görev kaldı!</p><button class="btn" id="r-next">Move Break →</button></div>`;
+  stage.innerHTML=`<div class="res"><div class="stars" aria-hidden="true">⭐⭐⭐</div><h2>Great job, Uras!</h2><p>+${first?3:1} ${first?'stars':'star'} · Sıradaki göreve geç!</p><button class="btn" id="r-next">Move Break →</button></div>`;
   $('#r-next').onclick=()=>showBreak(()=>runTask(nextT));
   return;
  }
@@ -734,7 +1001,7 @@ const GAMES={
   function round(){
    setProg(i,R);const t=order[i];const n=ctx.hard?4:ctx.lv.opts;const pr=promptFor(t,ctx);
    const opts=shuffle([t,...sample(ctx.all.filter(w=>w!==t),n-1)]);
-   stage.innerHTML=`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="hint">${ctx.lv.hint}</p></div><div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="Seçenek ${k+1}">${pic(o.p)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+   stage.innerHTML=`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="saytxt" lang="en">${esc(pr)}</p><p class="hint">Oku ya da dinle, doğru resme dokun</p></div><div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="Seçenek ${k+1}">${pic(o.p)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
    $('#g-speak').onclick=()=>say(pr);
    later(()=>say(pr),350);
    let locked=false;
@@ -782,7 +1049,7 @@ const GAMES={
   function round(){
    setProg(i,4);const t=list[i];const L=t.en.split('');let p=0;const ghost=i<ctx.lv.ghost;
    const tiles=shuffle(L);
-   stage.innerHTML=`<div class="road"><div class="lane"></div><div class="finish"></div><div class="racer" id="racer" style="left:${pos()}">${carSVG('#ef4444',10)}</div></div>
+   stage.innerHTML=`<div class="road"><div class="tw-snow"></div><div class="lane"></div><div class="finish"></div><div class="racer" id="racer" style="left:${pos()}">${carSVG('#ef4444',10)}</div></div>
     <div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Harfleri sırayla seç!${ghost?'<br>Silik harfleri takip et.':''}</p><button class="speak" id="g-hint">🔊 Listen</button></div></div>
     <div class="slots">${L.map((c,k)=>`<span class="slot" data-k="${k}">${ghost?`<em>${esc(c)}</em>`:''}</span>`).join('')}</div>
     <div class="tiles">${tiles.map((c,k)=>`<button class="tile" data-k="${k}">${esc(c)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
@@ -878,7 +1145,7 @@ function renderTypingCard(){
   <button class="btn" data-act="typing">Play ▶</button>`;
 }
 function startTyping(){
- session={typing:true};openPlay();$('#play-title').textContent='Typing Turbo';
+ session={typing:true};openPlay();stage.classList.add('neon');$('#play-title').textContent='Typing Turbo';
  let level=S.typing.level,list,wi,pos,letters,totalL,doneL;
  const typable=c=>/[a-z ]/i.test(c);
  const skip=()=>{while(pos<letters.length&&!typable(letters[pos]))pos++};
@@ -889,7 +1156,7 @@ function startTyping(){
  function render(){
   const w=list[wi];const fw=findWord(w.toLowerCase());
   stage.innerHTML=`<div class="tt-top"><span class="lvl-badge">Level ${level}</span><span class="tt-count">Word ${wi+1} / ${WPL}</span><button class="speak" id="tt-say" aria-label="Dinle">🔊 Listen</button></div>
-   <div class="road"><div class="lane"></div><div class="finish"></div><div class="racer" id="racer" style="left:${carPos()}">${carSVG('#2f6fed',level)}</div></div>
+   <div class="road"><div class="tw-snow"></div><div class="lane"></div><div class="finish"></div><div class="racer" id="racer" style="left:${carPos()}">${carSVG('#2f6fed',level)}</div></div>
    ${fw?`<div class="tt-pic">${pic(fw.p)}</div>`:''}
    <div class="tt-word" id="tt-word" aria-live="polite">${letters.map((c,k)=>`<span class="${k<pos?'d':k===pos?'c':''}${c===' '?' sp':''}">${c===' '?'&nbsp;':esc(c)}</span>`).join('')}</div>
    <p class="hint center">Klavyeden ya da aşağıdaki tuşlardan yaz.</p>
@@ -907,13 +1174,271 @@ function startTyping(){
  }
  function levelUp(){
   level++;S.typing.level=level;S.typing.best=Math.max(S.typing.best,level);save();setProg(WPL,WPL);
-  later(()=>{dingDong();confetti();},600);
-  later(()=>{say('Level up!');
-   stage.innerHTML=`<div class="res"><div class="stars" aria-hidden="true">🔔</div><h2>Level up!</h2><p class="carname">Level ${level}</p><p>Ding dong! Bir üst seviyeye çıktın.</p><div class="row"><button class="btn" id="tt-next">Next level ▶</button><button class="btn ghost" id="tt-stop">Stop</button></div></div>`;
+  const pr=praise();later(()=>celebrate(pr),1150);
+  later(()=>{
+   stage.innerHTML=`<div class="res"><div class="fw-space"></div><h2>Level up!</h2><p class="carname">Level ${level}</p><div class="row"><button class="btn" id="tt-next">Next level ▶</button><button class="btn ghost" id="tt-stop">Stop</button></div></div>`;
    $('#tt-next').onclick=startLevel;$('#tt-stop').onclick=closePlay},1100);
  }
  typingKey=e=>{if(e.ctrlKey||e.metaKey||e.altKey)return;if(!$('#tt-word'))return;const k=normKey(e.key);if(k.length===1&&(k===' '||/\p{L}/u.test(k))){e.preventDefault();press(k)}};
  startLevel();
+}
+
+/* ---------- Word Tower (jump game) ---------- */
+const KID='<svg viewBox="0 0 40 60" aria-hidden="true"><rect x="4" y="22" width="6" height="13" rx="3" fill="#f2c29b" stroke="#132029" stroke-width="1.8" transform="rotate(22 7 22)"/><rect x="30" y="22" width="6" height="13" rx="3" fill="#f2c29b" stroke="#132029" stroke-width="1.8" transform="rotate(-22 33 22)"/><path d="M12 37 H28 L27.5 53 H21.5 L20 43 L18.5 53 H12.5Z" fill="#3b6fc4" stroke="#132029" stroke-width="1.8" stroke-linejoin="round"/><path d="M20 39 V43 M14 41 V51 M26 41 V51" stroke="#2a4f8f" stroke-width="1"/><path d="M10 52 H19 V56 Q19 58 17 58 H10 Q9 58 9 56.5Z" fill="#fff" stroke="#132029" stroke-width="1.6"/><path d="M21 52 H30 L31 56.5 Q31 58 30 58 H23 Q21 58 21 56Z" fill="#fff" stroke="#132029" stroke-width="1.6"/><path d="M10.5 55 H18 M22 55 H29.5" stroke="#ff2e88" stroke-width="1.4"/><rect x="5" y="20" width="9" height="7" rx="3" fill="#fff" stroke="#132029" stroke-width="1.8" transform="rotate(22 9 21)"/><rect x="26" y="20" width="9" height="7" rx="3" fill="#fff" stroke="#132029" stroke-width="1.8" transform="rotate(-22 31 21)"/><rect x="11" y="20" width="18" height="19" rx="4" fill="#fff" stroke="#132029" stroke-width="2"/><circle cx="20" cy="29" r="5" fill="#ff7a59"/><path d="M15.4 30 H24.6 M16 32 H24" stroke="#fff" stroke-width="1"/><path d="M19 34 Q19.5 28 21 25.5 M21 25.5 q-3 -.5 -4.5 1.5 M21 25.5 q3 -1 4.3 1 M21 25.5 q-.5 -2 -2.5 -2.5" stroke="#132029" stroke-width="1.1" fill="none" stroke-linecap="round"/><rect x="12" y="36.5" width="16" height="2.5" fill="#132029"/><circle cx="20" cy="12" r="9" fill="#f2c29b" stroke="#132029" stroke-width="2"/><path d="M11 11 Q10 2 19 2 Q28 1 30 8 Q26 6 22 7 Q17 5 13 9Z" fill="#3a2414" stroke="#132029" stroke-width="1.5" stroke-linejoin="round"/><path d="M13 11 H27 V13.5 Q27 15.5 24.5 15.5 Q22 15.5 21.5 13 H18.5 Q18 15.5 15.5 15.5 Q13 15.5 13 13.5Z" fill="#132029"/><path d="M14.5 12 H17 M22.5 12 H25" stroke="#22d3ee" stroke-width="1"/><path d="M17.5 17.5 Q20 19.5 22.5 17.5" stroke="#132029" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+/* Extra tower vocabulary (Grade 1-3): en:tr:emoji */
+const TX=s=>s.split('|').map(x=>{const [en,tr,e]=x.split(':');return {en,tr,p:e?{e}:null}});
+const TOWER_EXTRA=TX('sun:güneş:☀️|moon:ay:🌙|star:yıldız:⭐|tree:ağaç:🌳|cake:pasta:🎂|kick:tekme / şut:🦵|team:takım:👕|win:kazanmak:🏆|fast:hızlı:💨|slow:yavaş:🐢|big:büyük|hot:sıcak:🔥|sad:üzgün:😢|cup:kupa:🏆|box:kutu:📦|bus:otobüs:🚌|pen:tükenmez kalem:🖊️|map:harita:🗺️|key:anahtar:🔑|bed:yatak:🛏️|toy:oyuncak:🧸|sea:deniz:🌊|sky:gökyüzü|ice:buz:🧊|snow:kar:☃️|rain:yağmur:🌧️|wind:rüzgar:🌬️|king:kral:🤴|ship:gemi:🚢|duck:ördek:🦆|frog:kurbağa:🐸|bear:ayı:🐻|cow:inek:🐮|pig:domuz:🐷|bee:arı:🐝|owl:baykuş:🦉|fox:tilki:🦊|boat:tekne:⛵|home:ev:🏡|shoe:ayakkabı:👟|sock:çorap:🧦|kid:çocuk:🧒|' +
+ 'happy:mutlu:😀|sport:spor:🏅|score:skor / gol atmak:🥅|field:saha:🏟️|socks:çoraplar:🧦|pizza:pizza:🍕|juice:meyve suyu:🧃|lemon:limon:🍋|tiger:kaplan:🐯|zebra:zebra:🦓|snake:yılan:🐍|sheep:koyun:🐑|mouse:fare:🐭|brown:kahverengi|clock:saat:⏰|table:masa|phone:telefon:📱|money:para:💰|music:müzik:🎵|dance:dans etmek:💃|paint:boyamak:🎨|smile:gülümsemek:😊|sleep:uyumak:😴|drink:içmek:🥤|write:yazmak:✍️|climb:tırmanmak:🧗|throw:atmak / fırlatmak|catch:yakalamak|cloud:bulut:☁️|grape:üzüm:🍇|honey:bal:🍯|plane:uçak:✈️|truck:kamyon:🚚|' +
+ 'player:oyuncu:⛹️|winner:kazanan:🥇|jacket:ceket:🧥|purple:mor|eleven:on bir|twelve:on iki|twenty:yirmi|cheese:peynir:🧀|rocket:roket:🚀|spider:örümcek:🕷️|turtle:kaplumbağa:🐢|summer:yaz:🏖️|winter:kış:⛄|chicken:tavuk:🐔|morning:sabah:🌅|evening:akşam:🌆|thirteen:on üç|monster:canavar:👾|picture:resim:🖼️|' +
+ 'football:futbol:⚽|goalkeeper:kaleci:🧤|stadium:stadyum:🏟️|champion:şampiyon:🏆|birthday:doğum günü:🎂|elephant:fil:🐘|dinosaur:dinozor:🦖|giraffe:zürafa:🦒|penguin:penguen:🐧|butterfly:kelebek:🦋|computer:bilgisayar:💻|playground:oyun parkı:🛝|rainbow:gökkuşağı:🌈|sandwich:sandviç:🥪|chocolate:çikolata:🍫|kangaroo:kanguru:🦘|umbrella:şemsiye:☂️|trousers:pantolon:👖|sweater:kazak:🧶|Saturday:cumartesi|Sunday:pazar|tomorrow:yarın|yesterday:dün|fourteen:on dört|fifteen:on beş|nineteen:on dokuz|beautiful:güzel|hospital:hastane:🏥|library:kütüphane:📚|' +
+ 'red card:kırmızı kart:🟥|yellow card:sarı kart:🟨|good job:aferin:👍|well done:çok iyi:👏|thank you:teşekkürler:🙏|good morning:günaydın:🌅|happy birthday:doğum günün kutlu olsun:🎂|nice shot:güzel şut:🥅|my team:benim takımım:👕|play football:futbol oyna:⚽|pass the ball:topu pas ver:⚽|blue sky:mavi gökyüzü|cold water:soğuk su:💧|fast car:hızlı araba:🏎️|see you:görüşürüz:👋|big goal:büyük gol:🥅|' +
+ 'I can run fast.:Hızlı koşabilirim.:🏃|Pass me the ball.:Topu bana pas ver.:⚽|I like football.:Futbolu severim.:⚽|My team is the best.:Benim takımım en iyisi.:🏆|Where is my bag?:Çantam nerede?:🎒|I have a red bike.:Kırmızı bir bisikletim var.:🚲|The cat is under the table.:Kedi masanın altında.:🐱|It is sunny today.:Bugün hava güneşli.:☀️|Can you swim?:Yüzebilir misin?:🏊|I am happy.:Mutluyum.:😀|We won the cup!:Kupayı kazandık!:🏆|Kick the ball to me.:Topu bana at.:🦵|This is my best friend.:Bu benim en iyi arkadaşım.:🤝|I want an apple.:Bir elma istiyorum.:🍎|Open the window, please.:Lütfen pencereyi aç.:🪟|The goalkeeper is tall.:Kaleci uzun boylu.:🧤|I play with my brother.:Kardeşimle oynarım.:👦|The dog can jump high.:Köpek yükseğe zıplayabilir.:🐶');
+const TOWER_STAGES=[['Warm-up','hafta kelimeleri + 3–4 harf'],['Rookie','5 harf'],['Pro','6–7 harf'],['Star','8+ harf'],['Captain','iki kelime'],['Legend','tam cümle']];
+const TOWER_PER=10,TOWER_TOP=TOWER_PER*TOWER_STAGES.length;
+function towerPools(){
+ const all=[],seen=new Set();
+ WEEKS.flatMap(x=>x.words).concat(TOWER_EXTRA).forEach(w=>{const k=w.en.toLowerCase();if(!seen.has(k)){seen.add(k);all.push(w)}});
+ const L=w=>w.en.length,one=all.filter(w=>!/ /.test(w.en));
+ const wk=WEEKS[view-1].words;
+ return [
+  wk.concat(one.filter(w=>L(w)<=4&&!wk.includes(w))),
+  one.filter(w=>L(w)===5),
+  one.filter(w=>L(w)>=6&&L(w)<=7),
+  one.filter(w=>L(w)>=8),
+  all.filter(w=>/ /.test(w.en)&&!/[.?!]$/.test(w.en)),
+  all.filter(w=>/[.?!]$/.test(w.en))
+ ];
+}
+function renderTowerCard(){
+ $('#tower-card').innerHTML=`<div><p class="eyebrow">Jump Game · <span lang="tr">zıplama oyunu</span></p><h2>Word Tower</h2><p class="meta">${TOWER_TOP} katlık kule, 6 bölüm: kısa kelimelerden tam cümlelere! Kelimeyi yaz, futbolcu zıplasın.</p></div>
+  <div class="tt-badges"><span class="lvl-badge">🏔 ${S.tower.best}m</span><small>Best height</small></div>
+  <button class="btn" data-act="tower">Play ▶</button>`;
+}
+function startTower(){
+ session={tower:true};openPlay();stage.classList.add('neon');$('#play-title').textContent='Word Tower';$('#prog').innerHTML='';
+ const pools=towerPools(),queues=pools.map(()=>[]);
+ const stageOf=f=>f<=TOWER_TOP?Math.min(Math.floor((f-1)/TOWER_PER),pools.length-1):3+(f%3);
+ const nextW=f=>{const s=stageOf(f);if(!queues[s].length)queues[s]=s===0?shuffle(pools[0].slice(0,WEEKS[view-1].words.length)).concat(shuffle(pools[0].slice(WEEKS[view-1].words.length))):shuffle(pools[s]);return queues[s].shift()};
+ const GAP=74,PW=44,M=5,surf=i=>14+i*GAP;
+ const typable=c=>/[a-z ]/i.test(c);
+ const plats=[{x:50-PW/2,w:null}];
+ let floor=0,built=0,letters=null,pos=0;
+ stage.innerHTML=`<div class="tt-top"><span class="lvl-badge" id="tw-m">🏔 0m</span><span class="tt-count" id="tw-stage"></span><button class="speak" id="tw-say" aria-label="Dinle">🔊 Listen</button></div>
+  <div class="tower"><div class="tw-snow"></div><div class="tw-world" id="tw-world"><div class="tw-ground"></div><div class="tw-kid" id="tw-kid">${KID}</div></div></div>
+  <div class="tw-q"><div class="tt-pic" id="tw-pic"></div><div><div class="tt-word" id="tw-word" aria-live="polite"></div><p class="tw-tr" id="tw-tr"></p></div></div>
+  <div class="kb">${['qwertyuiop','asdfghjkl','zxcvbnm'].map(r=>`<div class="kb-row">${r.split('').map(ch=>`<button class="key" data-key="${ch}" tabindex="-1">${ch}</button>`).join('')}</div>`).join('')}<div class="kb-row" id="tw-space" hidden><button class="key space" data-key=" " tabindex="-1">space</button></div></div>`;
+ const world=$('#tw-world'),kid=$('#tw-kid');
+ function build(){while(built<floor+7){built++;const w=nextW(built);const long=w.en.length>10;const prev=plats[built-1].x;let x;
+   if(long)x=50-PW/2+(Math.random()*16-8);else do{x=6+Math.random()*(100-PW-12)}while(Math.abs(x-prev)<12);
+   plats[built]={x,w};
+   const d=document.createElement('div');d.className='tw-plat'+(built%TOWER_PER===0?' gold':'');d.id='tw-p'+built;d.style.cssText=`left:${x}%;width:${PW}%;bottom:${surf(built)-12}px`;
+   d.innerHTML=`<span class="tw-lab${long?' long':''}">${esc(w.en)}</span>`;world.appendChild(d)}}
+ function place(){const c=plats[floor].x+PW/2;kid.style.left=`calc(${c}% - 23px)`;kid.style.bottom=surf(floor)+'px';world.style.transform=`translateY(${Math.max(0,surf(floor)-60)}px)`;
+  world.querySelectorAll('.tw-plat.next').forEach(e=>e.classList.remove('next'));const n=$('#tw-p'+(floor+1));if(n)n.classList.add('next');const o=$('#tw-p'+floor);if(o)o.classList.add('done')}
+ const skip=()=>{while(pos<letters.length&&!typable(letters[pos]))pos++};
+ function paint(){const el=$('#tw-word');el.classList.toggle('long',letters.length>10);el.innerHTML=letters.map((c,k)=>`<span class="${k<pos?'d':k===pos?'c':''}${c===' '?' sp':''}">${c===' '?'&nbsp;':esc(c)}</span>`).join('')}
+ function load(){
+  if(!$('#tw-word'))return;const w=plats[floor+1].w;const s=stageOf(floor+1);
+  letters=w.en.split('');pos=0;skip();
+  $('#tw-pic').innerHTML=w.p?pic(w.p):'';$('#tw-tr').textContent=w.tr||'';
+  $('#tw-space').hidden=!/ /.test(w.en);
+  $('#tw-stage').textContent=floor+1>TOWER_TOP?`Bonus · Floor ${floor+1}`:`Stage ${s+1}/6 · ${TOWER_STAGES[s][0]} · Floor ${floor+1}/${TOWER_TOP}`;
+  paint();later(()=>say(w.en),300)}
+ function press(ch){
+  if(!$('#tw-word')||!letters||pos>=letters.length)return;
+  if(normKey(ch)===normKey(letters[pos])){pos++;skip();tick();paint();if(pos>=letters.length)jump()}
+  else{bad();miss(plats[floor+1].w);const c=$('#tw-word .c');if(c){c.classList.remove('x');void c.offsetWidth;c.classList.add('x')}kid.classList.remove('oops');void kid.offsetWidth;kid.classList.add('oops')}
+ }
+ function banner(t,sub){const b=document.createElement('div');b.className='tw-banner';b.innerHTML=`<b>${t}</b><small>${sub}</small>`;$('.tower').appendChild(b);later(()=>b.remove(),1900)}
+ function jump(){
+  const w=plats[floor+1].w;good();say(w.en);
+  floor++;build();kid.classList.remove('hop','oops');void kid.offsetWidth;kid.classList.add('hop');place();
+  const m=floor*M;$('#tw-m').textContent='🏔 '+m+'m';
+  if(m>S.tower.best){S.tower.best=m;save()}
+  let wait=800;
+  if(floor===TOWER_TOP){wait=3400;later(()=>{celebrate(['You made it to the top, Uras!','Kulenin tepesine çıktın Uras!']);banner('TOP OF THE TOWER!','Zirvedesin! Bonus katlar başlıyor.')},500)}
+  else if(floor%TOWER_PER===0&&floor<TOWER_TOP){wait=3400;const s=stageOf(floor+1);later(()=>{celebrate(praise());banner(`Stage ${s+1}: ${TOWER_STAGES[s][0]}`,TOWER_STAGES[s][1])},500)}
+  else if(floor%5===0){wait=1100;later(dingDong,500)}
+  letters=null;later(load,wait);
+ }
+ build();place();load();
+ $('#tw-say').onclick=()=>say(plats[floor+1].w.en);
+ stage.querySelectorAll('.key').forEach(b=>b.onclick=()=>press(b.dataset.key));
+ typingKey=e=>{if(e.ctrlKey||e.metaKey||e.altKey)return;if(!$('#tw-word'))return;const k=normKey(e.key);if(k.length===1&&(k===' '||/\p{L}/u.test(k))){e.preventDefault();press(k)}};
+}
+
+/* ---------- Sentence Builder (drag & drop) ---------- */
+const PARAS={
+ 1:[["Hello! I am Uras.","Merhaba! Ben Uras."],["I am a boy.","Ben bir erkek çocuğum."],["My teacher is nice.","Öğretmenim çok iyi."],["I go to school with my friend.","Arkadaşımla okula giderim."]],
+ 2:[["My car is red.","Arabam kırmızı."],["The sky is blue.","Gökyüzü mavi."],["I like green apples.","Yeşil elmaları severim."],["My ball is black and white.","Topum siyah beyaz."]],
+ 3:[["I have two balls.","İki topum var."],["A car has four wheels.","Bir arabanın dört tekerleği var."],["I am seven.","Yedi yaşındayım."],["Ten cars are in the race.","Yarışta on araba var."]],
+ 4:[["This is my bag.","Bu benim çantam."],["My book is in my bag.","Kitabım çantamda."],["I have a red pencil.","Kırmızı bir kalemim var."],["Sit on your chair.","Sandalyene otur."]],
+ 5:[["I have a fast car.","Hızlı bir arabam var."],["My robot can dance.","Robotum dans edebilir."],["I ride my bike.","Bisikletime binerim."],["Let's play a game!","Hadi bir oyun oynayalım!"]],
+ 6:[["I have a dog.","Bir köpeğim var."],["My dog can run fast.","Köpeğim hızlı koşabilir."],["The cat is sleeping.","Kedi uyuyor."],["The lion is big.","Aslan büyük."]],
+ 7:[["I have two eyes.","İki gözüm var."],["I listen with my ears.","Kulaklarımla dinlerim."],["I kick the ball with my foot.","Topa ayağımla vururum."],["Touch your nose!","Burnuna dokun!"]],
+ 8:[["Run to the ball!","Topa koş!"],["Press up and jump!","Yukarı bas ve zıpla!"],["Turn left, then turn right.","Sola dön, sonra sağa dön."],["Stop the car!","Arabayı durdur!"]],
+ 9:[["I like apples.","Elmaları severim."],["Monkeys like bananas.","Maymunlar muz sever."],["I drink milk every day.","Her gün süt içerim."],["Rabbits like carrots.","Tavşanlar havuç sever."]],
+ 10:[["This is my family.","Bu benim ailem."],["My father is tall.","Babam uzun boylu."],["My mother is nice.","Annem çok iyi."],["I play with my brother.","Kardeşimle oynarım."]],
+ 11:[["This is my house.","Bu benim evim."],["My bed is in my bedroom.","Yatağım yatak odamda."],["Mum is in the kitchen.","Annem mutfakta."],["The ball is in the garden.","Top bahçede."]],
+ 12:[["It is sunny today.","Bugün hava güneşli."],["I wear my red shirt.","Kırmızı tişörtümü giyerim."],["It is cold in winter.","Kışın hava soğuk."],["I wear my coat and hat.","Montumu ve şapkamı giyerim."]]
+};
+/* Paragraphs 2-5 of each week's story (paragraph 1 = PARAS) */
+const STORY_MORE={
+ 1:[[["My friend is Ali.","Arkadaşımın adı Ali."],["We play football at school.","Okulda futbol oynarız."],["Ali is very fast.","Ali çok hızlı."]],
+    [["This is my teacher.","Bu benim öğretmenim."],["She is a good teacher.","O iyi bir öğretmen."],["She says hello to us.","Bize merhaba der."]],
+    [["Do you like school?","Okulu sever misin?"],["Yes, I like school.","Evet, okulu severim."],["I like my friends too.","Arkadaşlarımı da severim."]],
+    [["It is time to go home.","Eve gitme zamanı."],["Goodbye, teacher!","Hoşça kalın öğretmenim!"],["See you tomorrow!","Yarın görüşürüz!"]]],
+ 2:[[["I have a yellow car.","Sarı bir arabam var."],["It is very fast.","O çok hızlı."],["My yellow car wins the race.","Sarı arabam yarışı kazanır."]],
+    [["My friend has a pink car.","Arkadaşımın pembe bir arabası var."],["Her car is slow.","Onun arabası yavaş."],["Pink and yellow are happy colours.","Pembe ve sarı mutlu renkler."]],
+    [["What colour is your bag?","Çantan ne renk?"],["My bag is orange.","Çantam turuncu."],["I like orange.","Turuncuyu severim."]],
+    [["Look at the rainbow!","Gökkuşağına bak!"],["It is red, yellow and blue.","Kırmızı, sarı ve mavi."],["I love colours!","Renkleri çok severim!"]]],
+ 3:[[["One, two, three, kick!","Bir, iki, üç, şut!"],["I score a goal.","Gol atarım."],["Now we have one goal.","Şimdi bir golümüz var."]],
+    [["There are five players.","Beş oyuncu var."],["Five players and one ball.","Beş oyuncu ve bir top."],["We play together.","Birlikte oynarız."]],
+    [["How old are you?","Kaç yaşındasın?"],["I am seven years old.","Yedi yaşındayım."],["My brother is ten.","Abim on yaşında."]],
+    [["Let's count the cars.","Hadi arabaları sayalım."],["One, two, three, four, five!","Bir, iki, üç, dört, beş!"],["Five fast cars!","Beş hızlı araba!"]]],
+ 4:[[["Open your book, please.","Lütfen kitabını aç."],["Take your pencil.","Kalemini al."],["Let's write!","Hadi yazalım!"]],
+    [["I have a ruler and scissors.","Bir cetvelim ve makasım var."],["I cut the paper.","Kağıdı keserim."],["I draw a car in my notebook.","Defterime bir araba çizerim."]],
+    [["Where is my crayon?","Boya kalemim nerede?"],["It is under the chair.","Sandalyenin altında."],["Here it is!","İşte burada!"]],
+    [["Close your book.","Kitabını kapat."],["Put it in your bag.","Onu çantana koy."],["Good job, class!","Aferin sınıf!"]]],
+ 5:[[["I have a big robot.","Büyük bir robotum var."],["My robot is blue.","Robotum mavi."],["It can walk and talk.","Yürüyebilir ve konuşabilir."]],
+    [["My sister has a teddy.","Kız kardeşimin bir oyuncak ayısı var."],["Her teddy is brown.","Onun ayıcığı kahverengi."],["She loves her teddy.","Ayıcığını çok sever."]],
+    [["Let's fly a kite!","Hadi uçurtma uçuralım!"],["The kite is in the sky.","Uçurtma gökyüzünde."],["It is very high!","Çok yüksekte!"]],
+    [["My train is long.","Trenim uzun."],["It goes very fast.","Çok hızlı gider."],["Choo choo, here it comes!","Çuf çuf, işte geliyor!"]]],
+ 6:[[["The bird can fly.","Kuş uçabilir."],["The fish can swim.","Balık yüzebilir."],["The rabbit can jump.","Tavşan zıplayabilir."]],
+    [["I see a monkey.","Bir maymun görüyorum."],["The monkey is funny.","Maymun komik."],["It likes bananas.","Muzları sever."]],
+    [["My cat is small.","Kedim küçük."],["It is white and black.","Beyaz ve siyah."],["It sleeps on my bed.","Yatağımda uyur."]],
+    [["The horse is fast.","At hızlıdır."],["I want to ride a horse.","Ata binmek istiyorum."],["Animals are my friends.","Hayvanlar benim arkadaşlarım."]]],
+ 7:[[["Look with your eyes.","Gözlerinle bak."],["Listen with your ears.","Kulaklarınla dinle."],["Smell with your nose.","Burnunla kokla."]],
+    [["Clap your hands!","Ellerini çırp!"],["Stamp your feet!","Ayaklarını yere vur!"],["Shake your arms!","Kollarını salla!"]],
+    [["A goalkeeper uses his hands.","Kaleci ellerini kullanır."],["A player uses his feet.","Oyuncu ayaklarını kullanır."],["I use my head too!","Ben kafamı da kullanırım!"]],
+    [["Wash your hands.","Ellerini yıka."],["Brush your teeth.","Dişlerini fırçala."],["Now smile!","Şimdi gülümse!"]]],
+ 8:[[["Ready, set, go!","Hazır, işaret, başla!"],["Run, run, run!","Koş, koş, koş!"],["Now stop!","Şimdi dur!"]],
+    [["Go up the stairs.","Merdivenlerden çık."],["Go down the stairs.","Merdivenlerden in."],["Jump to the left!","Sola zıpla!"]],
+    [["Turn right at the school.","Okulda sağa dön."],["Go left at the park.","Parkta sola git."],["Stop at the red light.","Kırmızı ışıkta dur."]],
+    [["Press up to jump.","Zıplamak için yukarı bas."],["Press down to sit.","Oturmak için aşağı bas."],["I win the game!","Oyunu kazanırım!"]]],
+ 9:[[["I am hungry.","Acıktım."],["Can I have some bread?","Biraz ekmek alabilir miyim?"],["Yes, here you are.","Evet, buyurun."]],
+    [["I like strawberries.","Çilekleri severim."],["They are red and sweet.","Kırmızı ve tatlılar."],["Yummy, yummy!","Nefis, nefis!"]],
+    [["I drink water after football.","Futboldan sonra su içerim."],["Water is good for me.","Su bana iyi gelir."],["I drink milk too.","Süt de içerim."]],
+    [["Do you like eggs?","Yumurta sever misin?"],["Yes, I do!","Evet, severim!"],["I eat eggs for breakfast.","Kahvaltıda yumurta yerim."]]],
+ 10:[[["My grandma makes a cake.","Büyükannem pasta yapar."],["The cake is big.","Pasta büyük."],["We eat it together.","Onu birlikte yeriz."]],
+    [["My grandpa has a car.","Büyükbabamın bir arabası var."],["It is an old car.","O eski bir araba."],["He drives slowly.","Yavaş sürer."]],
+    [["My sister is a baby.","Kız kardeşim bir bebek."],["She is very small.","O çok küçük."],["She cannot walk.","Yürüyemez."]],
+    [["I love my family.","Ailemi çok severim."],["We are happy together.","Birlikte mutluyuz."],["Family is the best!","Aile en iyisidir!"]]],
+ 11:[[["Open the door.","Kapıyı aç."],["Come in, please.","Lütfen içeri gel."],["Welcome to my house!","Evime hoş geldin!"]],
+    [["I sit on the sofa.","Kanepeye otururum."],["I play games there.","Orada oyun oynarım."],["It is my favourite place.","Orası en sevdiğim yer."]],
+    [["Look out of the window.","Pencereden dışarı bak."],["I can see the garden.","Bahçeyi görebiliyorum."],["My dog is there.","Köpeğim orada."]],
+    [["The bathroom is clean.","Banyo temiz."],["I wash my hands.","Ellerimi yıkarım."],["Now I go to bed.","Şimdi yatmaya giderim."]]],
+ 12:[[["It is rainy today.","Bugün hava yağmurlu."],["Take your umbrella.","Şemsiyeni al."],["Put on your coat.","Montunu giy."]],
+    [["It is snowy!","Kar yağıyor!"],["Let's make a snowman.","Hadi kardan adam yapalım."],["Wear your hat.","Şapkanı tak."]],
+    [["It is hot and sunny.","Hava sıcak ve güneşli."],["Let's go to the park.","Hadi parka gidelim."],["Drink some water.","Biraz su iç."]],
+    [["I put on my football shoes.","Futbol ayakkabılarımı giyerim."],["I wear my team shirt.","Takım formamı giyerim."],["Let's play!","Hadi oynayalım!"]]]
+};
+/* Week stories about Uras: 5 paragraphs x 3 sentences [English, Turkish]. (PARAS / STORY_MORE above are the older generic stories, no longer used.) */
+const STORIES={
+ 1:[[["Hello! My name is Uras.", "Merhaba! Benim adım Uras."], ["I am seven years old.", "Yedi yaşındayım."], ["I am in Grade 2.", "2. sınıftayım."]], [["I go to Bilnet School.", "Bilnet Okulu'na giderim."], ["My school is in Balıkesir.", "Okulum Balıkesir'de."], ["I love my school.", "Okulumu çok seviyorum."]], [["My teacher is Pınar.", "Öğretmenimin adı Pınar."], ["She is very nice.", "O çok iyi biri."], ["She says hello to me.", "Bana merhaba der."]], [["My best friends are Beyazıt and Pars.", "En iyi arkadaşlarım Beyazıt ve Pars."], ["Defne and Elisa are my best friends too.", "Defne ve Elisa da en iyi arkadaşlarım."], ["We play together every day.", "Her gün birlikte oynarız."]], [["Ayaz, Aras and Mirel are in my class.", "Ayaz, Aras ve Mirel benim sınıfımda."], ["We learn English together.", "Birlikte İngilizce öğreniyoruz."], ["Goodbye, see you tomorrow!", "Hoşça kalın, yarın görüşürüz!"]]],
+ 2:[[["My football is black and white.", "Futbol topum siyah beyaz."], ["My shirt is red.", "Tişörtüm kırmızı."], ["I like red and blue.", "Kırmızıyı ve maviyi severim."]], [["Ela is my big sister.", "Ela benim ablam."], ["Her bag is pink.", "Onun çantası pembe."], ["Her shoes are white.", "Onun ayakkabıları beyaz."]], [["I see an orange cat.", "Turuncu bir kedi görüyorum."], ["I love cats!", "Kedileri çok severim!"], ["Cats are so cute.", "Kediler çok tatlı."]], [["Defne has a yellow pencil.", "Defne'nin sarı bir kalemi var."], ["Pars has a green bag.", "Pars'ın yeşil bir çantası var."], ["Beyazıt has a blue notebook.", "Beyazıt'ın mavi bir defteri var."]], [["Grandpa Selahattin has a black car.", "Selahattin dedemin siyah bir arabası var."], ["We go to the market in his car.", "Onun arabasıyla markete gideriz."], ["The market is big and colourful.", "Market büyük ve rengarenk."]]],
+ 3:[[["I am seven.", "Yedi yaşındayım."], ["I have one big sister.", "Bir ablam var."], ["Her name is Ela.", "Onun adı Ela."]], [["I have two cousins.", "İki kuzenim var."], ["Their names are Bade and Buse.", "Onların adları Bade ve Buse."], ["We play together.", "Birlikte oynarız."]], [["I play football with four friends.", "Dört arkadaşımla futbol oynarım."], ["Beyazıt, Pars, Ayaz and Aras.", "Beyazıt, Pars, Ayaz ve Aras."], ["We score ten goals!", "On gol atarız!"]], [["Grandpa buys me one chocolate.", "Dedem bana bir çikolata alır."], ["Then he buys two more!", "Sonra iki tane daha alır!"], ["Now I have three chocolates.", "Şimdi üç çikolatam var."]], [["I can count to ten.", "Ona kadar sayabilirim."], ["One, two, three, four, five!", "Bir, iki, üç, dört, beş!"], ["Six, seven, eight, nine, ten!", "Altı, yedi, sekiz, dokuz, on!"]]],
+ 4:[[["This is my classroom.", "Bu benim sınıfım."], ["My teacher Pınar is here.", "Öğretmenim Pınar burada."], ["We open our books.", "Kitaplarımızı açarız."]], [["I sit on my chair.", "Sandalyeme otururum."], ["My bag is next to me.", "Çantam yanımda."], ["I have a pencil and a ruler.", "Bir kalemim ve bir cetvelim var."]], [["Mirel has scissors.", "Mirel'in makası var."], ["Ayaz has crayons.", "Ayaz'ın boya kalemleri var."], ["We draw a big football.", "Büyük bir futbol topu çizeriz."]], [["Where is my notebook?", "Defterim nerede?"], ["Aras has my notebook!", "Defterim Aras'ta!"], ["Thank you, Aras!", "Teşekkürler Aras!"]], [["The lesson is over.", "Ders bitti."], ["I put my book in my bag.", "Kitabımı çantama koyarım."], ["Goodbye, teacher Pınar!", "Hoşça kalın Pınar öğretmenim!"]]],
+ 5:[[["I love playing PlayStation.", "PlayStation oynamayı çok severim."], ["I play football games on it.", "Onda futbol oyunları oynarım."], ["It is so much fun!", "Çok eğlenceli!"]], [["I play PlayStation with Beyazıt.", "Beyazıt'la PlayStation oynarım."], ["We are a team.", "Biz bir takımız."], ["We win the game!", "Oyunu kazanırız!"]], [["Pars has a fast car.", "Pars'ın hızlı bir arabası var."], ["My car is faster!", "Benim arabam daha hızlı!"], ["Let's race, Pars!", "Hadi yarışalım Pars!"]], [["My cousins Bade and Buse come to my house.", "Kuzenlerim Bade ve Buse evime gelir."], ["We play a board game.", "Bir kutu oyunu oynarız."], ["Buse wins the game!", "Oyunu Buse kazanır!"]], [["I love football more than toys.", "Futbolu oyuncaklardan daha çok severim."], ["My ball is my best toy.", "Topum en sevdiğim oyuncağım."], ["Let's play outside!", "Hadi dışarıda oynayalım!"]]],
+ 6:[[["I love cats and dogs.", "Kedileri ve köpekleri çok severim."], ["Cats are cute.", "Kediler tatlıdır."], ["Dogs are fun.", "Köpekler eğlencelidir."]], [["I see a dog in the park.", "Parkta bir köpek görüyorum."], ["The dog can run fast.", "Köpek hızlı koşabilir."], ["I run with the dog!", "Köpekle birlikte koşarım!"]], [["I see a small cat.", "Küçük bir kedi görüyorum."], ["The cat says meow.", "Kedi miyav der."], ["I give the cat some milk.", "Kediye biraz süt veririm."]], [["Ela and I go to the zoo.", "Ela ile hayvanat bahçesine gideriz."], ["We see a big lion.", "Büyük bir aslan görürüz."], ["We see a funny monkey.", "Komik bir maymun görürüz."]], [["I can swim like a fish!", "Balık gibi yüzebilirim!"], ["Fish live in water.", "Balıklar suda yaşar."], ["I love swimming.", "Yüzmeyi çok severim."]]],
+ 7:[[["I have two eyes and two ears.", "İki gözüm ve iki kulağım var."], ["I have one nose and one mouth.", "Bir burnum ve bir ağzım var."], ["I have two hands.", "İki elim var."]], [["I kick the ball with my foot.", "Topa ayağımla vururum."], ["I score a goal!", "Gol atarım!"], ["My legs are strong.", "Bacaklarım güçlü."]], [["I swim with my arms and legs.", "Kollarım ve bacaklarımla yüzerim."], ["I love swimming.", "Yüzmeyi çok severim."], ["I am a good swimmer.", "İyi bir yüzücüyüm."]], [["I wash my hands.", "Ellerimi yıkarım."], ["I brush my teeth.", "Dişlerimi fırçalarım."], ["Now I am ready!", "Şimdi hazırım!"]], [["Touch your nose, Uras!", "Burnuna dokun Uras!"], ["Touch your ears!", "Kulaklarına dokun!"], ["Clap your hands!", "Ellerini çırp!"]]],
+ 8:[[["Ready, set, go!", "Hazır, işaret, başla!"], ["I run very fast.", "Çok hızlı koşarım."], ["I win the race!", "Yarışı kazanırım!"]], [["In the game, I press up.", "Oyunda yukarıya basarım."], ["My player jumps.", "Oyuncum zıplar."], ["Goal!", "Gol!"]], [["Turn left, Uras!", "Sola dön Uras!"], ["Now turn right!", "Şimdi sağa dön!"], ["Stop!", "Dur!"]], [["Pars and I run to the ball.", "Pars ile topa koşarız."], ["I kick the ball up.", "Topu yukarı vururum."], ["Pars jumps high!", "Pars yükseğe zıplar!"]], [["I jump into the pool.", "Havuza atlarım."], ["I swim left and right.", "Sola ve sağa yüzerim."], ["I swim very fast!", "Çok hızlı yüzerim!"]]],
+ 9:[[["My grandma is Birsen.", "Anneannemin adı Birsen."], ["She cooks my favourite food.", "En sevdiğim yemekleri pişirir."], ["Thank you, Grandma!", "Teşekkürler anneanne!"]], [["I go to the market with Grandpa.", "Dedemle markete giderim."], ["His name is Selahattin.", "Onun adı Selahattin."], ["I love going to the market.", "Markete gitmeyi çok severim."]], [["Grandpa always buys me chocolate.", "Dedem bana hep çikolata alır."], ["I love chocolate!", "Çikolatayı çok severim!"], ["Thank you, Grandpa!", "Teşekkürler dede!"]], [["At the market, we buy apples.", "Markette elma alırız."], ["We buy milk and bread.", "Süt ve ekmek alırız."], ["We buy bananas too.", "Muz da alırız."]], [["I drink water after football.", "Futboldan sonra su içerim."], ["Water is good for me.", "Su bana iyi gelir."], ["Then I eat an apple.", "Sonra bir elma yerim."]]],
+ 10:[[["This is my family.", "Bu benim ailem."], ["My mother is İmge.", "Annemin adı İmge."], ["My father is Halit.", "Babamın adı Halit."]], [["My sister is Ela.", "Ablamın adı Ela."], ["She is my big sister.", "O benim ablam."], ["I love Ela.", "Ela'yı çok severim."]], [["My aunt is İrem.", "Teyzemin adı İrem."], ["She is my mum's sister.", "O annemin kız kardeşi."], ["She is very funny.", "O çok komik."]], [["My grandma is Birsen.", "Anneannemin adı Birsen."], ["My grandpa is Selahattin.", "Dedemin adı Selahattin."], ["I love them very much.", "Onları çok seviyorum."]], [["My cousins are Bade and Buse.", "Kuzenlerim Bade ve Buse."], ["We play together.", "Birlikte oynarız."], ["I love my family!", "Ailemi çok seviyorum!"]]],
+ 11:[[["This is my house.", "Bu benim evim."], ["I live in Balıkesir.", "Balıkesir'de yaşıyorum."], ["I love my home.", "Evimi çok seviyorum."]], [["My toys are in my bedroom.", "Oyuncaklarım yatak odamda."], ["My PlayStation is in the living room.", "PlayStation'ım oturma odasında."], ["I play there with Ela.", "Orada Ela ile oynarım."]], [["My dad is in the garden.", "Babam bahçede."], ["We play football in the garden.", "Bahçede futbol oynarız."], ["Dad is the goalkeeper!", "Babam kaleci!"]], [["Mum is in the kitchen.", "Annem mutfakta."], ["She makes a cake.", "Bir pasta yapıyor."], ["Ela helps her.", "Ela ona yardım ediyor."]], [["My friends come to my house.", "Arkadaşlarım evime gelir."], ["Beyazıt, Pars, Defne and Elisa!", "Beyazıt, Pars, Defne ve Elisa!"], ["We have a lot of fun.", "Çok eğleniriz."]]],
+ 12:[[["It is sunny today.", "Bugün hava güneşli."], ["I wear my football shirt.", "Futbol formamı giyerim."], ["Let's play football!", "Hadi futbol oynayalım!"]], [["It is hot.", "Hava sıcak."], ["Let's go swimming!", "Hadi yüzmeye gidelim!"], ["I wear my swimsuit.", "Mayomu giyerim."]], [["It is rainy.", "Hava yağmurlu."], ["I wear my coat.", "Montumu giyerim."], ["I play PlayStation at home.", "Evde PlayStation oynarım."]], [["It is cold and snowy.", "Hava soğuk ve karlı."], ["I wear my hat and coat.", "Şapkamı ve montumu giyerim."], ["Ela and I make a snowman.", "Ela ile kardan adam yaparız."]], [["Aunt İrem comes to visit.", "İrem teyzem ziyarete gelir."], ["She brings me a new hat.", "Bana yeni bir şapka getirir."], ["Thank you, Aunt İrem!", "Teşekkürler İrem teyze!"]]]
+};
+const storyOf=w=>STORIES[w]||[];
+const sbDone=w=>{const v=S.sb&&S.sb[w];return v===true?1:(+v||0)};
+function renderSbCard(){
+ const ST=storyOf(view),n=ST.length,d=sbDone(view);
+ $('#sb-card').innerHTML=`<div><p class="eyebrow">Sentence Builder · <span lang="tr">cümle kurma</span></p><h2>Week ${view} Story</h2><p class="meta">${n} paragraflık bir hikaye! Karışık kelimeleri sürükle bırak ile sırala, her seferinde bir paragraf yaz.</p></div>
+  <div class="tt-badges"><span class="lvl-badge">${d>=n?'✓ Story done':`Paragraph ${d+1} / ${n}`}</span><small>${esc(WEEKS[view-1].en)}</small><span class="sb-dots">${ST.map((_,k)=>`<i class="${k<d?'on':''}"></i>`).join('')}</span></div>
+  <button class="btn" data-act="sb">${d>=n?'Play again':d?'Continue':'Play'} ▶</button>`;
+}
+function startSb(){
+ const w=view,ST=storyOf(w);if(!ST[0])return;
+ let pi=sbDone(w)>=ST.length?0:sbDone(w),si=0,drag=null;
+ session={sb:true};openPlay();
+ const P=()=>ST[pi];
+ function paintPara(final){
+  const shown=final?ST.length:pi+1;
+  $('#sb-para').innerHTML=`<p class="eyebrow">My story · <span lang="tr">hikayem</span> · Paragraph ${Math.min(pi+1,ST.length)} / ${ST.length}</p>`+
+   ST.slice(0,shown).map((para,k)=>`<p>${para.map((s,j)=>(k<pi||final||j<si)?`<span class="sb-done">${esc(s[0])}</span>`:j===si?'<span class="sb-cur">_____</span>':'<span class="sb-todo">…</span>').join(' ')}</p>`).join('');
+  const el=$('#sb-para');el.scrollTop=el.scrollHeight;
+ }
+ function round(){
+  $('#play-title').textContent=`Week ${w} · Story · Paragraph ${pi+1}/${ST.length}`;
+  setProg(si,P().length);
+  const words=P()[si][0].split(' ');
+  let order=shuffle(words);
+  for(let g=0;g<20&&words.length>1&&order.join(' ')===words.join(' ');g++)order=shuffle(words);
+  stage.innerHTML=`<div class="sb-para" id="sb-para"></div>
+   <div class="qrow"><p class="hint">Kelimeleri sürükle ve doğru sıraya koy!</p><button class="speak" id="sb-say">🔊 Listen</button></div>
+   <p class="sb-tr" lang="tr">${esc(P()[si][1])}</p>
+   <div class="sb-zone sb-answer" id="sb-ans" aria-label="Cümle"></div>
+   <div class="sb-zone sb-bank" id="sb-bank" aria-label="Kelimeler">${order.map(t=>`<button class="sb-tile" data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+   <div class="fb" id="fb"></div>`;
+  paintPara();
+  $('#sb-say').onclick=()=>say(P()[si][0]);
+  later(()=>say(P()[si][0]),400);
+  stage.querySelectorAll('.sb-tile').forEach(bindTile);
+ }
+ function zoneAt(x,y){return [...stage.querySelectorAll('.sb-zone')].find(z=>{const r=z.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top-12&&y<=r.bottom+12})||null}
+ function insertRef(z,x,y,self){
+  for(const t of [...z.querySelectorAll('.sb-tile')].filter(t=>t!==self)){const r=t.getBoundingClientRect();if(y<r.top)return t;if(y<=r.bottom&&x<r.left+r.width/2)return t}
+  return null;
+ }
+ function bindTile(el){
+  el.addEventListener('pointerdown',e=>{
+   if(el.disabled||(e.button&&e.button>0))return;e.preventDefault();
+   drag={el,x0:e.clientX,y0:e.clientY,moved:false,ghost:null};
+   try{el.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  el.addEventListener('pointermove',e=>{
+   if(!drag||drag.el!==el)return;
+   if(!drag.moved&&Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)<6)return;
+   if(!drag.moved){drag.moved=true;const r=el.getBoundingClientRect();const g=el.cloneNode(true);g.classList.add('sb-ghost');g.style.width=r.width+'px';document.body.appendChild(g);drag.ghost=g;drag.ox=e.clientX-r.left;drag.oy=e.clientY-r.top;el.classList.add('sb-hold')}
+   drag.ghost.style.left=(e.clientX-drag.ox)+'px';drag.ghost.style.top=(e.clientY-drag.oy)+'px';
+   const z=zoneAt(e.clientX,e.clientY);stage.querySelectorAll('.sb-zone').forEach(x=>x.classList.toggle('over',x===z));
+  });
+  const end=e=>{
+   if(!drag||drag.el!==el)return;const d=drag;drag=null;
+   stage.querySelectorAll('.sb-zone').forEach(x=>x.classList.remove('over'));
+   if(d.ghost)d.ghost.remove();el.classList.remove('sb-hold');
+   if(!d.moved){(el.parentElement.id==='sb-bank'?$('#sb-ans'):$('#sb-bank')).appendChild(el)}
+   else if(e.type==='pointerup'){const z=zoneAt(e.clientX,e.clientY);if(z)z.insertBefore(el,insertRef(z,e.clientX,e.clientY,el))}
+   tick();el.classList.remove('no');afterMove();
+  };
+  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+ }
+ function afterMove(){
+  const f=$('#fb');f.classList.remove('show');
+  if($('#sb-bank').children.length)return;
+  const tiles=[...$('#sb-ans').children],want=P()[si][0].split(' ');
+  if(tiles.map(t=>t.dataset.t).join(' ')===want.join(' ')){
+   tiles.forEach(t=>{t.classList.add('ok');t.disabled=true});
+   good();say(P()[si][0]);si++;paintPara();
+   later(()=>si<P().length?round():finishPara(),1900);
+  }else{
+   bad();
+   tiles.forEach((t,k)=>{if(t.dataset.t!==want[k]){t.classList.remove('no');void t.offsetWidth;t.classList.add('no')}});
+   f.textContent='Almost! Kırmızı kelimelerin yerini değiştir.';f.classList.add('show');
+  }
+ }
+ function finishPara(){
+  setProg(1,1);S.sb=S.sb||{};
+  const first=sbDone(w)<pi+1;if(first)S.sb[w]=pi+1;S.stars+=first?3:1;save();$('#st-stars').textContent=S.stars;
+  const last=pi>=ST.length-1;
+  stage.innerHTML=`<div class="res"><div class="fw-space"></div><h2>${last?'Your story is ready!':`Paragraph ${pi+1} done!`}</h2><div class="sb-para" id="sb-para"></div><button class="speak" id="sb-read">🔊 ${last?'Read my story':'Read this paragraph'}</button><p>+${first?3:1} ⭐</p><div class="row">${last?'':'<button class="btn" id="sb-next">Next paragraph ▶</button>'}<button class="btn ghost" id="sb-home">Home</button></div></div>`;
+  paintPara(last);
+  const text=(last?ST.flat():P()).map(s=>s[0]);
+  $('#sb-read').onclick=()=>say(text);
+  $('#sb-home').onclick=closePlay;
+  if(!last)$('#sb-next').onclick=()=>{pi++;si=0;round()};
+  celebrate(last?['You wrote a whole story, Uras!','Koca bir hikaye yazdın Uras!']:praise());later(()=>say(text),5200);
+ }
+ round();
 }
 
 /* ---------- Garage ---------- */
@@ -953,7 +1478,7 @@ function renderParent(){
   <div class="pgrid">
    <div class="stat"><small>Today · bugün</small><b>${tday} min</b></div>
    <div class="stat"><small>Last 7 days · son 7 gün</small><b>${Math.round(week/60)} min</b></div>
-   <div class="stat"><small>Tasks done · biten görev</small><b>${tasksDone()} / ${NW*ND*2}</b></div>
+   <div class="stat"><small>Tasks done · biten görev</small><b>${tasksDone()} / ${TOTAL}</b></div>
    <div class="stat"><small>Streak · seri</small><b>${streak()} days</b></div>
   </div>
 
@@ -970,7 +1495,13 @@ function renderParent(){
   <div class="pgrid">
    <label class="field" for="p-rate">Konuşma hızı
     <select id="p-rate"><option value="0.7" ${S.rate<=0.7?'selected':''}>Yavaş</option><option value="0.8" ${S.rate>0.7&&S.rate<0.9?'selected':''}>Orta</option><option value="0.95" ${S.rate>=0.9?'selected':''}>Normal</option></select></label>
+   <label class="field" for="p-voice">İngilizce ses
+    <select id="p-voice">${(()=>{if(!voice)pickVoice();const vs=enVoices().sort((a,b)=>voiceScore(b)-voiceScore(a));return vs.length?vs.map(v=>`<option value="${esc(v.name)}" ${voice&&v.name===voice.name?'selected':''}>${esc(v.name)} (${esc(v.lang)})</option>`).join(''):'<option value="">İngilizce ses bulunamadı</option>'})()}</select></label>
+   <label class="field" for="p-uras">"Uras" nasıl okunsun?
+    <select id="p-uras">${['Oorahss','Oo-rahs','Oorass','Ooras','Urahs'].map(v=>`<option value="${v}" ${(S.urasSay||'Oorahss')===v?'selected':''}>${v}</option>`).join('')}</select></label>
   </div>
+  <div class="row" style="justify-content:flex-start"><button class="btn small" id="p-test">🔊 Sesi test et: "Run, run, run! This is my teacher."</button></div>
+  ${enVoices().length?'<p class="note">En doğal sesler genelde adında "Natural", "Online" ya da "Google US English" geçenlerdir. Kelimeler Türkçe gibi okunuyorsa listeden başka bir ses seçin.</p>':'<p class="note danger" style="padding:10px;border-radius:12px"><b>Bu cihazda İngilizce ses yok.</b> Bu yüzden kelimeler Türkçe okunuyor (örneğin "teacher" → "cafer"). Çözüm: <b>Windows:</b> Ayarlar → Saat ve dil → Konuşma → Ses ekle → English (United States). <b>Android:</b> Ayarlar → Erişilebilirlik → Metin okuma → Google motoru → English (US) ses verilerini yükleyin. <b>iPad/iPhone:</b> Ayarlar → Erişilebilirlik → Seslendirilen İçerik → Sesler → English. Ya da Chrome veya Edge tarayıcısını kullanın. Sonra sayfayı yenileyin.</p>'}
   <p class="note">12 haftanın hepsi açık. Uras yol haritasından istediği haftayı seçebilir.</p>
   <label class="check" for="p-open"><input type="checkbox" id="p-open" ${S.openAll?'checked':''}> Tüm maçlar açık (kapatırsanız maçlar sırayla açılır)</label>
   <label class="check" for="p-lock"><input type="checkbox" id="p-lock" ${S.lock?'checked':''}> Günde tek maç (bir sonraki maç ertesi gün açılır)</label>
@@ -991,6 +1522,9 @@ function renderParent(){
   <div class="row" style="justify-content:flex-start"><button class="btn small ghost" id="p-reset">İlerlemeyi sıfırla</button><span id="p-confirm" hidden><button class="btn small danger" id="p-reset-yes">Evet, ilerlemeyi sil</button> <button class="link" id="p-reset-no">Vazgeç</button></span></div>
   <p class="note">İlerleme bu cihazdaki tarayıcıda saklanır. Başka cihazdan açılırsa sıfırdan başlar. Sıfırlama fotoğrafı silmez.</p>`;
  $('#p-rate').onchange=e=>{S.rate=+e.target.value;save();say('Hello Uras!')};
+ $('#p-voice').onchange=e=>{S.voiceName=e.target.value||null;save();voice=null;pickVoice();say('Run, run, run! This is my teacher.')};
+ $('#p-test').onclick=()=>say('Run, run, run! This is my teacher.');
+ $('#p-uras').onchange=e=>{S.urasSay=e.target.value;save();say('Hello Uras! Great job, Uras!')};
  $('#p-lock').onchange=e=>{S.lock=e.target.checked;save()};
  $('#p-open').onchange=e=>{S.openAll=e.target.checked;save()};
  $('#p-sfx').onchange=e=>{S.sfx=e.target.checked;save()};
@@ -1006,3 +1540,4 @@ function renderParent(){
 renderHome();
 })();
 </script>
+
