@@ -901,6 +901,8 @@ const PLAN=[
  [{t:'listen',part:'a'},{t:'memory',part:'a'},{t:'write',part:'all'}],
  [{t:'listen',part:'b'},{t:'write',part:'a'}],
  [{t:'memory',part:'b'},{t:'write',part:'b'}],
+ /* Mission 4: Letter Race + Listen & Find; both get harder with the week's level (hint letters, listening prompt, pictures, rounds) */
+ [{t:'race',part:'b'},{t:'listen',part:'b'}],
  [{t:'listen',part:'all',hard:true},{t:'penalty',part:'all',hard:true},{t:'write',part:'all',hard:true}]
 ];
 const ND=PLAN.length, FIN=ND-1;
@@ -933,7 +935,9 @@ if(!S.badges)S.badges={};
 if(!S.vbSeen)S.vbSeen={};
 if(!S.vq)S.vq={};
 /* Old Mission 3 (Penalty Shoot-out, same game as Penalty Cup) was removed: move saved progress of old Missions 4-5 down one */
-if(!S.plan2){const mv=o=>{const n={};Object.keys(o||{}).forEach(k=>{const m=k.match(/^w(\d+)d(\d+)(.*)$/);if(!m){n[k]=o[k];return}const d=+m[2];if(d===2)return;n[`w${m[1]}d${d>2?d-1:d}${m[3]}`]=o[k]});return n};S.done=mv(S.done);S.dayDone=mv(S.dayDone);S.plan2=1} /* Word Quest: best stars per pack, key "level-pack" */
+if(!S.plan2){const mv=o=>{const n={};Object.keys(o||{}).forEach(k=>{const m=k.match(/^w(\d+)d(\d+)(.*)$/);if(!m){n[k]=o[k];return}const d=+m[2];if(d===2)return;n[`w${m[1]}d${d>2?d-1:d}${m[3]}`]=o[k]});return n};S.done=mv(S.done);S.dayDone=mv(S.dayDone);S.plan2=1}
+/* New Mission 4 (Letter Race + Listen & Find) added before the Final Mission: move saved Final Mission progress up one */
+if(!S.plan3){const mv=o=>{const n={};Object.keys(o||{}).forEach(k=>{const m=k.match(/^w(\d+)d(\d+)(.*)$/);if(!m){n[k]=o[k];return}const d=+m[2];n[`w${m[1]}d${d>=3?d+1:d}${m[3]}`]=o[k]});return n};S.done=mv(S.done);S.dayDone=mv(S.dayDone);S.plan3=1}
 if(!S.pcup)S.pcup={}; /* Penalty Cup per week: {won, best:"3–1"} */
 if(!S.chant)S.chant={}; /* Chant Time per week: best stars */
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
