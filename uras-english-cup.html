@@ -454,7 +454,7 @@ body::before{background:#0d0420}
 .m-prize svg{width:78px;height:auto}
 .m-prize small{display:block;color:#c9d6ce;font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.1em}
 .m-prize b{font-family:var(--display);font-weight:400;font-size:18px;color:var(--sun)}
-.menu{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.menu{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .mtile{background:#140a2e;color:#fff;border:3px solid #22d3ee;border-radius:18px;padding:16px 10px;display:grid;gap:4px;justify-items:center;text-align:center;cursor:pointer;box-shadow:0 4px 0 #0d0420,0 0 14px rgba(34,211,238,.35);min-width:0}
 .mtile .mt-ic{font-size:38px;line-height:1.1}
 .mtile b{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.1}
@@ -462,8 +462,38 @@ body::before{background:#0d0420}
 .mtile.on{background:var(--sun);color:var(--ink);border-color:#fff;box-shadow:0 4px 0 #0d0420,0 0 20px rgba(255,201,60,.8)}
 .mtile.on small{color:#4a3500}
 .panel{display:grid;gap:24px}
-@media (max-width:900px){.menu{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:640px){.menu{grid-template-columns:1fr 1fr}.mtile:first-child{grid-column:1 / -1}.btn.big{font-size:24px;padding:14px 26px}}
+@media (max-width:900px){.menu{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.btn.big{font-size:24px;padding:14px 26px}}
+/* Mission card, neon: WEEK badge on the left, mission steps + Kick off on the right */
+.mission{background:linear-gradient(135deg,#1c0b3d 0%,#3b0f5c 58%,#7a1f7a 100%);color:#fff;border-color:#0d0420;box-shadow:0 5px 0 #0d0420,0 0 28px rgba(255,46,136,.45)}
+.mission h1{color:#fff;font-size:clamp(28px,4vw,40px)}
+.mission .eyebrow{color:#ffc93c}
+.m-top{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:center}
+.m-body{min-width:0}
+.m-week{width:150px;aspect-ratio:1;border-radius:24px;border:3px solid #ffc93c;background:#0d0420;color:#fff;display:grid;place-items:center;align-content:center;gap:2px;cursor:pointer;box-shadow:0 6px 0 #05010f,0 0 22px rgba(255,201,60,.45);padding:8px}
+.m-week small{font-weight:900;letter-spacing:.2em;color:#ffc93c;font-size:13px}
+.m-week b{font-family:var(--display);font-weight:400;font-size:66px;line-height:1}
+.m-week span{font-weight:800;font-size:14px;color:#e9d5ff;line-height:1.2;text-align:center}
+.m-week[aria-expanded="true"]{background:#ffc93c;color:#132029;border-color:#fff}
+.m-week[aria-expanded="true"] small,.m-week[aria-expanded="true"] span{color:#132029}
+.m-dots{display:flex;gap:8px;margin:8px 0 6px}
+.m-dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;border:2px solid #22d3ee;color:#bff6ff;background:#0d0420}
+.m-dot.done{background:#16a34a;border-color:#4ade80;color:#fff}
+.m-dot.cur{background:#ffc93c;border-color:#fff;color:#132029;box-shadow:0 0 12px rgba(255,201,60,.8)}
+.m-sub{color:#e9d5ff;font-weight:800;margin:8px 0 16px}
+.mission .m-chip{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.mission .btn.ghost{background:#fff}
+.m-weeks{margin-top:20px;padding-top:18px;border-top:2px dashed rgba(255,255,255,.3);display:grid;gap:16px}
+.m-weeks .wk-nums{margin-top:0}
+.m-weeks .wk-detail{color:var(--ink)}
+.m-weeks .mtrack{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.m-weeks .mtrack::before{display:none}
+.hero{align-items:start}
+@media (max-width:640px){
+ .m-top{grid-template-columns:1fr;gap:14px;justify-items:start}
+ .m-week{width:auto;aspect-ratio:auto;grid-auto-flow:column;gap:10px;padding:8px 16px;border-radius:16px}
+ .m-week b{font-size:36px}
+}
 
 /* Word Quest: level tabs, pack map, flip card */
 .vb-tab:disabled{cursor:not-allowed;background:#dfe7e2;color:var(--muted);box-shadow:none}
@@ -650,26 +680,24 @@ tr.cur td{background:#fff6d6}
 <main class="wrap">
   <div class="hero">
     <aside class="pcard" id="pcard" aria-label="Uras'ın oyuncu kartı"></aside>
-    <section class="card mission" id="mission" aria-live="polite"></section>
+    <section class="card mission" aria-live="polite">
+      <div id="mission"></div>
+      <!-- Opens from the WEEK badge: week numbers, then that week's sub-tabs -->
+      <div class="m-weeks" id="m-weeks" hidden>
+        <div class="wk-nums" id="levels"></div>
+        <div class="card wk-detail" id="week-detail" hidden>
+          <div class="wk-detail-h"><h3 id="fx-title">Week 1</h3><button class="xbtn" data-w-close="1" title="Haftayı kapat">✕ Exit</button></div>
+          <div class="sub-tabs" id="week-subtabs" role="tablist"></div>
+          <div data-sub="missions"><div class="fixtures mtrack" id="fixtures"></div></div>
+          <div data-sub="sentence" id="week-chunk"></div>
+          <div data-sub="wall"><div class="wall" id="wall"></div></div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Simple home: one menu; each part opens only when its button is tapped -->
   <nav class="menu" id="menu" aria-label="Menü"></nav>
-
-  <div class="panel" data-panel="weeks" hidden>
-    <section>
-      <div class="sec-h"><h2>Weeks</h2></div>
-      <div class="wk-nums" id="levels"></div>
-    </section>
-    <!-- Opens when a week number is tapped: sub-tabs for that week -->
-    <div class="card wk-detail" id="week-detail" hidden>
-      <div class="wk-detail-h"><h3 id="fx-title">Week 1</h3><button class="xbtn" data-w-close="1" title="Haftayı kapat">✕ Exit</button></div>
-      <div class="sub-tabs" id="week-subtabs" role="tablist"></div>
-      <div data-sub="missions"><div class="fixtures mtrack" id="fixtures"></div></div>
-      <div data-sub="sentence" id="week-chunk"></div>
-      <div data-sub="wall"><div class="wall" id="wall"></div></div>
-    </div>
-  </div>
 
   <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
   <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
@@ -1076,19 +1104,24 @@ function renderHome(){
  const ci=Math.min(completedDays(),NCARS-1);const nc=carAt(ci);
  /* Sentence of the week lives in the Weeks panel; the mission card stays short */
  $('#week-chunk').innerHTML=`<div class="chunk" style="margin:0"><button class="speak" data-chunk="1" aria-label="Haftanın cümlesini dinle">🔊</button><span><small>Sentence of the week · Week ${view}</small><b>${esc(Wk.chunk)}</b><small>${esc(Wk.chunkTr)}</small></span></div>`;
- const head=`<p class="eyebrow">Week ${view} · ${esc(Wk.en)}${nd>=0?` · ${nd===4?'Final Mission':'Mission '+(nd+1)}`:''}</p>`;
+ /* Mission card: WEEK badge (tap = open the weeks) + mission steps + Kick off + prize */
  const prize=lbl=>`<span class="m-prize">${carSVG(nc.color,ci+1,nc.v)}<span><small>${lbl}</small><b>${esc(nc.name)}</b></span></span>`;
+ const badge=`<button class="m-week" data-act="weekpick" aria-expanded="${weekPick}" title="Choose a week"><small>WEEK</small><b>${view}</b><span>${esc(Wk.en)} ${weekPick?'▴':'▾'}</span></button>`;
+ const dots=`<div class="m-dots" aria-label="Missions this week">${PLAN.map((_,d)=>`<span class="m-dot${dayComplete(view,d)?' done':''}${d===nd?' cur':''}">${dayComplete(view,d)?'✓':d===4?'★':d+1}</span>`).join('')}</div>`;
+ let body;
  if(nd===-1){
-  m.innerHTML=`<div>${head}<h1>Week complete! 🏆</h1><p class="meta" style="margin:10px 0 16px">${view<NW?'Choose a new week!':'Season complete. You are the champion!'}</p>
-   <div class="m-go"><button class="btn big" data-panel="weeks">Choose a week ▶</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div></div>`;
+  body=`<p class="eyebrow">All 5 missions done</p>${dots}<h1>Week complete! 🏆</h1><p class="m-sub">${view<NW?'Tap the WEEK badge and choose a new week.':'Season complete. You are the champion!'}</p>
+   <div class="m-go"><button class="btn big" data-act="weekpick">Choose a week ▶</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div>`;
  }else if(waitsTomorrow(view,nd)){
-  m.innerHTML=`<div>${head}<h1>Done for today. Great job, Uras!</h1><p class="meta" style="margin:10px 0 16px">Mission ${nd+1} is waiting for you tomorrow.</p>${prize("Tomorrow's prize")}</div>`;
+  body=`<p class="eyebrow">${nd===4?'Final Mission':'Mission '+(nd+1)} · tomorrow</p>${dots}<h1>Done for today. Great job, Uras!</h1><p class="m-sub">Mission ${nd+1} is waiting for you tomorrow.</p><div class="m-go">${prize("Tomorrow's prize")}</div>`;
  }else{
   const started=dayStarted(view,nd);
-  m.innerHTML=`<div>${head}<h1>${started?"Let's keep going, Uras!":"Today's mission is ready!"}</h1>
+  body=`<p class="eyebrow">${nd===4?'Final Mission':'Mission '+(nd+1)+' of 5'}</p>${dots}<h1>${started?"Let's keep going, Uras!":"Today's mission is ready!"}</h1>
    <div class="m-tasks">${PLAN[nd].map((s,t)=>`<span class="m-chip${S.done[tk(view,nd,t)]?' done':''}">${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div>
-   <div class="m-go"><button class="btn big" data-act="start">${started?'Continue ▶':'Kick off ▶'}</button>${prize('Prize · ödül')}</div></div>`;
+   <div class="m-go"><button class="btn big" data-act="start">${started?'Continue ▶':'Kick off ▶'}</button>${prize('Prize')}</div>`;
  }
+ m.innerHTML=`<div class="m-top">${badge}<div class="m-body">${body}</div></div>`;
+ $('#m-weeks').hidden=!weekPick;
  renderMenu();
 
  $('#fx-title').textContent=`Week ${view} · ${Wk.en} (${Wk.tr})`;
@@ -1104,13 +1137,12 @@ function renderHome(){
 }
 
 /* Home menu: one tile per part of the site; tapping a tile opens that part (only one open at a time) */
-let openPanel=null,weekDetail=false,weekSub='missions';
+let openPanel=null,weekPick=false,weekDetail=false,weekSub='missions';
 function renderMenu(){
  const Wk=WEEKS[view-1],dn=PLAN.filter((_,d)=>dayComplete(view,d)).length;
  const ps=vqPacks(VOCAB_LEVELS[vbLevel-1]),pd=ps.filter((_,p)=>vqStars(vbLevel,p)>0).length;
  const ST=storyOf(view),sd=Math.min(sbDone(view),ST.length);
  const items=[
-  ['weeks','📅','Weeks & Missions',`Week ${view} · ${Wk.en} · ${dn}/5`],
   ['quest','🗺️','Word Quest',`Level ${vbLevel} · ${pd}/${ps.length} packs`],
   ['typing','⌨️','Typing Turbo',`Level ${S.typing.level}`],
   ['tower','🏔','Word Tower',`Best: ${S.tower.best} m`],
@@ -1124,6 +1156,8 @@ document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.dataset.panel){openPanel=openPanel===b.dataset.panel&&b.classList.contains('mtile')?null:b.dataset.panel;renderMenu();
   if(openPanel){const p=document.querySelector(`.panel[data-panel="${openPanel}"]`);if(p)p.scrollIntoView({behavior:'smooth',block:'start'})}return}
+ if(b.dataset.act==='weekpick'){weekPick=!weekPick;if(!weekPick)weekDetail=false;renderHome();
+  if(weekPick){const d=$('#m-weeks');if(d)d.scrollIntoView({behavior:'smooth',block:'nearest'})}return}
  if(b.dataset.w){const w=+b.dataset.w;if(w===view&&weekDetail)weekDetail=false;else{view=w;weekDetail=true}renderHome();
   if(weekDetail){const d=$('#week-detail');if(d)d.scrollIntoView({behavior:'smooth',block:'nearest'})}return}
  if(b.dataset.wClose){weekDetail=false;renderHome();return}
