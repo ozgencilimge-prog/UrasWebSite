@@ -53,4 +53,16 @@ function New-Icon([int]$size, [string]$name) {
 New-Icon 192 'icon-192.png'
 New-Icon 512 'icon-512.png'
 New-Icon 180 'apple-touch-icon.png'
+
+# 3) kelime-listesi.pdf from kelime-listesi.html (written by vocab.py), printed with Edge or Chrome
+$listHtml = Join-Path $here 'kelime-listesi.html'
+if (Test-Path $listHtml) {
+  $browser = @("${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe", "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe", "$env:ProgramFiles\Google\Chrome\Application\chrome.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
+  if ($browser) {
+    $pdf = Join-Path $here 'kelime-listesi.pdf'
+    $url = 'file:///' + ($listHtml -replace '\\','/')
+    $p = Start-Process -FilePath $browser -ArgumentList @('--headless=new','--disable-gpu','--no-pdf-header-footer',"--print-to-pdf=`"$pdf`"",$url) -PassThru -Wait -WindowStyle Hidden
+    if (Test-Path $pdf) { "Built kelime-listesi.pdf ($([int]((Get-Item $pdf).Length/1KB)) KB)" } else { "PDF could not be created (exit $($p.ExitCode))" }
+  } else { 'No Edge/Chrome found: skipped PDF.' }
+}
 'Built index.html and icons.'

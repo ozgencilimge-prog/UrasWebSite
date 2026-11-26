@@ -418,6 +418,18 @@ body::before{background:#0d0420}
  .mtrack .fx button,.mtrack .fx > span[aria-hidden="true"]:not(.mnum){grid-column:3;grid-row:1 / span 2;justify-self:end}
 }
 
+/* Word Bank (leveled new words) */
+.vb-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.vb-head h2{font-size:32px;margin-top:2px}
+.vb-head .meta{margin-top:6px}
+.vb-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 8px}
+.vb-tab{background:var(--paper);border:3px solid var(--ink);border-radius:14px;padding:10px 12px;text-align:left;cursor:pointer;font-family:var(--display);font-size:17px;box-shadow:0 3px 0 var(--ink);min-width:0}
+.vb-tab small{display:block;font-family:var(--body);font-weight:800;font-size:13px;color:var(--muted)}
+.vb-tab.on{background:var(--sun)}
+.vb-wall{margin-top:10px}
+.vb-wall .wcard b{font-size:17px;line-height:1.15}
+@media (max-width:640px){.vb-tabs{grid-template-columns:1fr 1fr}}
+
 /* Break + result */
 .brk,.res{display:grid;justify-items:center;text-align:center;gap:12px;padding-block:8px}
 .brk h2,.res h2{font-size:clamp(28px,6vw,40px)}
@@ -552,6 +564,8 @@ tr.cur td{background:#fff6d6}
     <div class="sec-h"><h2>Word Wall</h2><p>Tap a card to hear the word and the sentence</p></div>
     <div class="wall" id="wall" style="margin-top:12px"></div>
   </section>
+
+  <section class="card" id="vbank"></section>
 </main>
 
 <div class="overlay" id="play" hidden>
@@ -695,7 +709,8 @@ function partOf(Wk,part){const h=Math.ceil(Wk.words.length/2);return part==='a'?
 /* Turkish keyboards: the "I" key types dotless ı (and İ for capitals). Treat both as English i. */
 const normKey=k=>(k==='ı'||k==='İ')?'i':String(k).toLowerCase();
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function findWord(en){for(const x of WEEKS)for(const w of x.words)if(w.en===en)return w;return null}
+function findWord(en){for(const x of WEEKS)for(const w of x.words)if(w.en===en)return w;
+ for(const w of VOCAB_ALL.concat(TOWER_EXTRA))if(w.p&&w.en.toLowerCase()===en)return w;return null}
 
 function carSVG(c,num,v){v=v||0;const body=v%5,t=Math.floor(v/20)%3,K='#132029',G='#cfe8ff';
  const B=[
@@ -867,7 +882,7 @@ function renderHome(){
  $('#st-stars').textContent=S.stars;
  $('#st-cars').textContent=completedDays()+'/'+NCARS;
  $('#st-streak').textContent=streak();
- renderCard();renderSbCard();renderTypingCard();renderTowerCard();
+ renderCard();renderSbCard();renderTypingCard();renderTowerCard();renderWordBank();
  const Wk=WEEKS[view-1];const lv=lvOf(view);
 
  $('#levels').innerHTML=LEVELS.map(L=>`<div><div class="lvl-h"><b>Level ${L.n} · ${L.name}</b><span>${L.sub}</span></div><div class="weeks">${WEEKS.filter(x=>x.lv===L.n).map(x=>{
@@ -907,6 +922,8 @@ function renderHome(){
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.dataset.w){view=+b.dataset.w;renderHome();return}
+ if(b.dataset.vb){vbLevel=+b.dataset.vb;renderWordBank();return}
+ if(b.dataset.vbsay!==undefined){say(VOCAB_LEVELS[vbLevel-1].words[+b.dataset.vbsay].en);return}
  if(b.dataset.say!==undefined){const w=WEEKS[view-1].words[+b.dataset.say];say([w.en,w.ex]);return}
  if(b.dataset.chunk){say(WEEKS[view-1].chunk);return}
  const a=b.dataset.act;
@@ -1143,7 +1160,7 @@ const TYPE_POOLS=[
  ['red car','big ball','blue bus','my dog','go left','run fast','green apple','two goals','fast car','hello Uras'],
  ['I like cars.','Kick the ball!','I am seven.','My car is red.','Hello, I am Uras.','Ready, set, go!','I can jump.','Open the door.']
 ];
-const WPL=5;
+const WPL=10; /* words per Typing Turbo level */
 let typingKey=null;
 document.addEventListener('keydown',e=>{if(typingKey)typingKey(e)});
 function renderTypingCard(){
@@ -1201,11 +1218,30 @@ const TOWER_EXTRA=TX('sun:güneş:☀️|moon:ay:🌙|star:yıldız:⭐|tree:ağ
  'football:futbol:⚽|goalkeeper:kaleci:🧤|stadium:stadyum:🏟️|champion:şampiyon:🏆|birthday:doğum günü:🎂|elephant:fil:🐘|dinosaur:dinozor:🦖|giraffe:zürafa:🦒|penguin:penguen:🐧|butterfly:kelebek:🦋|computer:bilgisayar:💻|playground:oyun parkı:🛝|rainbow:gökkuşağı:🌈|sandwich:sandviç:🥪|chocolate:çikolata:🍫|kangaroo:kanguru:🦘|umbrella:şemsiye:☂️|trousers:pantolon:👖|sweater:kazak:🧶|Saturday:cumartesi|Sunday:pazar|tomorrow:yarın|yesterday:dün|fourteen:on dört|fifteen:on beş|nineteen:on dokuz|beautiful:güzel|hospital:hastane:🏥|library:kütüphane:📚|' +
  'red card:kırmızı kart:🟥|yellow card:sarı kart:🟨|good job:aferin:👍|well done:çok iyi:👏|thank you:teşekkürler:🙏|good morning:günaydın:🌅|happy birthday:doğum günün kutlu olsun:🎂|nice shot:güzel şut:🥅|my team:benim takımım:👕|play football:futbol oyna:⚽|pass the ball:topu pas ver:⚽|blue sky:mavi gökyüzü|cold water:soğuk su:💧|fast car:hızlı araba:🏎️|see you:görüşürüz:👋|big goal:büyük gol:🥅|' +
  'I can run fast.:Hızlı koşabilirim.:🏃|Pass me the ball.:Topu bana pas ver.:⚽|I like football.:Futbolu severim.:⚽|My team is the best.:Benim takımım en iyisi.:🏆|Where is my bag?:Çantam nerede?:🎒|I have a red bike.:Kırmızı bir bisikletim var.:🚲|The cat is under the table.:Kedi masanın altında.:🐱|It is sunny today.:Bugün hava güneşli.:☀️|Can you swim?:Yüzebilir misin?:🏊|I am happy.:Mutluyum.:😀|We won the cup!:Kupayı kazandık!:🏆|Kick the ball to me.:Topu bana at.:🦵|This is my best friend.:Bu benim en iyi arkadaşım.:🤝|I want an apple.:Bir elma istiyorum.:🍎|Open the window, please.:Lütfen pencereyi aç.:🪟|The goalkeeper is tall.:Kaleci uzun boylu.:🧤|I play with my brother.:Kardeşimle oynarım.:👦|The dog can jump high.:Köpek yükseğe zıplayabilir.:🐶');
+/* VOCAB:BEGIN (generated by vocab.py - edit the list there, then run it) */
+const VOCAB_LEVELS=[
+ {n:1,name:"Starter",tr:"Başlangıç",sub:"1. sınıf · kısa ve somut kelimeler (3–4 harf)",words:TX("ant:karınca:🐜|hen:tavuk:🐔|goat:keçi:🐐|lamb:kuzu:🐑|van:minibüs:🚐|jet:jet uçağı:✈️|cap:kasket:🧢|mug:kupa bardak:☕|pot:tencere:🍲|jam:reçel:🍓|nut:fındık:🥜|pie:turta:🥧|tea:çay:🍵|zoo:hayvanat bahçesi:🦁|mum:anne:👩|dad:baba:👨|lip:dudak:👄|toe:ayak parmağı:🦶|hug:sarılmak:🤗|sit:oturmak:🪑|eat:yemek yemek:🍽️|see:görmek:👀|new:yeni:🆕|old:eski / yaşlı:👴|wet:ıslak:💦|dry:kuru:☀️|fun:eğlence:🎉|net:file:🥅|fan:taraftar:📣|hop:sekmek:🐇|tap:dokunmak:👆|hill:tepe:⛰️|lake:göl:🏞️|park:park:🛝|road:yol:🛣️|tyre:lastik:🛞|seat:koltuk:💺|horn:korna:📯|lamp:lamba:💡|wall:duvar:🧱|roof:çatı:🏠|desk:sıra / masa:🪑|rice:pirinç:🍚|soup:çorba:🍲|corn:mısır:🌽|pear:armut:🍐|kiwi:kivi:🥝|knee:diz:🦵|neck:boyun|hair:saç:💇|face:yüz:🙂|head:baş:🗣️|ring:yüzük:💍|bell:zil:🔔|gift:hediye:🎁|doll:oyuncak bebek:🪆|drum:davul:🥁|race:yarış:🏁|taxi:taksi:🚕|gold:altın:🥇|shop:dükkan:🏪|farm:çiftlik:🚜|nest:yuva:🪺")},
+ {n:2,name:"Explorer",tr:"Kaşif",sub:"1.–2. sınıf · günlük hayat, okul ve oyun (4–6 harf)",words:TX("jersey:forma:👕|coach:antrenör:📋|match:maç:⚽|boots:krampon:👟|wheel:tekerlek:🛞|brake:fren:🛑|driver:sürücü:🧑‍✈️|petrol:benzin:⛽|scooter:scooter:🛴|tractor:traktör:🚜|puzzle:yapboz:🧩|guitar:gitar:🎸|piano:piyano:🎹|paper:kağıt:📄|glue:yapıştırıcı:🧴|eraser:silgi:🧽|lesson:ders:📚|class:sınıf:🏫|laugh:gülmek:😂|cry:ağlamak:😢|angry:kızgın:😠|tired:yorgun:🥱|hungry:aç:🍽️|thirsty:susamış:🥤|scared:korkmuş:😨|brave:cesur:🦸|strong:güçlü:💪|tall:uzun boylu:🦒|short:kısa:📏|clean:temiz:🧼|dirty:kirli:🧹|quiet:sessiz:🤫|loud:gürültülü:📢|cookie:kurabiye:🍪|candy:şeker:🍬|pasta:makarna:🍝|salad:salata:🥗|cherry:kiraz:🍒|melon:kavun:🍈|peach:şeftali:🍑|potato:patates:🥔|tomato:domates:🍅|onion:soğan:🧅|butter:tereyağı:🧈|salt:tuz:🧂|spoon:kaşık:🥄|fork:çatal:🍴|plate:tabak:🍽️|glass:bardak:🥛|soap:sabun:🧼|brush:fırça:🪥|mirror:ayna:🪞|pillow:yastık:🛏️|watch:kol saati:⌚|tablet:tablet:📱|screen:ekran:🖥️|button:düğme:🔘|level:seviye:🆙|uncle:amca / dayı:👨|aunt:teyze / hala:👩|cousin:kuzen:🧒|street:sokak:🏘️")},
+ {n:3,name:"Player",tr:"Oyuncu",sub:"2. sınıf · fiiller, sıfatlar, futbol ve araba kelimeleri (5–8 harf)",words:TX("referee:hakem:🧑‍⚖️|whistle:düdük:📯|corner:korner:🚩|penalty:penaltı:⚽|striker:forvet:⚽|defender:defans oyuncusu:🛡️|captain:kaptan:©️|trophy:kupa / ödül:🏆|medal:madalya:🏅|engine:motor:⚙️|helmet:kask:⛑️|traffic:trafik:🚦|bridge:köprü:🌉|tunnel:tünel:🚇|station:istasyon:🚉|airport:havalimanı:🛫|island:ada:🏝️|forest:orman:🌲|mountain:dağ:⛰️|river:nehir:🏞️|beach:plaj:🏖️|desert:çöl:🏜️|ocean:okyanus:🌊|planet:gezegen:🪐|dragon:ejderha:🐉|octopus:ahtapot:🐙|dolphin:yunus:🐬|shark:köpekbalığı:🦈|whale:balina:🐳|parrot:papağan:🦜|camel:deve:🐫|puppy:yavru köpek:🐶|kitten:yavru kedi:🐱|controller:oyun kolu:🎮|joystick:joystick:🕹️|practice:antrenman:🏋️|swim:yüzmek:🏊|ride:binmek:🚲|drive:araba sürmek:🚗|push:itmek:👐|pull:çekmek:🪢|carry:taşımak:🎒|build:inşa etmek:🏗️|draw:çizmek:✏️|read:okumak:📖|sing:şarkı söylemek:🎤|listen:dinlemek:👂|speak:konuşmak:🗣️|think:düşünmek:🤔|help:yardım etmek:🤝|share:paylaşmak:🤲|wait:beklemek:⏳|hurry:acele etmek:🏃|finish:bitirmek:🏁|start:başlamak:▶️|quick:çabuk:⚡|heavy:ağır:🏋️|light:hafif:🪶|empty:boş:🫙|full:dolu:🍽️|round:yuvarlak:⚪|square:kare:🟦|circle:daire:⭕|triangle:üçgen:🔺|Monday:pazartesi|Tuesday:salı|Wednesday:çarşamba|Thursday:perşembe|Friday:cuma")},
+ {n:4,name:"Champion",tr:"Şampiyon",sub:"2.–3. sınıf · iki kelimelik ifadeler ve kısa cümleler",words:TX("seat belt:emniyet kemeri:🚗|traffic light:trafik ışığı:🚦|police car:polis arabası:🚓|fire truck:itfaiye aracı:🚒|free kick:serbest vuruş:⚽|corner kick:korner atışı:🚩|game over:oyun bitti:🎮|next level:sonraki seviye:🆙|press start:başlata bas:▶️|high score:en yüksek skor:🏆|best friend:en iyi arkadaş:🤝|ice cream:dondurma:🍦|hot dog:sosisli sandviç:🌭|swimming pool:yüzme havuzu:🏊|summer holiday:yaz tatili:🏖️|race car:yarış arabası:🏎️|football match:futbol maçı:🏟️|golden cup:altın kupa:🏆|bus stop:otobüs durağı:🚏|birthday cake:doğum günü pastası:🎂|good night:iyi geceler:🌙|see you soon:yakında görüşürüz:👋|well played:iyi oynadın:👏|my turn:sıra bende:🙋|I scored a goal!:Gol attım!:⚽|Can I play, please?:Oynayabilir miyim lütfen?:🙋|Let's go to the park.:Hadi parka gidelim.:🛝|My favourite colour is blue.:En sevdiğim renk mavi.:🔵|I am faster than you!:Senden daha hızlıyım!:🏃|The referee blows the whistle.:Hakem düdüğü çalar.:📯|Put on your seat belt.:Emniyet kemerini tak.:🚗|Press start to play.:Oynamak için başlata bas.:▶️|We are the champions!:Biz şampiyonuz!:🏆|I can ride a bike.:Bisiklete binebilirim.:🚲|What time is it?:Saat kaç?:⏰|It is my turn.:Sıra bende.:🙋|Good night, Mum.:İyi geceler anne.:🌙|The car is very fast.:Araba çok hızlı.:🏎️|I like to play games.:Oyun oynamayı severim.:🎮|Pass the ball, please.:Topu pas ver lütfen.:⚽")}
+];
+/* VOCAB:END */
+const VOCAB_ALL=VOCAB_LEVELS.flatMap(L=>L.words);
+/* Word Bank words also feed Typing Turbo, sorted into its pools by length / phrase / sentence */
+VOCAB_ALL.forEach(w=>{const s=w.en,i=/[.?!]$/.test(s)?5:/ /.test(s)?4:s.length<=3?0:s.length===4?1:s.length===5?2:3;if(!TYPE_POOLS[i].includes(s))TYPE_POOLS[i].push(s)});
+let vbLevel=1;
+function renderWordBank(){
+ const L=VOCAB_LEVELS[vbLevel-1];
+ $('#vbank').innerHTML=`<div class="vb-head"><div><p class="eyebrow">Word Bank · <span lang="tr">kelime bankası</span></p><h2>New Words</h2><p class="meta">${VOCAB_ALL.length} yeni kelime ve ifade, 4 seviye. Dokun ve dinle! Bu kelimeler Typing Turbo ve Word Tower'da da çıkar.</p></div><a class="btn small ghost" href="kelime-listesi.pdf" target="_blank" rel="noopener">📄 PDF</a></div>
+  <div class="vb-tabs">${VOCAB_LEVELS.map(x=>`<button class="vb-tab ${x.n===vbLevel?'on':''}" data-vb="${x.n}">Level ${x.n} · ${esc(x.name)}<small>${esc(x.tr)} · ${x.words.length} kelime</small></button>`).join('')}</div>
+  <p class="note">${esc(L.sub)}</p>
+  <div class="wall vb-wall">${L.words.map((w,i)=>`<button class="wcard" data-vbsay="${i}">${w.p?pic(w.p):'<span class="pic emo">🔤</span>'}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small></button>`).join('')}</div>`;
+}
 const TOWER_STAGES=[['Warm-up','hafta kelimeleri + 3–4 harf'],['Rookie','5 harf'],['Pro','6–7 harf'],['Star','8+ harf'],['Captain','iki kelime'],['Legend','tam cümle']];
 const TOWER_PER=10,TOWER_TOP=TOWER_PER*TOWER_STAGES.length;
 function towerPools(){
  const all=[],seen=new Set();
- WEEKS.flatMap(x=>x.words).concat(TOWER_EXTRA).forEach(w=>{const k=w.en.toLowerCase();if(!seen.has(k)){seen.add(k);all.push(w)}});
+ WEEKS.flatMap(x=>x.words).concat(TOWER_EXTRA,VOCAB_ALL).forEach(w=>{const k=w.en.toLowerCase();if(!seen.has(k)){seen.add(k);all.push(w)}});
  const L=w=>w.en.length,one=all.filter(w=>!/ /.test(w.en));
  const wk=WEEKS[view-1].words;
  return [
