@@ -666,7 +666,7 @@ tr.cur td{background:#fff6d6}
 
   <div class="panel" data-panel="weeks" hidden>
     <section>
-      <div class="sec-h"><h2>Weeks</h2><p>Bir haftaya dokun · kolaydan zora</p></div>
+      <div class="sec-h"><h2>Weeks</h2></div>
       <div class="wk-nums" id="levels"></div>
     </section>
     <!-- Opens when a week number is tapped: sub-tabs for that week -->
@@ -675,7 +675,7 @@ tr.cur td{background:#fff6d6}
       <div class="sub-tabs" id="week-subtabs" role="tablist"></div>
       <div data-sub="missions"><div class="fixtures mtrack" id="fixtures"></div></div>
       <div data-sub="sentence" id="week-chunk"></div>
-      <div data-sub="wall"><p class="note" style="margin-bottom:10px">Dokun: kelimeyi ve cümleyi dinle</p><div class="wall" id="wall"></div></div>
+      <div data-sub="wall"><div class="wall" id="wall"></div></div>
     </div>
   </div>
 
@@ -688,7 +688,7 @@ tr.cur td{background:#fff6d6}
 <div class="overlay" id="play" hidden>
   <div class="play-in">
     <div class="phead">
-      <button class="xbtn" id="play-close" title="Ana sayfaya dön">🏠 Home</button>
+      <button class="xbtn" id="play-close" title="Oyundan çık">✕ Exit</button>
       <h2 id="play-title">Görev</h2>
       <span class="pill pts" title="Total points · toplam puan">🏆 <b data-pts>0</b></span>
       <div class="prog" id="prog"></div>
@@ -979,23 +979,23 @@ function confetti(){
    Typing Turbo level +20, Word Tower floor +2 (every 10th floor +22), new Word Bank card +1.
    Badges: original neon-city / street-car themed awards (no game brand names or logos). */
 const BADGES=[
- {id:'rookie',name:'Rookie Driver',tr:'İlk görevini bitir',ic:'🚗',c:['#22d3ee','#2f6fed'],prog:()=>[tasksDone(),1]},
- {id:'p100',name:'Neon Starter',tr:'100 puan topla',ic:'⭐',c:['#ffe066','#ff8c1a'],prog:()=>[S.points,100]},
- {id:'p500',name:'City Cruiser',tr:'500 puan topla',ic:'🌆',c:['#ff7ab8','#8e44ad'],prog:()=>[S.points,500]},
- {id:'p1000',name:'Palm Beach Pro',tr:'1.000 puan topla',ic:'🌴',c:['#a3e635','#16a34a'],prog:()=>[S.points,1000]},
- {id:'p2500',name:'Skyline Boss',tr:'2.500 puan topla',ic:'🏙️',c:['#22d3ee','#7a1f7a'],prog:()=>[S.points,2500]},
- {id:'p5000',name:'Sunset Legend',tr:'5.000 puan topla',ic:'🌅',c:['#ffd166','#ff2e88'],prog:()=>[S.points,5000]},
- {id:'cars5',name:'Garage Owner',tr:'5 araba kazan',ic:'🔧',c:['#cbd5e1','#64748b'],prog:()=>[completedDays(),5]},
- {id:'cars20',name:'Car Collector',tr:'20 araba kazan',ic:'🏎️',c:['#ff8c1a','#e63946'],prog:()=>[completedDays(),20]},
- {id:'cup',name:'Trophy Hunter',tr:'Bir haftayı bitir, kupayı al',ic:'🏆',c:['#ffe066','#e0b13a'],prog:()=>[WEEKS.some(x=>weekComplete(x.n))?1:0,1]},
- {id:'streak3',name:'Night Shift',tr:'3 gün üst üste çalış',ic:'🌙',c:['#818cf8','#1d3557'],prog:()=>[streak(),3]},
+ {id:'rookie',name:'Rookie Driver',tr:'Finish your first mission',ic:'🚗',c:['#22d3ee','#2f6fed'],prog:()=>[tasksDone(),1]},
+ {id:'p100',name:'Neon Starter',tr:'Collect 100 points',ic:'⭐',c:['#ffe066','#ff8c1a'],prog:()=>[S.points,100]},
+ {id:'p500',name:'City Cruiser',tr:'Collect 500 points',ic:'🌆',c:['#ff7ab8','#8e44ad'],prog:()=>[S.points,500]},
+ {id:'p1000',name:'Palm Beach Pro',tr:'Collect 1,000 points',ic:'🌴',c:['#a3e635','#16a34a'],prog:()=>[S.points,1000]},
+ {id:'p2500',name:'Skyline Boss',tr:'Collect 2,500 points',ic:'🏙️',c:['#22d3ee','#7a1f7a'],prog:()=>[S.points,2500]},
+ {id:'p5000',name:'Sunset Legend',tr:'Collect 5,000 points',ic:'🌅',c:['#ffd166','#ff2e88'],prog:()=>[S.points,5000]},
+ {id:'cars5',name:'Garage Owner',tr:'Win 5 cars',ic:'🔧',c:['#cbd5e1','#64748b'],prog:()=>[completedDays(),5]},
+ {id:'cars20',name:'Car Collector',tr:'Win 20 cars',ic:'🏎️',c:['#ff8c1a','#e63946'],prog:()=>[completedDays(),20]},
+ {id:'cup',name:'Trophy Hunter',tr:'Finish a week, win the cup',ic:'🏆',c:['#ffe066','#e0b13a'],prog:()=>[WEEKS.some(x=>weekComplete(x.n))?1:0,1]},
+ {id:'streak3',name:'Night Shift',tr:'Play 3 days in a row',ic:'🌙',c:['#818cf8','#1d3557'],prog:()=>[streak(),3]},
  {id:'type3',name:'Turbo Typer',tr:'Typing Turbo Level 3',ic:'⌨️',c:['#64dfdf','#2f6fed'],prog:()=>[S.typing.best,3]},
  {id:'type6',name:'Keyboard King',tr:'Typing Turbo Level 6',ic:'👑',c:['#ffd166','#8e44ad'],prog:()=>[S.typing.best,6]},
- {id:'tower50',name:'Rooftop Runner',tr:"Word Tower'da 50 m'ye çık",ic:'🏢',c:['#ff7ab8','#22d3ee'],prog:()=>[S.tower.best,50]},
- {id:'tower300',name:'Helicopter Pilot',tr:"Word Tower'ın tepesine çık (300 m)",ic:'🚁',c:['#22d3ee','#14b8a6'],prog:()=>[S.tower.best,300]},
- {id:'story',name:'Story Writer',tr:'Bir hikaye paragrafı yaz',ic:'📖',c:['#fda4af','#ff2e88'],prog:()=>[Object.values(S.sb||{}).some(v=>v)?1:0,1]},
- {id:'words50',name:'Word Detective',tr:"Word Quest'te 50 kart aç",ic:'🔍',c:['#a3e635','#2f6fed'],prog:()=>[Object.keys(S.vbSeen).length,50]},
- {id:'quest1',name:'Quest Master',tr:"Word Quest'te bir seviyeyi bitir",ic:'🗺️',c:['#ffd166','#22d3ee'],prog:()=>[VOCAB_LEVELS.some(L=>vqLevelDone(L.n))?1:0,1]}
+ {id:'tower50',name:'Rooftop Runner',tr:'Reach 50 m in Word Tower',ic:'🏢',c:['#ff7ab8','#22d3ee'],prog:()=>[S.tower.best,50]},
+ {id:'tower300',name:'Helicopter Pilot',tr:'Reach the top of Word Tower (300 m)',ic:'🚁',c:['#22d3ee','#14b8a6'],prog:()=>[S.tower.best,300]},
+ {id:'story',name:'Story Writer',tr:'Write a story paragraph',ic:'📖',c:['#fda4af','#ff2e88'],prog:()=>[Object.values(S.sb||{}).some(v=>v)?1:0,1]},
+ {id:'words50',name:'Word Detective',tr:'Open 50 cards in Word Quest',ic:'🔍',c:['#a3e635','#2f6fed'],prog:()=>[Object.keys(S.vbSeen).length,50]},
+ {id:'quest1',name:'Quest Master',tr:'Finish a level in Word Quest',ic:'🗺️',c:['#ffd166','#22d3ee'],prog:()=>[VOCAB_LEVELS.some(L=>vqLevelDone(L.n))?1:0,1]}
 ];
 let badgeUid=0;
 function badgeSVG(b,on){
@@ -1033,8 +1033,8 @@ function nextToast(){
 function openBadges(){
  const got=Object.keys(S.badges).length;
  openSheet(`<div class="sheet-h"><h2>Uras's Badges</h2><button class="xbtn" data-close>✕ Close</button></div>
-  <p class="hint">🏆 ${(S.points||0).toLocaleString('tr-TR')} puan · ${got} / ${BADGES.length} rozet. Oynadıkça puan topla, rozetleri aç!</p>
-  <p class="note">Puanlar: görev +30 · hikaye paragrafı +30 · Typing Turbo kelimesi +2, seviye +20 · Word Tower katı +2, 10. kat +22 · yeni Word Bank kartı +1</p>
+  <p class="hint">🏆 ${(S.points||0).toLocaleString('tr-TR')} points · ${got} / ${BADGES.length} badges</p>
+  
   <div class="badge-grid">${BADGES.map(b=>{const on=!!S.badges[b.id];const [c,g]=b.prog();const pct=Math.min(100,Math.round(Math.min(c,g)/g*100));
    return `<div class="bdg${on?' on':''}">${badgeSVG(b,on)}<b>${esc(b.name)}</b><small>${esc(b.tr)}</small>${on?`<small>✓ ${esc(S.badges[b.id])}</small>`:`<span class="bar"><i style="width:${pct}%"></i></span><small>${Math.min(c,g).toLocaleString('tr-TR')} / ${g.toLocaleString('tr-TR')}</small>`}</div>`}).join('')}</div>`);
 }
@@ -1087,10 +1087,10 @@ function renderHome(){
  const head=`<p class="eyebrow">Week ${view} · ${esc(Wk.en)}${nd>=0?` · ${nd===4?'Final Mission':'Mission '+(nd+1)}`:''}</p>`;
  const prize=lbl=>`<span class="m-prize">${carSVG(nc.color,ci+1,nc.v)}<span><small>${lbl}</small><b>${esc(nc.name)}</b></span></span>`;
  if(nd===-1){
-  m.innerHTML=`<div>${head}<h1>Week complete! 🏆</h1><p class="meta" style="margin:10px 0 16px">${view<NW?'Yeni bir hafta seç ve devam et!':'Bütün sezonu bitirdin. Şampiyonsun!'}</p>
+  m.innerHTML=`<div>${head}<h1>Week complete! 🏆</h1><p class="meta" style="margin:10px 0 16px">${view<NW?'Choose a new week!':'Season complete. You are the champion!'}</p>
    <div class="m-go"><button class="btn big" data-panel="weeks">Choose a week ▶</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div></div>`;
  }else if(waitsTomorrow(view,nd)){
-  m.innerHTML=`<div>${head}<h1>Done for today. Great job, Uras!</h1><p class="meta" style="margin:10px 0 16px">Yarın ${nd+1}. görev seni bekliyor. Şimdilik oyunlardan birini oynayabilirsin.</p>${prize("Tomorrow's prize")}</div>`;
+  m.innerHTML=`<div>${head}<h1>Done for today. Great job, Uras!</h1><p class="meta" style="margin:10px 0 16px">Mission ${nd+1} is waiting for you tomorrow.</p>${prize("Tomorrow's prize")}</div>`;
  }else{
   const started=dayStarted(view,nd);
   m.innerHTML=`<div>${head}<h1>${started?"Let's keep going, Uras!":"Today's mission is ready!"}</h1>
@@ -1119,7 +1119,7 @@ function renderMenu(){
  const ST=storyOf(view),sd=Math.min(sbDone(view),ST.length);
  const items=[
   ['weeks','📅','Weeks & Missions',`Week ${view} · ${Wk.en} · ${dn}/5`],
-  ['quest','🗺️','Word Quest',`Level ${vbLevel} · ${pd}/${ps.length} paket`],
+  ['quest','🗺️','Word Quest',`Level ${vbLevel} · ${pd}/${ps.length} packs`],
   ['typing','⌨️','Typing Turbo',`Level ${S.typing.level}`],
   ['tower','🏔','Word Tower',`Best: ${S.tower.best} m`],
   ['story','📖','Story Time',`Week ${view} · ${sd}/${ST.length}`]
@@ -1172,7 +1172,7 @@ function closePlay(){
  try{speechSynthesis.cancel()}catch(e){}
  session=null;typingKey=null;save();renderHome();
 }
-$('#play-close').onclick=()=>goHome();
+$('#play-close').onclick=closePlay; /* Exit: back to where you were before the game */
 /* Back to the home page from anywhere: close a game or window, close the open menu part, scroll to the top */
 function goHome(){
  if(!$('#play').hidden)closePlay();
@@ -1389,11 +1389,11 @@ const TYPE_POOLS=[
 const WPL=10; /* words per Typing Turbo level */
 let typingKey=null;
 document.addEventListener('keydown',e=>{if(typingKey)typingKey(e)});
-const TT_NAMES=['3 harf','4 harf','5 harf','6+ harf','iki kelime','cümle'];
+const TT_NAMES=['3 letters','4 letters','5 letters','6+ letters','2 words','sentences'];
 function renderTypingCard(){
  const t=S.typing,top=TYPE_POOLS.length;
  const open=n=>n<=t.best||S.openAll; /* reached levels, or all when the parent's "all open" switch is on */
- $('#typing-card').innerHTML=`<div><p class="eyebrow">Keyboard Game · <span lang="tr">klavye oyunu</span></p><h2>Typing Turbo</h2><p class="meta">Kelimeleri yaz, her ${WPL} kelimede bir üst seviyeye çık! Ding dong! 🔔 Aşağıdan başlamak istediğin seviyeyi seç.</p></div>
+ $('#typing-card').innerHTML=`<div><p class="eyebrow">Keyboard Game · <span lang="tr">klavye oyunu</span></p><h2>Typing Turbo</h2></div>
   <div class="tt-badges"><span class="lvl-badge">Level ${t.level}</span><small>Best: Level ${t.best}</small></div>
   <button class="btn" data-act="typing">Play ▶</button>
   <div class="tt-levels" role="group" aria-label="Seviye seç">${Array.from({length:top},(_,i)=>i+1).map(n=>`<button class="tt-lv${n===Math.min(t.level,top)?' on':''}" data-ttlv="${n}" ${open(n)?'':'disabled'}><b>${open(n)?'':'🔒 '}Level ${n}</b><small>${TT_NAMES[n-1]}</small></button>`).join('')}</div>`;
@@ -1475,12 +1475,12 @@ function renderWordBank(){
  if(!vqLevelOpen(vbLevel))vbLevel=1;
  const L=VOCAB_LEVELS[vbLevel-1],packs=vqPacks(L);
  const doneN=packs.filter((_,p)=>vqStars(vbLevel,p)>0).length,cur=packs.findIndex((_,p)=>!vqStars(vbLevel,p));
- $('#vbank').innerHTML=`<div class="vb-head"><div><p class="eyebrow">Word Quest · <span lang="tr">kelime macerası</span></p><h2>New Words</h2><p class="meta">${VOCAB_ALL.length} kelime, 4 seviye. Her pakette 10 kart var: kartı çevir, kelimeyi öğren, sonra mini sınavı geç ve yıldızları topla!</p></div><a class="btn small ghost" href="kelime-listesi.pdf" target="_blank" rel="noopener">📄 PDF</a></div>
+ $('#vbank').innerHTML=`<div class="vb-head"><div><p class="eyebrow">Word Quest · <span lang="tr">kelime macerası</span></p><h2>New Words</h2></div><a class="btn small ghost" href="kelime-listesi.pdf" target="_blank" rel="noopener">📄 PDF</a></div>
   <div class="vb-tabs">${VOCAB_LEVELS.map(x=>{const op=vqLevelOpen(x.n),ps=vqPacks(x),d=ps.filter((_,p)=>vqStars(x.n,p)>0).length;
-   return `<button class="vb-tab ${x.n===vbLevel?'on':''}" data-vb="${x.n}" ${op?'':'disabled'}>${op?'':'🔒 '}Level ${x.n} · ${esc(x.name)}<small>${d===ps.length?'🏆 tamamlandı':`${d} / ${ps.length} paket`}</small><span class="wbar"><i style="width:${Math.round(d/ps.length*100)}%"></i></span></button>`}).join('')}</div>
-  <p class="note">${esc(L.sub)} · ${doneN} / ${packs.length} paket tamam${doneN===packs.length?' · Seviye bitti! 🏆':''}</p>
+   return `<button class="vb-tab ${x.n===vbLevel?'on':''}" data-vb="${x.n}" ${op?'':'disabled'}>${op?'':'🔒 '}Level ${x.n} · ${esc(x.name)}<small>${d===ps.length?'🏆 Done':`${d} / ${ps.length} packs`}</small><span class="wbar"><i style="width:${Math.round(d/ps.length*100)}%"></i></span></button>`}).join('')}</div>
+  
   <div class="vq-map">${packs.map((pk,p)=>{const st=vqStars(vbLevel,p),op=vqPackOpen(vbLevel,p),isCur=p===cur&&op;
-   return `<button class="vq-pack${st?' done':''}${isCur?' cur':''}" data-vqp="${p}" ${op?'':'disabled'} aria-label="Paket ${p+1}"><span class="vq-ic">${op?(pk[0].p&&pk[0].p.e?pk[0].p.e:'🔤'):'🔒'}</span><b>${p+1}</b><small>${st?vqStarStr(st):op?(isCur?'Play ▶':'Open'):'Kilitli'}</small></button>`}).join('')}</div>`;
+   return `<button class="vq-pack${st?' done':''}${isCur?' cur':''}" data-vqp="${p}" ${op?'':'disabled'} aria-label="Pack ${p+1}"><span class="vq-ic">${op?(pk[0].p&&pk[0].p.e?pk[0].p.e:'🔤'):'🔒'}</span><b>${p+1}</b><small>${st?vqStarStr(st):op?(isCur?'Play ▶':'Open'):'Locked'}</small></button>`}).join('')}</div>`;
 }
 function startPack(n,p){
  const L=VOCAB_LEVELS[n-1],pack=vqPacks(L)[p];
@@ -1546,7 +1546,7 @@ function towerPools(){
  ];
 }
 function renderTowerCard(){
- $('#tower-card').innerHTML=`<div><p class="eyebrow">Jump Game · <span lang="tr">zıplama oyunu</span></p><h2>Word Tower</h2><p class="meta">${TOWER_TOP} katlık kule, 6 bölüm: kısa kelimelerden tam cümlelere! Kelimeyi yaz, futbolcu zıplasın.</p></div>
+ $('#tower-card').innerHTML=`<div><p class="eyebrow">Jump Game · <span lang="tr">zıplama oyunu</span></p><h2>Word Tower</h2></div>
   <div class="tt-badges"><span class="lvl-badge">🏔 ${S.tower.best}m</span><small>Best height</small></div>
   <button class="btn" data-act="tower">Play ▶</button>`;
 }
@@ -1702,7 +1702,7 @@ const storyOf=w=>STORIES[w]||[];
 const sbDone=w=>{const v=S.sb&&S.sb[w];return v===true?1:(+v||0)};
 function renderSbCard(){
  const ST=storyOf(view),n=ST.length,d=sbDone(view);
- $('#sb-card').innerHTML=`<div><p class="eyebrow">Sentence Builder · <span lang="tr">cümle kurma</span></p><h2>Week ${view} Story</h2><p class="meta">${n} paragraflık bir hikaye! Karışık kelimeleri sürükle bırak ile sırala, her seferinde bir paragraf yaz.</p></div>
+ $('#sb-card').innerHTML=`<div><p class="eyebrow">Sentence Builder · <span lang="tr">cümle kurma</span></p><h2>Week ${view} Story</h2></div>
   <div class="tt-badges"><span class="lvl-badge">${d>=n?'✓ Story done':`Paragraph ${d+1} / ${n}`}</span><small>${esc(WEEKS[view-1].en)}</small><span class="sb-dots">${ST.map((_,k)=>`<i class="${k<d?'on':''}"></i>`).join('')}</span></div>
   <button class="btn" data-act="sb">${d>=n?'Play again':d?'Continue':'Play'} ▶</button>`;
 }
@@ -1798,7 +1798,7 @@ $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet'||e.target.clos
 function openGarage(){
  const n=completedDays();
  openSheet(`<div class="sheet-h"><h2>Uras's Garage</h2><button class="xbtn" data-close>✕ Close</button></div>
-  <p class="hint">${n} / ${NCARS} cars collected · Her bitirdiğin maç = 1 yeni araba</p>
+  <p class="hint">${n} / ${NCARS} cars collected · 1 new car for every mission</p>
   <h3>Trophy Cabinet</h3>
   <div class="cups">${WEEKS.map(x=>`<div class="cup ${weekComplete(x.n)?'won':''}"><span>🏆</span>Week ${x.n}<br>${esc(x.en)}</div>`).join('')}</div>
   <h3>Car Collection</h3>
