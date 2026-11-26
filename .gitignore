@@ -4,3 +4,5 @@ uras.jpg
 parent-password.txt
 # Local tool settings
 .claude/
+# Full profile artwork (contains a game logo): keep local, only the cropped sticker is published
+uras-profile-original.jpg

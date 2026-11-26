@@ -829,7 +829,7 @@ function confetti(){
 }
 
 /* ---------- Player card + photo ---------- */
-const DEFAULT_PHOTO='uras-sticker.jpg';
+const DEFAULT_PHOTO='uras-sticker.jpg?v=2'; /* bump v when the sticker image changes, so browsers fetch the new one */
 function stickerHTML(){
  const own=!!S.photo;const p=own?S.ph:{x:50,y:50,z:1};
  const empty='<label for=&quot;photo-in&quot; class=&quot;ph-empty&quot;><b>📷</b>Add photo</label>';
