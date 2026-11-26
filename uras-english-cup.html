@@ -453,6 +453,26 @@ body::before{background:#0d0420}
 .vb-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
 @media (max-width:640px){.vb-tabs{grid-template-columns:1fr 1fr}}
 
+/* Points + badges */
+.pill.pts{background:var(--sun);color:var(--ink);border:2px solid #fff;font-size:16px}
+.pill.pts b{font-variant-numeric:tabular-nums}
+.pill.pts.bump{animation:cuppop .45s ease-out}
+.phead .pill.pts{flex:none}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.bdg{background:var(--paper-2);border:3px solid var(--ink);border-radius:16px;padding:10px;display:grid;gap:4px;justify-items:center;align-content:start;text-align:center}
+.bdg.on{background:#140a2e;color:#fff;border-color:#ffc93c;box-shadow:0 0 14px rgba(255,201,60,.45)}
+.bdg svg{width:84px;height:auto}
+.bdg b{font-family:var(--display);font-weight:400;font-size:17px}
+.bdg small{font-weight:800;font-size:12px;color:var(--muted)}
+.bdg.on small{color:#e9d5ff}
+.bdg .bar{width:100%;height:8px;border-radius:5px;background:rgba(19,32,41,.15);overflow:hidden}
+.bdg .bar i{display:block;height:100%;background:var(--ok)}
+.badge-toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);z-index:96;display:flex;gap:12px;align-items:center;width:max-content;max-width:calc(100vw - 32px);background:#ffc93c;color:#132029;border:3px solid #132029;border-radius:18px;padding:10px 18px 10px 10px;box-shadow:0 6px 0 #132029,0 0 26px rgba(255,201,60,.6);animation:toastin .5s ease-out;pointer-events:none}
+.badge-toast svg{width:64px;height:auto;flex:none}
+.badge-toast b{display:block;font-family:var(--display);font-weight:400;font-size:22px;line-height:1.1}
+.badge-toast small{display:block;font-weight:800;font-size:13px}
+@keyframes toastin{0%{transform:translate(-50%,40px);opacity:0}100%{transform:translate(-50%,0);opacity:1}}
+
 /* Break + result */
 .brk,.res{display:grid;justify-items:center;text-align:center;gap:12px;padding-block:8px}
 .brk h2,.res h2{font-size:clamp(28px,6vw,40px)}
@@ -550,7 +570,9 @@ tr.cur td{background:#fff6d6}
       Uras English Cup
     </div>
     <span class="pill" title="Day streak">🔥 <span id="st-streak">0</span> days</span>
+    <span class="pill pts" title="Total points · toplam puan">🏆 <b data-pts>0</b> pts</span>
     <span class="pill" title="Stars">⭐ <span id="st-stars">0</span></span>
+    <button class="tbtn" id="open-badges" title="Badges · rozetler">🎖 <span id="st-badges">0</span></button>
     <button class="tbtn" id="open-garage">🚗 Garage <span id="st-cars">0/60</span></button>
     <button class="tbtn alt" id="open-parent">Parents</button>
   </div>
@@ -596,6 +618,7 @@ tr.cur td{background:#fff6d6}
     <div class="phead">
       <button class="xbtn" id="play-close">✕ Exit</button>
       <h2 id="play-title">Görev</h2>
+      <span class="pill pts" title="Total points · toplam puan">🏆 <b data-pts>0</b></span>
       <div class="prog" id="prog"></div>
     </div>
     <div id="stage"></div>
@@ -700,6 +723,10 @@ if(!S.ph)S.ph=Object.assign({},DEF.ph);
 if(!S.typing)S.typing={level:1,best:1};
 if(!S.tower)S.tower={best:0};
 if(!S.sb)S.sb={};
+/* Points + badges. Older saves get points worked out from what was already done. */
+if(S.points==null)S.points=(S.stars||0)*10+Math.max(0,(S.typing.best||1)-1)*20+Math.floor((S.tower.best||0)/5)*2;
+if(!S.badges)S.badges={};
+if(!S.vbSeen)S.vbSeen={};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
 function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const today=()=>fmt(new Date());
@@ -874,6 +901,70 @@ function confetti(){
  document.body.appendChild(box);setTimeout(()=>box.remove(),2000);
 }
 
+/* ---------- Points + badges ----------
+   Points: mission task +30 (replay +10), story paragraph +30 (again +10), typed word +2,
+   Typing Turbo level +20, Word Tower floor +2 (every 10th floor +22), new Word Bank card +1.
+   Badges: original neon-city / street-car themed awards (no game brand names or logos). */
+const BADGES=[
+ {id:'rookie',name:'Rookie Driver',tr:'İlk görevini bitir',ic:'🚗',c:['#22d3ee','#2f6fed'],prog:()=>[tasksDone(),1]},
+ {id:'p100',name:'Neon Starter',tr:'100 puan topla',ic:'⭐',c:['#ffe066','#ff8c1a'],prog:()=>[S.points,100]},
+ {id:'p500',name:'City Cruiser',tr:'500 puan topla',ic:'🌆',c:['#ff7ab8','#8e44ad'],prog:()=>[S.points,500]},
+ {id:'p1000',name:'Palm Beach Pro',tr:'1.000 puan topla',ic:'🌴',c:['#a3e635','#16a34a'],prog:()=>[S.points,1000]},
+ {id:'p2500',name:'Skyline Boss',tr:'2.500 puan topla',ic:'🏙️',c:['#22d3ee','#7a1f7a'],prog:()=>[S.points,2500]},
+ {id:'p5000',name:'Sunset Legend',tr:'5.000 puan topla',ic:'🌅',c:['#ffd166','#ff2e88'],prog:()=>[S.points,5000]},
+ {id:'cars5',name:'Garage Owner',tr:'5 araba kazan',ic:'🔧',c:['#cbd5e1','#64748b'],prog:()=>[completedDays(),5]},
+ {id:'cars20',name:'Car Collector',tr:'20 araba kazan',ic:'🏎️',c:['#ff8c1a','#e63946'],prog:()=>[completedDays(),20]},
+ {id:'cup',name:'Trophy Hunter',tr:'Bir haftayı bitir, kupayı al',ic:'🏆',c:['#ffe066','#e0b13a'],prog:()=>[WEEKS.some(x=>weekComplete(x.n))?1:0,1]},
+ {id:'streak3',name:'Night Shift',tr:'3 gün üst üste çalış',ic:'🌙',c:['#818cf8','#1d3557'],prog:()=>[streak(),3]},
+ {id:'type3',name:'Turbo Typer',tr:'Typing Turbo Level 3',ic:'⌨️',c:['#64dfdf','#2f6fed'],prog:()=>[S.typing.best,3]},
+ {id:'type6',name:'Keyboard King',tr:'Typing Turbo Level 6',ic:'👑',c:['#ffd166','#8e44ad'],prog:()=>[S.typing.best,6]},
+ {id:'tower50',name:'Rooftop Runner',tr:"Word Tower'da 50 m'ye çık",ic:'🏢',c:['#ff7ab8','#22d3ee'],prog:()=>[S.tower.best,50]},
+ {id:'tower300',name:'Helicopter Pilot',tr:"Word Tower'ın tepesine çık (300 m)",ic:'🚁',c:['#22d3ee','#14b8a6'],prog:()=>[S.tower.best,300]},
+ {id:'story',name:'Story Writer',tr:'Bir hikaye paragrafı yaz',ic:'📖',c:['#fda4af','#ff2e88'],prog:()=>[Object.values(S.sb||{}).some(v=>v)?1:0,1]},
+ {id:'words50',name:'Word Detective',tr:"Word Bank'te 50 kart aç",ic:'🔍',c:['#a3e635','#2f6fed'],prog:()=>[Object.keys(S.vbSeen).length,50]}
+];
+let badgeUid=0;
+function badgeSVG(b,on){
+ const [c1,c2]=on?b.c:['#c7ced9','#7b8494'],g='bdg'+(++badgeUid);
+ return `<svg viewBox="0 0 100 112" aria-hidden="true"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
+  <path d="M32 76 L22 108 L38 99 L46 110 L52 80Z" fill="${on?'#ff2e88':'#9aa3b5'}" stroke="#0d0420" stroke-width="2"/><path d="M68 76 L78 108 L62 99 L54 110 L48 80Z" fill="${on?'#22d3ee':'#9aa3b5'}" stroke="#0d0420" stroke-width="2"/>
+  <polygon points="50,4 91,27 91,73 50,96 9,73 9,27" fill="url(#${g})" stroke="#0d0420" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="50" cy="50" r="27" fill="#140a2e" stroke="${on?'#fff':'#e2e8f0'}" stroke-width="3"/>
+  <text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-size="28"${on?'':' opacity=".45"'}>${on?b.ic:'🔒'}</text></svg>`;
+}
+function renderPoints(){
+ document.querySelectorAll('[data-pts]').forEach(e=>e.textContent=(S.points||0).toLocaleString('tr-TR'));
+ const n=$('#st-badges');if(n)n.textContent=Object.keys(S.badges).length+'/'+BADGES.length;
+}
+function addPoints(n){
+ S.points=(S.points||0)+n;save();renderPoints();
+ document.querySelectorAll('.pill.pts').forEach(p=>{p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump')});
+ setTimeout(()=>checkBadges(false),0); /* after the caller has finished updating progress */
+}
+const toastQ=[];let toastOn=false;
+function checkBadges(silent){
+ let changed=false;
+ BADGES.forEach(b=>{if(S.badges[b.id])return;let p;try{p=b.prog()}catch(e){return}if(p[0]>=p[1]){S.badges[b.id]=today();changed=true;if(!silent)toastQ.push(b)}});
+ if(changed){save();renderPoints()}
+ if(!toastOn&&toastQ.length)nextToast();
+}
+function nextToast(){
+ const b=toastQ.shift();if(!b){toastOn=false;return}
+ toastOn=true;
+ const t=document.createElement('div');t.className='badge-toast';t.setAttribute('role','status');
+ t.innerHTML=`${badgeSVG(b,true)}<div><small>NEW BADGE! · Yeni rozet!</small><b>${esc(b.name)}</b><small>${esc(b.tr)}</small></div>`;
+ document.body.appendChild(t);dingDong();
+ setTimeout(()=>{t.remove();nextToast()},4300);
+}
+function openBadges(){
+ const got=Object.keys(S.badges).length;
+ openSheet(`<div class="sheet-h"><h2>Uras's Badges</h2><button class="xbtn" data-close>✕ Close</button></div>
+  <p class="hint">🏆 ${(S.points||0).toLocaleString('tr-TR')} puan · ${got} / ${BADGES.length} rozet. Oynadıkça puan topla, rozetleri aç!</p>
+  <p class="note">Puanlar: görev +30 · hikaye paragrafı +30 · Typing Turbo kelimesi +2, seviye +20 · Word Tower katı +2, 10. kat +22 · yeni Word Bank kartı +1</p>
+  <div class="badge-grid">${BADGES.map(b=>{const on=!!S.badges[b.id];const [c,g]=b.prog();const pct=Math.min(100,Math.round(Math.min(c,g)/g*100));
+   return `<div class="bdg${on?' on':''}">${badgeSVG(b,on)}<b>${esc(b.name)}</b><small>${esc(b.tr)}</small>${on?`<small>✓ ${esc(S.badges[b.id])}</small>`:`<span class="bar"><i style="width:${pct}%"></i></span><small>${Math.min(c,g).toLocaleString('tr-TR')} / ${g.toLocaleString('tr-TR')}</small>`}</div>`}).join('')}</div>`);
+}
+
 /* ---------- Player card + photo ---------- */
 const DEFAULT_PHOTO='uras-sticker.jpg?v=2'; /* bump v when the sticker image changes, so browsers fetch the new one */
 function stickerHTML(){
@@ -905,7 +996,7 @@ function renderHome(){
  $('#st-stars').textContent=S.stars;
  $('#st-cars').textContent=completedDays()+'/'+NCARS;
  $('#st-streak').textContent=streak();
- renderCard();renderSbCard();renderTypingCard();renderTowerCard();renderWordBank();
+ renderCard();renderSbCard();renderTypingCard();renderTowerCard();renderWordBank();renderPoints();
  const Wk=WEEKS[view-1];const lv=lvOf(view);
 
  $('#levels').innerHTML=LEVELS.map(L=>`<div><div class="lvl-h"><b>Level ${L.n} · ${L.name}</b><span>${L.sub}</span></div><div class="weeks">${WEEKS.filter(x=>x.lv===L.n).map(x=>{
@@ -946,7 +1037,7 @@ document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.dataset.w){view=+b.dataset.w;renderHome();return}
  if(b.dataset.vb){vbLevel=+b.dataset.vb;vbOpen.clear();renderWordBank();return}
- if(b.dataset.vbsay!==undefined){const i=+b.dataset.vbsay;if(!vbOpen.has(i)){vbOpen.add(i);b.classList.add('open');good();$('#vb-count').textContent=vbOpen.size;$('#vb-close').hidden=false}say(VOCAB_LEVELS[vbLevel-1].words[i].en);return}
+ if(b.dataset.vbsay!==undefined){const i=+b.dataset.vbsay;const vw=VOCAB_LEVELS[vbLevel-1].words[i];if(!vbOpen.has(i)){vbOpen.add(i);b.classList.add('open');good();$('#vb-count').textContent=vbOpen.size;$('#vb-close').hidden=false;if(!S.vbSeen[vw.en]){S.vbSeen[vw.en]=1;addPoints(1)}}say(vw.en);return}
  if(b.dataset.vbclose){vbOpen.clear();renderWordBank();return}
  if(b.dataset.say!==undefined){const w=WEEKS[view-1].words[+b.dataset.say];say([w.en,w.ex]);return}
  if(b.dataset.chunk){say(WEEKS[view-1].chunk);return}
@@ -962,6 +1053,7 @@ document.addEventListener('click',e=>{
 });
 $('#open-garage').onclick=openGarage;
 $('#open-parent').onclick=openGate;
+$('#open-badges').onclick=openBadges;
 
 /* ---------- Play ---------- */
 const stage=$('#stage');
@@ -1000,7 +1092,7 @@ function finishTask(){
  const {w,d,t,replay}=session;
  const wasDay=dayComplete(w,d);
  const first=!S.done[tk(w,d,t)];
- S.done[tk(w,d,t)]=true;S.stars+=first?3:1;
+ S.done[tk(w,d,t)]=true;S.stars+=first?3:1;addPoints(first?30:10);
  const nowDay=dayComplete(w,d);
  if(nowDay&&!wasDay&&!S.dayDone[dk(w,d)])S.dayDone[dk(w,d)]=today();
  const wkDone=nowDay&&!wasDay&&weekComplete(w);
@@ -1222,11 +1314,11 @@ function startTyping(){
   if(!$('#tt-word')||pos>=letters.length)return;
   if(normKey(ch)===normKey(letters[pos])){
    pos++;doneL++;skip();tick();paint();
-   if(pos>=letters.length){good();say(list[wi]);wi++;if(wi>=WPL)levelUp();else later(nextWord,900)}
+   if(pos>=letters.length){good();say(list[wi]);addPoints(2);wi++;if(wi>=WPL)levelUp();else later(nextWord,900)}
   }else{bad();const c=$('#tt-word .c');if(c){c.classList.remove('x');void c.offsetWidth;c.classList.add('x')}}
  }
  function levelUp(){
-  level++;S.typing.level=level;S.typing.best=Math.max(S.typing.best,level);save();setProg(WPL,WPL);
+  level++;S.typing.level=level;S.typing.best=Math.max(S.typing.best,level);save();setProg(WPL,WPL);addPoints(20);
   const pr=praise();later(()=>celebrate(pr),1150);
   later(()=>{
    stage.innerHTML=`<div class="res"><div class="fw-space"></div><h2>Level up!</h2><p class="carname">Level ${level}</p><div class="row"><button class="btn" id="tt-next">Next level ▶</button><button class="btn ghost" id="tt-stop">Stop</button></div></div>`;
@@ -1327,6 +1419,7 @@ function startTower(){
   floor++;build();kid.classList.remove('hop','oops');void kid.offsetWidth;kid.classList.add('hop');place();
   const m=floor*M;$('#tw-m').textContent='🏔 '+m+'m';
   if(m>S.tower.best){S.tower.best=m;save()}
+  addPoints(floor%TOWER_PER===0?22:2);
   letters=null;
   /* Every 10 words: celebration + a "Next level" pause, like Typing Turbo */
   if(floor%TOWER_PER===0){
@@ -1513,7 +1606,7 @@ function startSb(){
  }
  function finishPara(){
   setProg(1,1);S.sb=S.sb||{};
-  const first=sbDone(w)<pi+1;if(first)S.sb[w]=pi+1;S.stars+=first?3:1;save();$('#st-stars').textContent=S.stars;
+  const first=sbDone(w)<pi+1;if(first)S.sb[w]=pi+1;S.stars+=first?3:1;save();$('#st-stars').textContent=S.stars;addPoints(first?30:10);
   const last=pi>=ST.length-1;
   stage.innerHTML=`<div class="res"><div class="fw-space"></div><h2>${last?'Your story is ready!':`Paragraph ${pi+1} done!`}</h2><div class="sb-para" id="sb-para"></div><button class="speak" id="sb-read">🔊 ${last?'Read my story':'Read this paragraph'}</button><p>+${first?3:1} ⭐</p><div class="row">${last?'':'<button class="btn" id="sb-next">Next paragraph ▶</button>'}<button class="btn ghost" id="sb-home">Home</button></div></div>`;
   paintPara(last);
@@ -1619,9 +1712,10 @@ function renderParent(){
  $('#sheet-in').querySelectorAll('[data-word]').forEach(b=>b.onclick=()=>say(b.dataset.word));
  $('#p-reset').onclick=()=>{$('#p-confirm').hidden=false};
  $('#p-reset-no').onclick=()=>{$('#p-confirm').hidden=true};
- $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1}});view=1;save();renderParent()};
+ $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1},tower:{best:0},sb:{},points:0,badges:{},vbSeen:{}});view=1;save();renderParent()};
 }
 
+checkBadges(true); /* badges already earned before this feature existed, without pop-ups */
 renderHome();
 })();
 </script>
