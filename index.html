@@ -1559,7 +1559,8 @@ function startCup(w){
 }
 
 /* ---------- Chant Time: 6th (bonus) card of every week ----------
-   4 rounds: the sentence of the week, then example sentences of 3 week words (last round has 2 gaps).
+   10 rounds: the sentence of the week, then the example sentences of the week's words (shuffled);
+   short weeks end with the sentence of the week again. Rounds 7-10 have 2 gaps.
    The sentence is read, then a drum beat lights the words one by one; at a gap the beat waits until
    the right word is tapped (no time pressure). At the end the whole sentence is read: "Chant it!" */
 function chantCard(){
@@ -1569,8 +1570,11 @@ function chantCard(){
 function startChant(w){
  const Wk=WEEKS[w-1];session={chant:true};openPlay();stage.classList.add('neon');
  const BEAT=650,clean=t=>t.replace(/[^A-Za-z']/g,'').toLowerCase();
- const exs=sample(Wk.words.filter(x=>x.ex),3);
- const rounds=[{text:Wk.chunk,key:null,gaps:1}].concat(exs.map((x,i)=>({text:x.ex,key:x.en,gaps:i===2?2:1})));
+ const CH_ROUNDS=10;
+ const exs=shuffle(Wk.words.filter(x=>x.ex)).slice(0,CH_ROUNDS-1);
+ const rounds=[{text:Wk.chunk,key:null}].concat(exs.map(x=>({text:x.ex,key:x.en})));
+ while(rounds.length<CH_ROUNDS)rounds.push({text:Wk.chunk,key:null});
+ rounds.forEach((r,i)=>{r.gaps=i>=6&&r.text.split(' ').length>=4?2:1});
  let ri=0,mist=0;
  function beat(){const d=$('#ch-drum');if(d){d.classList.remove('hit');void d.offsetWidth;d.classList.add('hit')}tone(110,.14,'sine',.35);tone(220,.05,'triangle',.08)}
  function round(){
