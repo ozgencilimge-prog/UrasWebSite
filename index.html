@@ -496,6 +496,19 @@ body::before{background:#0d0420}
 .m-weeks .wk-detail{color:var(--ink)}
 .m-weeks .mtrack{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .m-weeks .mtrack::before{display:none}
+/* Chant Time */
+.mtrack .fx.chantfx{border-color:#ff7ab8;box-shadow:0 0 14px rgba(255,122,184,.4)}
+.mtrack .fx.chantfx .mnum{border-color:#ff7ab8;font-size:20px}
+.mtrack .fx.chantfx .st{background:#ff7ab8;color:#0d0420}
+.mtrack .fx.chantfx.done .st{background:#4ade80}
+.ch-line{font-family:var(--display);font-size:clamp(26px,5.5vw,40px);text-align:center;line-height:1.7;background:#fffdf5;color:#132029;border:3px solid #0d0420;border-radius:16px;padding:12px 16px}
+.ch-w{display:inline-block;padding:0 4px;border-radius:8px;transition:transform .1s}
+.ch-w.now{background:#ffc93c;transform:scale(1.12)}
+.ch-w.gap{color:#a3a9b5;border-bottom:4px dashed #ff2e88}
+.ch-w.filled{color:#15803d;border-bottom-color:transparent}
+.ch-line.all .ch-w{color:#15803d}
+.ch-drum{font-size:56px;text-align:center;line-height:1}
+.ch-drum.hit{animation:cuppop .25s ease-out}
 /* Penalty Cup */
 .mtrack .fx.cupfx{border-color:#ffc93c}
 .mtrack .fx.cupfx .mnum{border-color:#ffc93c;font-size:20px}
@@ -862,6 +875,7 @@ if(!S.badges)S.badges={};
 if(!S.vbSeen)S.vbSeen={};
 if(!S.vq)S.vq={}; /* Word Quest: best stars per pack, key "level-pack" */
 if(!S.pcup)S.pcup={}; /* Penalty Cup per week: {won, best:"3–1"} */
+if(!S.chant)S.chant={}; /* Chant Time per week: best stars */
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
 function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const today=()=>fmt(new Date());
@@ -1058,7 +1072,8 @@ const BADGES=[
  {id:'story',name:'Story Writer',tr:'Write a story paragraph',ic:'📖',c:['#fda4af','#ff2e88'],prog:()=>[Object.values(S.sb||{}).some(v=>v)?1:0,1]},
  {id:'words50',name:'Word Detective',tr:'Open 50 cards in Word Quest',ic:'🔍',c:['#a3e635','#2f6fed'],prog:()=>[Object.keys(S.vbSeen).length,50]},
  {id:'quest1',name:'Quest Master',tr:'Finish a level in Word Quest',ic:'🗺️',c:['#ffd166','#22d3ee'],prog:()=>[VOCAB_LEVELS.some(L=>vqLevelDone(L.n))?1:0,1]},
- {id:'pking',name:'Penalty King',tr:'Win a Penalty Cup',ic:'🥅',c:['#a3e635','#16a34a'],prog:()=>[Object.values(S.pcup||{}).some(x=>x&&x.won)?1:0,1]}
+ {id:'pking',name:'Penalty King',tr:'Win a Penalty Cup',ic:'🥅',c:['#a3e635','#16a34a'],prog:()=>[Object.values(S.pcup||{}).some(x=>x&&x.won)?1:0,1]},
+ {id:'chant',name:'Chant Champion',tr:'Finish 3 Chant Times',ic:'🥁',c:['#ff7ab8','#ffc93c'],prog:()=>[Object.keys(S.chant||{}).length,3]}
 ];
 let badgeUid=0;
 function badgeSVG(b,on){
@@ -1174,7 +1189,7 @@ function renderHome(){
   const cls=done?'done':cur?'cur':open?'open':'lock';
   const st=done?'Completed ✓':cur?'Up next':open?'Open':(d===nd?'Tomorrow':'Locked');
   const btn=done?`<button class="btn small ghost" data-act="replay" data-d="${d}">Replay</button>`:(cur||open)?`<button class="btn small${open?' ghost':''}" data-act="playday" data-d="${d}">Play</button>`:`<span aria-hidden="true" style="font-size:24px">🔒</span>`;
-  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('');
+  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('')+chantCard();
 
  $('#wall').innerHTML=Wk.words.map((w,i)=>`<button class="wcard" data-say="${i}">${pic(w.p)}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small>${lv.n>=2?`<em>${esc(w.ex)}</em>`:''}</button>`).join('');
 }
@@ -1218,6 +1233,7 @@ document.addEventListener('click',e=>{
  else if(a==='typing')startTyping();
  else if(a==='cup')startCup(view);
  else if(a==='cupplay')startCup(cupWeek||view);
+ else if(a==='chant')startChant(view);
  else if(b.dataset.cupw){cupWeek=+b.dataset.cupw;renderCupCard();tick()}
  else if(b.dataset.ttlv){S.typing.level=+b.dataset.ttlv;save();renderTypingCard();tick()}
  else if(a==='tower')startTower();
@@ -1531,6 +1547,73 @@ function startCup(w){
   $('#pc-again').onclick=()=>startCup(w);$('#pc-back').onclick=closePlay;
  }
  next();
+}
+
+/* ---------- Chant Time: 6th (bonus) card of every week ----------
+   4 rounds: the sentence of the week, then example sentences of 3 week words (last round has 2 gaps).
+   The sentence is read, then a drum beat lights the words one by one; at a gap the beat waits until
+   the right word is tapped (no time pressure). At the end the whole sentence is read: "Chant it!" */
+function chantCard(){
+ const s=S.chant[view]||0;
+ return `<div class="fx chantfx ${s?'done':'open'}"><span class="mnum" aria-hidden="true">🥁</span><h3>Chant Time</h3><div class="ti"><span>🥁 Clap the beat</span><span>🗣️ Say the sentence</span></div><span class="st">${s?'Completed ✓ '+'★'.repeat(s):'Bonus'}</span><button class="btn small${s?' ghost':''}" data-act="chant">${s?'Replay':'Play'}</button></div>`;
+}
+function startChant(w){
+ const Wk=WEEKS[w-1];session={chant:true};openPlay();stage.classList.add('neon');
+ const BEAT=650,clean=t=>t.replace(/[^A-Za-z']/g,'').toLowerCase();
+ const exs=sample(Wk.words.filter(x=>x.ex),3);
+ const rounds=[{text:Wk.chunk,key:null,gaps:1}].concat(exs.map((x,i)=>({text:x.ex,key:x.en,gaps:i===2?2:1})));
+ let ri=0,mist=0;
+ function beat(){const d=$('#ch-drum');if(d){d.classList.remove('hit');void d.offsetWidth;d.classList.add('hit')}tone(110,.14,'sine',.35);tone(220,.05,'triangle',.08)}
+ function round(){
+  const R=rounds[ri],T=R.text.split(' ');
+  const cand=T.map((_,i)=>i).filter(i=>clean(T[i]).length>=3);let gaps=[];
+  if(R.key){const k=T.findIndex(t=>clean(t).startsWith(R.key.toLowerCase()));if(k>=0)gaps.push(k)}
+  while(gaps.length<R.gaps&&cand.length){const c=cand.splice(Math.floor(Math.random()*cand.length),1)[0];if(!gaps.includes(c))gaps.push(c)}
+  if(!gaps.length)gaps=[T.length-1];
+  setProg(ri,rounds.length);$('#play-title').textContent=`Chant Time · Week ${w} · Round ${ri+1} / ${rounds.length}`;
+  stage.innerHTML=`<p class="hint center">Önce dinle. Sonra ritim boşluğa gelince doğru kelimeye dokun!</p>
+   <div class="ch-line" id="ch-line">${T.map((t,i)=>`<span class="ch-w${gaps.includes(i)?' gap':''}" data-i="${i}">${gaps.includes(i)?'_____':esc(t)}</span>`).join(' ')}</div>
+   <div class="ch-drum" id="ch-drum" aria-hidden="true">🥁</div>
+   <div class="opts" id="ch-opts"></div><div class="fb" id="fb"></div>`;
+  let pos=0;
+  const w_=i=>stage.querySelector(`.ch-w[data-i="${i}"]`);
+  function step(){
+   const el=w_(pos);if(!el)return;
+   stage.querySelectorAll('.ch-w.now').forEach(e=>e.classList.remove('now'));el.classList.add('now');beat();
+   if(gaps.includes(pos)&&!el.classList.contains('filled')){ask(pos);return}
+   pos++;later(pos<T.length?step:finishRound,BEAT);
+  }
+  function ask(i){
+   const right=T[i].replace(/[.,!?]/g,''),rc=clean(right);
+   const pool=[...new Set(Wk.words.map(x=>x.en).concat(T.map(t=>t.replace(/[.,!?]/g,''))).filter(x=>clean(x)!==rc&&clean(x).length>1))];
+   const opts=shuffle([right,...sample(pool,2)]);
+   const box=$('#ch-opts');
+   box.innerHTML=opts.map((o,k)=>`<button class="opt word" data-k="${k}">${esc(o)}</button>`).join('');
+   box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(clean(opts[+b.dataset.k])===rc){b.classList.add('ok');good();const el=w_(i);el.textContent=T[i];el.classList.add('filled');box.innerHTML='';pos++;later(pos<T.length?step:finishRound,BEAT)}
+    else{b.classList.add('no');bad();mist++;later(()=>b.classList.remove('no'),450)}
+   });
+  }
+  function finishRound(){
+   stage.querySelectorAll('.ch-w.now').forEach(e=>e.classList.remove('now'));$('#ch-line').classList.add('all');say(R.text);
+   const f=$('#fb');f.innerHTML='<span><b>Chant it!</b> Cümleyi sen de yüksek sesle söyle!</span>';f.classList.add('show');
+   const box=$('#ch-opts');box.className='row';
+   box.innerHTML=`<button class="speak" id="ch-again">🔊 Again</button><button class="btn" id="ch-next">${ri+1<rounds.length?'Next ▶':'Finish ▶'}</button>`;
+   $('#ch-again').onclick=()=>say(R.text);
+   $('#ch-next').onclick=()=>{ri++;ri<rounds.length?round():finish()};
+  }
+  say(R.text);later(step,900+R.text.length*75);
+ }
+ function finish(){
+  const stars=mist===0?3:mist<=3?2:1,first=!S.chant[w];
+  if(stars>(S.chant[w]||0))S.chant[w]=stars;save();
+  const pts=first?20:5;addPoints(pts);setProg(1,1);
+  stage.innerHTML=`<div class="res"><div class="fw-space"></div><h2>Chant Time complete!</h2><p class="vq-stars" aria-label="${stars} / 3"><span class="on">${'★'.repeat(stars)}</span><span class="off">${'★'.repeat(3-stars)}</span></p><p>+${pts} points</p>
+   <div class="row"><button class="btn" id="ch-replay">Play again</button><button class="btn ghost" id="ch-back">Back to week</button></div></div>`;
+  celebrate(['Great chanting, Uras!','Harika söyledin Uras!']);
+  $('#ch-replay').onclick=()=>startChant(w);$('#ch-back').onclick=closePlay;
+ }
+ round();
 }
 
 /* ---------- Typing Turbo (keyboard game) ---------- */
@@ -2040,7 +2123,7 @@ function renderParent(){
  $('#sheet-in').querySelectorAll('[data-word]').forEach(b=>b.onclick=()=>say(b.dataset.word));
  $('#p-reset').onclick=()=>{$('#p-confirm').hidden=false};
  $('#p-reset-no').onclick=()=>{$('#p-confirm').hidden=true};
- $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1},tower:{best:0},sb:{},points:0,badges:{},vbSeen:{},vq:{},pcup:{}});view=1;save();renderParent()};
+ $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1},tower:{best:0},sb:{},points:0,badges:{},vbSeen:{},vq:{},pcup:{},chant:{}});view=1;save();renderParent()};
 }
 
 checkBadges(true); /* badges already earned before this feature existed, without pop-ups */
