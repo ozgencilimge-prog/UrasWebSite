@@ -428,6 +428,14 @@ body::before{background:#0d0420}
 .vb-tab.on{background:var(--sun)}
 .vb-wall{margin-top:10px}
 .vb-wall .wcard b{font-size:17px;line-height:1.15}
+/* Word Bank cards start closed: picture + "?", tap to reveal the word */
+.vb-card:not(.open){background:var(--paper-2);border-style:dashed}
+.vb-card .vb-q{font-family:var(--display);font-size:28px;color:var(--muted);line-height:1}
+.vb-card .vb-q small{display:block;font-family:var(--body);font-size:12px;font-weight:800}
+.vb-card .vb-a{display:none}
+.vb-card.open .vb-q{display:none}
+.vb-card.open .vb-a{display:grid;gap:2px;justify-items:center;animation:cuppop .35s ease-out}
+.vb-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
 @media (max-width:640px){.vb-tabs{grid-template-columns:1fr 1fr}}
 
 /* Break + result */
@@ -922,8 +930,9 @@ function renderHome(){
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.dataset.w){view=+b.dataset.w;renderHome();return}
- if(b.dataset.vb){vbLevel=+b.dataset.vb;renderWordBank();return}
- if(b.dataset.vbsay!==undefined){say(VOCAB_LEVELS[vbLevel-1].words[+b.dataset.vbsay].en);return}
+ if(b.dataset.vb){vbLevel=+b.dataset.vb;vbOpen.clear();renderWordBank();return}
+ if(b.dataset.vbsay!==undefined){const i=+b.dataset.vbsay;if(!vbOpen.has(i)){vbOpen.add(i);b.classList.add('open');good();$('#vb-count').textContent=vbOpen.size;$('#vb-close').hidden=false}say(VOCAB_LEVELS[vbLevel-1].words[i].en);return}
+ if(b.dataset.vbclose){vbOpen.clear();renderWordBank();return}
  if(b.dataset.say!==undefined){const w=WEEKS[view-1].words[+b.dataset.say];say([w.en,w.ex]);return}
  if(b.dataset.chunk){say(WEEKS[view-1].chunk);return}
  const a=b.dataset.act;
@@ -1229,13 +1238,13 @@ const VOCAB_LEVELS=[
 const VOCAB_ALL=VOCAB_LEVELS.flatMap(L=>L.words);
 /* Word Bank words also feed Typing Turbo, sorted into its pools by length / phrase / sentence */
 VOCAB_ALL.forEach(w=>{const s=w.en,i=/[.?!]$/.test(s)?5:/ /.test(s)?4:s.length<=3?0:s.length===4?1:s.length===5?2:3;if(!TYPE_POOLS[i].includes(s))TYPE_POOLS[i].push(s)});
-let vbLevel=1;
+let vbLevel=1;const vbOpen=new Set();
 function renderWordBank(){
  const L=VOCAB_LEVELS[vbLevel-1];
- $('#vbank').innerHTML=`<div class="vb-head"><div><p class="eyebrow">Word Bank · <span lang="tr">kelime bankası</span></p><h2>New Words</h2><p class="meta">${VOCAB_ALL.length} yeni kelime ve ifade, 4 seviye. Dokun ve dinle! Bu kelimeler Typing Turbo ve Word Tower'da da çıkar.</p></div><a class="btn small ghost" href="kelime-listesi.pdf" target="_blank" rel="noopener">📄 PDF</a></div>
+ $('#vbank').innerHTML=`<div class="vb-head"><div><p class="eyebrow">Word Bank · <span lang="tr">kelime bankası</span></p><h2>New Words</h2><p class="meta">${VOCAB_ALL.length} yeni kelime ve ifade, 4 seviye. Resme bak, kelimeyi tahmin et, sonra karta dokun ve aç! Bu kelimeler Typing Turbo ve Word Tower'da da çıkar.</p></div><a class="btn small ghost" href="kelime-listesi.pdf" target="_blank" rel="noopener">📄 PDF</a></div>
   <div class="vb-tabs">${VOCAB_LEVELS.map(x=>`<button class="vb-tab ${x.n===vbLevel?'on':''}" data-vb="${x.n}">Level ${x.n} · ${esc(x.name)}<small>${esc(x.tr)} · ${x.words.length} kelime</small></button>`).join('')}</div>
-  <p class="note">${esc(L.sub)}</p>
-  <div class="wall vb-wall">${L.words.map((w,i)=>`<button class="wcard" data-vbsay="${i}">${w.p?pic(w.p):'<span class="pic emo">🔤</span>'}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small></button>`).join('')}</div>`;
+  <div class="vb-tools"><p class="note">${esc(L.sub)} · Açılan: <b><span id="vb-count">${vbOpen.size}</span> / ${L.words.length}</b></p><button class="link" data-vbclose="1" id="vb-close" ${vbOpen.size?'':'hidden'}>Kartları kapat</button></div>
+  <div class="wall vb-wall">${L.words.map((w,i)=>`<button class="wcard vb-card${vbOpen.has(i)?' open':''}" data-vbsay="${i}" aria-label="Kart ${i+1}">${w.p?pic(w.p):'<span class="pic emo">🔤</span>'}<span class="vb-q">?<small>Dokun</small></span><span class="vb-a"><b>${esc(w.en)}</b><small>${esc(w.tr)}</small></span></button>`).join('')}</div>`;
 }
 const TOWER_STAGES=[['Warm-up','hafta kelimeleri + 3–4 harf'],['Rookie','5 harf'],['Pro','6–7 harf'],['Star','8+ harf'],['Captain','iki kelime'],['Legend','tam cümle']];
 const TOWER_PER=10,TOWER_TOP=TOWER_PER*TOWER_STAGES.length;
