@@ -499,12 +499,20 @@ body::before{background:#0d0420}
 .hero{align-items:start}
 /* Game menu in the left column, under the player card */
 .side{display:grid;gap:14px;align-content:start;min-width:0}
-.side .menu{grid-template-columns:1fr 1fr;gap:10px}
-.side .mtile{padding:12px 6px;border-radius:16px;gap:2px}
-.side .mtile .mt-ic{font-size:30px}
-.side .mtile b{font-size:15px}
-.side .mtile small{font-size:11px}
-@media (max-width:900px){.side .menu{grid-template-columns:repeat(4,1fr)}}
+/* Desktop: games listed top to bottom under the player card (icon left, name + status right) */
+.side .menu{grid-template-columns:1fr;gap:12px}
+.side .mtile{grid-template-columns:48px 1fr;justify-items:start;align-items:center;text-align:left;column-gap:12px;row-gap:2px;padding:14px 16px;border-radius:16px}
+.side .mtile .mt-ic{grid-row:1 / span 2;font-size:36px;justify-self:center}
+.side .mtile b{font-size:19px}
+.side .mtile small{font-size:12.5px}
+/* Tablet and phone: compact tiles in a grid */
+@media (max-width:900px){
+ .side .menu{grid-template-columns:repeat(4,1fr);gap:10px}
+ .side .mtile{grid-template-columns:1fr;justify-items:center;text-align:center;padding:12px 6px}
+ .side .mtile .mt-ic{grid-row:auto;font-size:30px}
+ .side .mtile b{font-size:15px}
+ .side .mtile small{font-size:11px}
+}
 @media (max-width:640px){.side .menu{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){
  .m-top{grid-template-columns:1fr;gap:14px;justify-items:start}
