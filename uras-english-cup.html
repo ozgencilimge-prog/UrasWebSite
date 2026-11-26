@@ -573,6 +573,10 @@ body::before{background:#0d0420}
 .pc-role.keep{background:#2f6fed;color:#fff}
 .golt.pc-good{color:#4ade80;font-size:clamp(34px,7vw,58px);text-align:center}
 .golt.pc-bad{color:#ff4d6d;font-size:clamp(34px,7vw,58px);text-align:center}
+#stage.neon .fb span{color:#e9d5ff}
+#stage.neon .fb span b{color:#ffc93c}
+.golt.pc-good small,.golt.pc-bad small{display:block;font-family:var(--body);font-weight:900;font-size:clamp(16px,3.6vw,22px);color:#fff;-webkit-text-stroke:0;background:rgba(13,4,32,.85);border-radius:12px;padding:4px 12px;margin-top:6px}
+.golt.pc-good.on,.golt.pc-bad.on{animation-duration:2s}
 .hero{align-items:start}
 /* Game menu in the left column, under the player card */
 .side{display:grid;gap:14px;align-content:start;min-width:0}
@@ -1581,7 +1585,7 @@ function startCup(w){
   turn%2===0?kick():keep();
  }
  /* Big result text: green when Uras did well, red when not */
- function flash(t,ok){const g=$('#golt');if(g){g.textContent=t;g.className='golt '+(ok?'pc-good':'pc-bad');void g.offsetWidth;g.classList.add('on')}}
+ function flash(t,sub,ok){const g=$('#golt');if(g){g.innerHTML=`<span>${t}<small>${sub}</small></span>`;g.className='golt '+(ok?'pc-good':'pc-bad');void g.offsetWidth;g.classList.add('on')}}
  function kick(){
   const t=kicks[ki++%kicks.length],opts=shuffle([t,...sample(words.filter(x=>x!==t),2)]);
   stage.innerHTML=board('kick')+scene(KEEPER)+`<div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Bu ne? Doğru kelimeyi seç ve şutunu çek!</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
@@ -1591,9 +1595,9 @@ function startCup(w){
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
    if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
    if(ok){b.classList.add('ok');me++;mk.push(1);ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;
-    later(()=>{flash('GOAL! ⚽',true);updBoard();cheer();say(t.en);showFb(t,null)},450)}
+    later(()=>{flash('✓ GOAL! ⚽','Doğru! Gol attın',true);updBoard();cheer();say(t.en);showFb(t,null)},450)}
    else{b.classList.add('no');mk.push(0);miss(t);bad();ball.style.transform=`translate(calc(-50% + ${side*60}px),-120px) scale(.65)`;k.style.transform=`translateX(calc(-50% + ${side*60}px))`;
-    later(()=>{flash('MISSED!',false);updBoard();f.innerHTML=`<span>The keeper stopped it. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+    later(()=>{flash('✗ MISSED','Yanlış kelime, gol olmadı',false);updBoard();f.innerHTML=`<span>The keeper stopped it. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
    later(()=>{turn++;next()},2100);
   });
  }
@@ -1606,9 +1610,9 @@ function startCup(w){
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
    if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
    if(ok){b.classList.add('ok');rk.push(0);k.style.transform=`translateX(calc(-50% + ${side*60}px))`;ball.style.transform=`translate(calc(-50% + ${side*60}px),-110px) scale(.7)`;
-    later(()=>{flash('GREAT SAVE! 🧤',true);updBoard();good();say(t.en);showFb(t,null)},450)}
+    later(()=>{flash('✓ SAVED! 🧤','Doğru! Topu tuttun',true);updBoard();good();say(t.en);showFb(t,null)},450)}
    else{b.classList.add('no');rival++;rk.push(1);miss(t);bad();k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;
-    later(()=>{flash('RIVAL SCORES!',false);updBoard();f.innerHTML=`<span>The rival scored. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+    later(()=>{flash('✗ RIVAL SCORES','Yanlış resim, rakip gol attı',false);updBoard();f.innerHTML=`<span>The rival scored. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
    later(()=>{turn++;next()},2100);
   });
  }
