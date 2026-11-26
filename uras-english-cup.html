@@ -508,14 +508,16 @@ body::before{background:#0d0420}
 .side .mtile b{font-size:19px}
 .side .mtile small{font-size:12.5px}
 /* Tablet and phone: compact tiles in a grid */
+.cup-weeks{grid-template-columns:repeat(6,1fr)}
+@media (max-width:640px){.cup-weeks{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:900px){
- .side .menu{grid-template-columns:repeat(4,1fr);gap:10px}
+ .side .menu{grid-template-columns:repeat(5,1fr);gap:10px}
  .side .mtile{grid-template-columns:1fr;justify-items:center;text-align:center;padding:12px 6px}
  .side .mtile .mt-ic{grid-row:auto;font-size:30px}
  .side .mtile b{font-size:15px}
  .side .mtile small{font-size:11px}
 }
-@media (max-width:640px){.side .menu{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.side .menu{grid-template-columns:1fr 1fr}.side .mtile:last-child{grid-column:1 / -1}}
 @media (max-width:640px){
  .m-top{grid-template-columns:1fr;gap:14px;justify-items:start}
  .m-week{width:auto;aspect-ratio:auto;grid-auto-flow:column;gap:10px;padding:8px 16px;border-radius:16px}
@@ -732,6 +734,7 @@ tr.cur td{background:#fff6d6}
   <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
   <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
   <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
+  <div class="panel" data-panel="cup" hidden><section class="card typing-card" id="cup-card"></section></div>
   <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
 </main>
 
@@ -1122,7 +1125,7 @@ function renderHome(){
  $('#st-stars').textContent=S.stars;
  $('#st-cars').textContent=completedDays()+'/'+NCARS;
  $('#st-streak').textContent=streak();
- renderCard();renderSbCard();renderTypingCard();renderTowerCard();renderWordBank();renderPoints();
+ renderCard();renderSbCard();renderTypingCard();renderTowerCard();renderCupCard();renderWordBank();renderPoints();
  const Wk=WEEKS[view-1];const lv=lvOf(view);
 
  /* Weeks as plain numbers; tapping one opens its sub-tabs below */
@@ -1143,7 +1146,7 @@ function renderHome(){
  let body;
  if(nd===-1){
   body=`<p class="eyebrow">All 5 missions done</p>${dots}<h1>Week complete! 🏆</h1><p class="m-sub">${view<NW?'Tap the WEEK badge and choose a new week.':'Season complete. You are the champion!'}</p>
-   <div class="m-go"><button class="btn big" data-act="cup">⚽ Penalty Cup</button><button class="btn ghost" data-act="weekpick">Choose a week</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div>`;
+   <div class="m-go"><button class="btn big" data-act="weekpick">Choose a week ▶</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div>`;
  }else if(waitsTomorrow(view,nd)){
   body=`<p class="eyebrow">${nd===4?'Final Mission':'Mission '+(nd+1)} · tomorrow</p>${dots}<h1>Done for today. Great job, Uras!</h1><p class="m-sub">Mission ${nd+1} is waiting for you tomorrow.</p><div class="m-go">${prize("Tomorrow's prize")}</div>`;
  }else{
@@ -1163,7 +1166,7 @@ function renderHome(){
   const cls=done?'done':cur?'cur':open?'open':'lock';
   const st=done?'Completed ✓':cur?'Up next':open?'Open':(d===nd?'Tomorrow':'Locked');
   const btn=done?`<button class="btn small ghost" data-act="replay" data-d="${d}">Replay</button>`:(cur||open)?`<button class="btn small${open?' ghost':''}" data-act="playday" data-d="${d}">Play</button>`:`<span aria-hidden="true" style="font-size:24px">🔒</span>`;
-  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('')+cupCard();
+  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('');
 
  $('#wall').innerHTML=Wk.words.map((w,i)=>`<button class="wcard" data-say="${i}">${pic(w.p)}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small>${lv.n>=2?`<em>${esc(w.ex)}</em>`:''}</button>`).join('');
 }
@@ -1178,6 +1181,7 @@ function renderMenu(){
   ['quest','🗺️','Word Quest',`Level ${vbLevel} · ${pd}/${ps.length} packs`],
   ['typing','⌨️','Typing Turbo',`Level ${S.typing.level}`],
   ['tower','🏔','Word Tower',`Best: ${S.tower.best} m`],
+  ['cup','🏆','Penalty Cup',`${Object.values(S.pcup).filter(x=>x&&x.won).length} / ${NW} cups`],
   ['story','📖','Story Time',`Week ${view} · ${sd}/${ST.length}`]
  ];
  $('#menu').innerHTML=items.map(([id,ic,t,s])=>`<button class="mtile${openPanel===id?' on':''}" data-panel="${id}" aria-expanded="${openPanel===id}"><span class="mt-ic" aria-hidden="true">${ic}</span><b>${t}</b><small>${esc(s)}</small></button>`).join('');
@@ -1205,6 +1209,8 @@ document.addEventListener('click',e=>{
  else if(a==='garage')openGarage();
  else if(a==='typing')startTyping();
  else if(a==='cup')startCup(view);
+ else if(a==='cupplay')startCup(cupWeek||view);
+ else if(b.dataset.cupw){cupWeek=+b.dataset.cupw;renderCupCard();tick()}
  else if(b.dataset.ttlv){S.typing.level=+b.dataset.ttlv;save();renderTypingCard();tick()}
  else if(a==='tower')startTower();
  else if(a==='sb')startSb();
@@ -1441,6 +1447,17 @@ GAMES.write=function(ctx,done){
    Alternating turns: Uras kicks (picture -> pick the word) and saves (hear the word -> tap the picture),
    5 each; tied after that -> sudden death, up to 3 more pairs. Winning gives the week's cup. */
 const KEEPER_BLUE=KEEPER.replace(/#ff8c1a/g,'#2f6fed');
+/* Penalty Cup also lives in the games menu: pick any open week's cup */
+let cupWeek=0;
+function renderCupCard(){
+ const won=Object.values(S.pcup).filter(x=>x&&x.won).length;
+ if(!cupWeek||!cupOpen(cupWeek))cupWeek=cupOpen(view)?view:(WEEKS.find(x=>cupOpen(x.n))||{n:0}).n;
+ $('#cup-card').innerHTML=`<div><p class="eyebrow">Football Game · <span lang="tr">futbol oyunu</span></p><h2>Penalty Cup</h2></div>
+  <div class="tt-badges"><span class="lvl-badge">🏆 ${won} / ${NW}</span><small>Cups won</small></div>
+  ${cupWeek?`<button class="btn" data-act="cupplay">Play Week ${cupWeek} ▶</button>`:'<span class="note">Finish a week\'s 5 missions to open its cup</span>'}
+  <div class="tt-levels cup-weeks" role="group" aria-label="Choose a week">${WEEKS.map(x=>{const op=cupOpen(x.n),r=S.pcup[x.n];
+   return `<button class="tt-lv${x.n===cupWeek?' on':''}" data-cupw="${x.n}" ${op?'':'disabled'}><b>${op?'':'🔒 '}Week ${x.n}</b><small>${r&&r.won?'🏆 '+esc(r.best):esc(x.en)}</small></button>`}).join('')}</div>`;
+}
 const cupOpen=w=>S.openAll||weekComplete(w);
 function cupCard(){
  const w=view,r=S.pcup[w],op=cupOpen(w),won=!!(r&&r.won);
