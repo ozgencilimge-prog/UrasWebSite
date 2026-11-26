@@ -488,6 +488,16 @@ body::before{background:#0d0420}
 .m-weeks .wk-detail{color:var(--ink)}
 .m-weeks .mtrack{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .m-weeks .mtrack::before{display:none}
+/* Penalty Cup */
+.mtrack .fx.cupfx{border-color:#ffc93c}
+.mtrack .fx.cupfx .mnum{border-color:#ffc93c;font-size:20px}
+.mtrack .fx.cupfx.lock{border-color:#6b5b8a}
+.pc-board{display:flex;justify-content:center;align-items:center;gap:14px;background:#0d0420;border:3px solid #ffc93c;border-radius:16px;padding:6px 16px;font-family:var(--display);justify-self:center;box-shadow:0 0 16px rgba(255,201,60,.45)}
+.pc-board b{font-size:36px;font-weight:400;color:#ffc93c;line-height:1}
+.pc-team{font-size:16px;color:#e9d5ff;letter-spacing:.1em}
+.pc-dash{font-size:28px;color:#fff}
+.pc-marks{display:flex;justify-content:space-between;gap:12px;font-size:18px;min-height:26px;padding:0 4px}
+.pc-final{font-family:var(--display);font-size:34px !important;color:#ffc93c !important}
 .hero{align-items:start}
 /* Game menu in the left column, under the player card */
 .side{display:grid;gap:14px;align-content:start;min-width:0}
@@ -840,6 +850,7 @@ if(S.points==null)S.points=(S.stars||0)*10+Math.max(0,(S.typing.best||1)-1)*20+M
 if(!S.badges)S.badges={};
 if(!S.vbSeen)S.vbSeen={};
 if(!S.vq)S.vq={}; /* Word Quest: best stars per pack, key "level-pack" */
+if(!S.pcup)S.pcup={}; /* Penalty Cup per week: {won, best:"3–1"} */
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
 function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const today=()=>fmt(new Date());
@@ -1035,7 +1046,8 @@ const BADGES=[
  {id:'tower300',name:'Helicopter Pilot',tr:'Reach the top of Word Tower (300 m)',ic:'🚁',c:['#22d3ee','#14b8a6'],prog:()=>[S.tower.best,300]},
  {id:'story',name:'Story Writer',tr:'Write a story paragraph',ic:'📖',c:['#fda4af','#ff2e88'],prog:()=>[Object.values(S.sb||{}).some(v=>v)?1:0,1]},
  {id:'words50',name:'Word Detective',tr:'Open 50 cards in Word Quest',ic:'🔍',c:['#a3e635','#2f6fed'],prog:()=>[Object.keys(S.vbSeen).length,50]},
- {id:'quest1',name:'Quest Master',tr:'Finish a level in Word Quest',ic:'🗺️',c:['#ffd166','#22d3ee'],prog:()=>[VOCAB_LEVELS.some(L=>vqLevelDone(L.n))?1:0,1]}
+ {id:'quest1',name:'Quest Master',tr:'Finish a level in Word Quest',ic:'🗺️',c:['#ffd166','#22d3ee'],prog:()=>[VOCAB_LEVELS.some(L=>vqLevelDone(L.n))?1:0,1]},
+ {id:'pking',name:'Penalty King',tr:'Win a Penalty Cup',ic:'🥅',c:['#a3e635','#16a34a'],prog:()=>[Object.values(S.pcup||{}).some(x=>x&&x.won)?1:0,1]}
 ];
 let badgeUid=0;
 function badgeSVG(b,on){
@@ -1131,7 +1143,7 @@ function renderHome(){
  let body;
  if(nd===-1){
   body=`<p class="eyebrow">All 5 missions done</p>${dots}<h1>Week complete! 🏆</h1><p class="m-sub">${view<NW?'Tap the WEEK badge and choose a new week.':'Season complete. You are the champion!'}</p>
-   <div class="m-go"><button class="btn big" data-act="weekpick">Choose a week ▶</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div>`;
+   <div class="m-go"><button class="btn big" data-act="cup">⚽ Penalty Cup</button><button class="btn ghost" data-act="weekpick">Choose a week</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div>`;
  }else if(waitsTomorrow(view,nd)){
   body=`<p class="eyebrow">${nd===4?'Final Mission':'Mission '+(nd+1)} · tomorrow</p>${dots}<h1>Done for today. Great job, Uras!</h1><p class="m-sub">Mission ${nd+1} is waiting for you tomorrow.</p><div class="m-go">${prize("Tomorrow's prize")}</div>`;
  }else{
@@ -1151,7 +1163,7 @@ function renderHome(){
   const cls=done?'done':cur?'cur':open?'open':'lock';
   const st=done?'Completed ✓':cur?'Up next':open?'Open':(d===nd?'Tomorrow':'Locked');
   const btn=done?`<button class="btn small ghost" data-act="replay" data-d="${d}">Replay</button>`:(cur||open)?`<button class="btn small${open?' ghost':''}" data-act="playday" data-d="${d}">Play</button>`:`<span aria-hidden="true" style="font-size:24px">🔒</span>`;
-  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('');
+  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('')+cupCard();
 
  $('#wall').innerHTML=Wk.words.map((w,i)=>`<button class="wcard" data-say="${i}">${pic(w.p)}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small>${lv.n>=2?`<em>${esc(w.ex)}</em>`:''}</button>`).join('');
 }
@@ -1192,6 +1204,7 @@ document.addEventListener('click',e=>{
  else if(a==='playday')startDay(view,+b.dataset.d,false);
  else if(a==='garage')openGarage();
  else if(a==='typing')startTyping();
+ else if(a==='cup')startCup(view);
  else if(b.dataset.ttlv){S.typing.level=+b.dataset.ttlv;save();renderTypingCard();tick()}
  else if(a==='tower')startTower();
  else if(a==='sb')startSb();
@@ -1422,6 +1435,78 @@ GAMES.write=function(ctx,done){
  }
  round();
 };
+
+/* ---------- Penalty Cup: bonus 6th activity of every week ----------
+   Opens when the week's 5 missions are done (or the parent's "all open" switch is on).
+   Alternating turns: Uras kicks (picture -> pick the word) and saves (hear the word -> tap the picture),
+   5 each; tied after that -> sudden death, up to 3 more pairs. Winning gives the week's cup. */
+const KEEPER_BLUE=KEEPER.replace(/#ff8c1a/g,'#2f6fed');
+const cupOpen=w=>S.openAll||weekComplete(w);
+function cupCard(){
+ const w=view,r=S.pcup[w],op=cupOpen(w),won=!!(r&&r.won);
+ const st=won?`Won 🏆 ${r.best}`:op?'Bonus':'After 5 missions';
+ const btn=op?`<button class="btn small${won?' ghost':''}" data-act="cup">${won?'Replay':'Play'}</button>`:'<span aria-hidden="true" style="font-size:24px">🔒</span>';
+ return `<div class="fx cupfx ${won?'done':op?'cur':'lock'}"><span class="mnum" aria-hidden="true">🏆</span><h3>Penalty Cup</h3><div class="ti"><span>⚽ 5 kicks</span><span>🧤 5 saves</span></div><span class="st">${st}</span>${btn}</div>`;
+}
+function startCup(w){
+ const Wk=WEEKS[w-1],words=Wk.words;
+ session={cup:true};openPlay();stage.classList.add('neon');
+ let me=0,rival=0,turn=0,ki=0,si=0;const mk=[],rk=[];
+ const kicks=fillTo(words,8),saves=fillTo(words,8);
+ const board=()=>`<div class="pc-board"><span class="pc-team">URAS</span><b>${me}</b><span class="pc-dash">–</span><b>${rival}</b><span class="pc-team">RIVAL</span></div>
+  <div class="pc-marks"><span>${mk.map(x=>x?'⚽':'❌').join(' ')||'&nbsp;'}</span><span>${rk.map(x=>x?'⚽':'🧤').join(' ')||'&nbsp;'}</span></div>`;
+ const label=()=>turn>=10?'Sudden death':`${turn%2===0?'Kick':'Save'} ${Math.floor(turn/2)+1} / 5`;
+ const scene=keeper=>`<div class="pen"><div class="goal"><div class="keeper" id="keeper">${keeper}</div></div><div class="spot"></div><div class="ball" id="ball">⚽</div><div class="golt" id="golt"></div></div>`;
+ function next(){
+  if(turn>=10&&turn%2===0&&(me!==rival||turn>=16))return end();
+  setProg(Math.min(turn,10),10);
+  $('#play-title').textContent=`Penalty Cup · Week ${w} · ${label()}`;
+  turn%2===0?kick():keep();
+ }
+ function flash(t){const g=$('#golt');if(g){g.textContent=t;g.classList.remove('on');void g.offsetWidth;g.classList.add('on')}}
+ function kick(){
+  const t=kicks[ki++%kicks.length],opts=shuffle([t,...sample(words.filter(x=>x!==t),2)]);
+  stage.innerHTML=board()+scene(KEEPER)+`<div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Your kick! Bu ne? Doğru kelimeyi seç.</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
+   <div class="opts">${opts.map((o,k)=>`<button class="opt word" data-k="${k}">${esc(o.en)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+  $('#g-hint').onclick=()=>say(t.en);
+  let locked=false;
+  stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+   if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
+   if(ok){b.classList.add('ok');me++;mk.push(1);ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;
+    later(()=>{flash('GOAL!');cheer();say(t.en);showFb(t,null)},450)}
+   else{b.classList.add('no');mk.push(0);miss(t);bad();ball.style.transform=`translate(calc(-50% + ${side*60}px),-120px) scale(.65)`;k.style.transform=`translateX(calc(-50% + ${side*60}px))`;
+    later(()=>{flash('SAVED!');f.innerHTML=`<span>Saved! It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+   later(()=>{turn++;next()},2100);
+  });
+ }
+ function keep(){
+  const t=saves[si++%saves.length],opts=shuffle([t,...sample(words.filter(x=>x!==t),2)]);
+  stage.innerHTML=board()+scene(KEEPER_BLUE)+`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="hint">Rival kicks! Dinle, doğru resme dokun ve topu kurtar!</p></div>
+   <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${pic(o.p)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+  $('#g-speak').onclick=()=>say(t.en);later(()=>say(t.en),350);
+  let locked=false;
+  stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+   if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
+   if(ok){b.classList.add('ok');rk.push(0);k.style.transform=`translateX(calc(-50% + ${side*60}px))`;ball.style.transform=`translate(calc(-50% + ${side*60}px),-110px) scale(.7)`;
+    later(()=>{flash('SAVE!');good();say(t.en);showFb(t,null)},450)}
+   else{b.classList.add('no');rival++;rk.push(1);miss(t);bad();k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;
+    later(()=>{flash('GOAL!');f.innerHTML=`<span>Rival scores! It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+   later(()=>{turn++;next()},2100);
+  });
+ }
+ function end(){
+  setProg(10,10);
+  const won=me>rival,draw=me===rival,prev=S.pcup[w],score=`${me}–${rival}`;
+  if(won&&!(prev&&prev.won))S.pcup[w]={won:true,best:score};else if(!prev)S.pcup[w]={won:false,best:score};
+  save();
+  const pts=won?(prev&&prev.won?10:50):5;addPoints(pts);
+  stage.innerHTML=`<div class="res">${won?'<div class="fw-space"></div>':''}<h2>${won?'You won the Penalty Cup!':draw?'Draw!':'So close!'}</h2><p class="pc-final">URAS ${me} – ${rival} RIVAL</p><p>${won?'Champion of Week '+w+'!':'Try again, you can do it!'} · +${pts} points</p>
+   <div class="row"><button class="btn" id="pc-again">${won?'Play again':'Try again'}</button><button class="btn ghost" id="pc-back">Back to week</button></div></div>`;
+  if(won)celebrate(['Champion! You won the cup, Uras!','Şampiyon! Kupayı kazandın Uras!']);else say(draw?'Draw! Try again!':'So close! Try again!');
+  $('#pc-again').onclick=()=>startCup(w);$('#pc-back').onclick=closePlay;
+ }
+ next();
+}
 
 /* ---------- Typing Turbo (keyboard game) ---------- */
 const TYPE_POOLS=[
@@ -1930,7 +2015,7 @@ function renderParent(){
  $('#sheet-in').querySelectorAll('[data-word]').forEach(b=>b.onclick=()=>say(b.dataset.word));
  $('#p-reset').onclick=()=>{$('#p-confirm').hidden=false};
  $('#p-reset-no').onclick=()=>{$('#p-confirm').hidden=true};
- $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1},tower:{best:0},sb:{},points:0,badges:{},vbSeen:{},vq:{}});view=1;save();renderParent()};
+ $('#p-reset-yes').onclick=()=>{S=Object.assign({},DEF,{done:{},dayDone:{},mistakes:{},secs:{},photo:S.photo,ph:S.ph,rate:S.rate,sfx:S.sfx,typing:{level:1,best:1},tower:{best:0},sb:{},points:0,badges:{},vbSeen:{},vq:{},pcup:{}});view=1;save();renderParent()};
 }
 
 checkBadges(true); /* badges already earned before this feature existed, without pop-ups */
