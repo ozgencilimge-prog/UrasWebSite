@@ -219,6 +219,13 @@ button{font:inherit;color:inherit}
 .typing-card .meta{margin-top:6px}
 .lvl-badge{background:var(--ink);color:var(--sun);font-family:var(--display);font-size:22px;padding:6px 14px;border-radius:12px;display:inline-block}
 .tt-badges{display:grid;gap:4px;justify-items:center;color:var(--muted);font-weight:800}
+.tt-levels{grid-column:1 / -1;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.tt-lv{background:var(--paper-2);border:3px solid var(--ink);border-radius:12px;padding:6px 4px;cursor:pointer;box-shadow:0 3px 0 var(--ink);display:grid;gap:1px;min-width:0}
+.tt-lv b{font-family:var(--display);font-weight:400;font-size:16px}
+.tt-lv small{font-weight:800;font-size:11px;color:var(--muted)}
+.tt-lv.on{background:var(--sun)}
+.tt-lv:disabled{cursor:not-allowed;opacity:.5;box-shadow:none}
+@media (max-width:640px){.tt-levels{grid-template-columns:repeat(3,1fr)}}
 .tt-top{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
 .tt-count{font-weight:900}
 .tt-pic{height:90px;display:grid;place-items:center}
@@ -378,6 +385,22 @@ body::before{background:#0d0420}
 .play-in:has(.res){min-height:100vh;min-height:100dvh;grid-template-rows:auto 1fr}
 .play-in:has(.res) #stage{align-self:center}
 .tw-banner{left:0;right:0;margin:0 auto;width:max-content;top:auto;bottom:18px;transform:none}
+/* Word Tower level-up: dim the whole screen and show one clear card (trophy, praise, next level) */
+.tw-next{position:fixed;inset:0;z-index:85;display:grid;place-items:center;padding:16px;background:rgba(13,4,32,.84)}
+.tw-card{width:min(400px,100%);background:#140a2e;color:#fff;border:3px solid #ffc93c;border-radius:20px;padding:18px 16px;display:grid;gap:10px;justify-items:center;text-align:center;box-shadow:0 0 30px rgba(255,201,60,.5)}
+.tw-card .tw-lvl{font-family:var(--display);font-weight:400;font-size:28px;color:#fff}
+.tw-card .tw-sub{color:#e9d5ff;font-weight:800;font-size:15px}
+/* Celebration text: high-contrast yellow card instead of dark-on-dark */
+.fw-msg{background:#ffc93c !important;color:#132029 !important;border:3px solid #132029 !important;box-shadow:0 5px 0 #132029,0 0 22px rgba(255,201,60,.55)}
+.fw-msg b{color:#132029 !important;text-shadow:none !important}
+.fw-msg small{color:#4a3500 !important}
+.fw-inline .fw-msg{width:auto !important;max-width:100% !important;white-space:normal}
+.tw-card .fw-msg b{font-size:clamp(20px,5vw,26px) !important}
+.tw-card .fw-msg small{font-size:15px !important}
+.tw-card .fw-cup{width:96px !important}
+/* When it floats (no slot on screen) it sits mid-screen instead of over the top of the game */
+.fw > .fw-cup{top:30% !important}
+.fw > .fw-msg{top:calc(30% + 78px) !important}
 
 /* Weekly missions: neon mission track under the player card */
 .mtrack{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:12px}
@@ -933,6 +956,7 @@ document.addEventListener('click',e=>{
  else if(a==='playday')startDay(view,+b.dataset.d,false);
  else if(a==='garage')openGarage();
  else if(a==='typing')startTyping();
+ else if(b.dataset.ttlv){S.typing.level=+b.dataset.ttlv;save();renderTypingCard();tick()}
  else if(a==='tower')startTower();
  else if(a==='sb')startSb();
 });
@@ -1164,11 +1188,14 @@ const TYPE_POOLS=[
 const WPL=10; /* words per Typing Turbo level */
 let typingKey=null;
 document.addEventListener('keydown',e=>{if(typingKey)typingKey(e)});
+const TT_NAMES=['3 harf','4 harf','5 harf','6+ harf','iki kelime','cümle'];
 function renderTypingCard(){
- const t=S.typing;
- $('#typing-card').innerHTML=`<div><p class="eyebrow">Keyboard Game · <span lang="tr">klavye oyunu</span></p><h2>Typing Turbo</h2><p class="meta">Kelimeleri yaz, her ${WPL} kelimede bir üst seviyeye çık! Ding dong! 🔔</p></div>
+ const t=S.typing,top=TYPE_POOLS.length;
+ const open=n=>n<=t.best||S.openAll; /* reached levels, or all when the parent's "all open" switch is on */
+ $('#typing-card').innerHTML=`<div><p class="eyebrow">Keyboard Game · <span lang="tr">klavye oyunu</span></p><h2>Typing Turbo</h2><p class="meta">Kelimeleri yaz, her ${WPL} kelimede bir üst seviyeye çık! Ding dong! 🔔 Aşağıdan başlamak istediğin seviyeyi seç.</p></div>
   <div class="tt-badges"><span class="lvl-badge">Level ${t.level}</span><small>Best: Level ${t.best}</small></div>
-  <button class="btn" data-act="typing">Play ▶</button>`;
+  <button class="btn" data-act="typing">Play ▶</button>
+  <div class="tt-levels" role="group" aria-label="Seviye seç">${Array.from({length:top},(_,i)=>i+1).map(n=>`<button class="tt-lv${n===Math.min(t.level,top)?' on':''}" data-ttlv="${n}" ${open(n)?'':'disabled'}><b>${open(n)?'':'🔒 '}Level ${n}</b><small>${TT_NAMES[n-1]}</small></button>`).join('')}</div>`;
 }
 function startTyping(){
  session={typing:true};openPlay();stage.classList.add('neon');$('#play-title').textContent='Typing Turbo';
@@ -1287,7 +1314,7 @@ function startTower(){
   letters=w.en.split('');pos=0;skip();
   $('#tw-pic').innerHTML=w.p?pic(w.p):'';$('#tw-tr').textContent=w.tr||'';
   $('#tw-space').hidden=!/ /.test(w.en);
-  $('#tw-stage').textContent=floor+1>TOWER_TOP?`Bonus · Floor ${floor+1}`:`Stage ${s+1}/6 · ${TOWER_STAGES[s][0]} · Floor ${floor+1}/${TOWER_TOP}`;
+  $('#tw-stage').textContent=floor+1>TOWER_TOP?`Bonus · Floor ${floor+1}`:`Level ${s+1}/6 · ${TOWER_STAGES[s][0]} · Word ${(floor%TOWER_PER)+1}/${TOWER_PER} · Floor ${floor+1}/${TOWER_TOP}`;
   paint();later(()=>say(w.en),300)}
  function press(ch){
   if(!$('#tw-word')||!letters||pos>=letters.length)return;
@@ -1300,11 +1327,24 @@ function startTower(){
   floor++;build();kid.classList.remove('hop','oops');void kid.offsetWidth;kid.classList.add('hop');place();
   const m=floor*M;$('#tw-m').textContent='🏔 '+m+'m';
   if(m>S.tower.best){S.tower.best=m;save()}
+  letters=null;
+  /* Every 10 words: celebration + a "Next level" pause, like Typing Turbo */
+  if(floor%TOWER_PER===0){
+   const top=floor===TOWER_TOP;
+   later(()=>{nextPanel(floor/TOWER_PER,top);celebrate(top?['You made it to the top, Uras!','Kulenin tepesine çıktın Uras!']:praise())},500);
+   return;
+  }
   let wait=800;
-  if(floor===TOWER_TOP){wait=3400;later(()=>{celebrate(['You made it to the top, Uras!','Kulenin tepesine çıktın Uras!']);banner('TOP OF THE TOWER!','Zirvedesin! Bonus katlar başlıyor.')},500)}
-  else if(floor%TOWER_PER===0&&floor<TOWER_TOP){wait=3400;const s=stageOf(floor+1);later(()=>{celebrate(praise());banner(`Stage ${s+1}: ${TOWER_STAGES[s][0]}`,TOWER_STAGES[s][1])},500)}
-  else if(floor%5===0){wait=1100;later(dingDong,500)}
-  letters=null;later(load,wait);
+  if(floor%5===0){wait=1100;later(dingDong,500)}
+  later(load,wait);
+ }
+ function nextPanel(lvl,top){
+  const s=stageOf(floor+1),bonus=floor+1>TOWER_TOP;
+  const p=document.createElement('div');p.className='tw-next';
+  p.innerHTML=`<div class="tw-card"><div class="fw-space"></div><span class="tw-lvl">Level ${lvl} complete!</span><span class="tw-sub">${top?'Zirvedesin! Bonus katlar başlıyor.':bonus?'Sıradaki: Bonus katlar':`Sıradaki: Level ${s+1} · ${TOWER_STAGES[s][0]} (${TOWER_STAGES[s][1]})`}</span><div class="row"><button class="btn" id="tw-next">Next level ▶</button><button class="btn ghost small" id="tw-stop">Stop</button></div></div>`;
+  stage.appendChild(p);
+  $('#tw-next').onclick=()=>{p.remove();load()};$('#tw-stop').onclick=closePlay;
+  later(()=>{const b=$('#tw-next');if(b)b.focus()},150);
  }
  build();place();load();
  $('#tw-say').onclick=()=>say(plats[floor+1].w.en);
