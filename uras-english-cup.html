@@ -489,6 +489,15 @@ body::before{background:#0d0420}
 .m-weeks .mtrack{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .m-weeks .mtrack::before{display:none}
 .hero{align-items:start}
+/* Game menu in the left column, under the player card */
+.side{display:grid;gap:14px;align-content:start;min-width:0}
+.side .menu{grid-template-columns:1fr 1fr;gap:10px}
+.side .mtile{padding:12px 6px;border-radius:16px;gap:2px}
+.side .mtile .mt-ic{font-size:30px}
+.side .mtile b{font-size:15px}
+.side .mtile small{font-size:11px}
+@media (max-width:900px){.side .menu{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:640px){.side .menu{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){
  .m-top{grid-template-columns:1fr;gap:14px;justify-items:start}
  .m-week{width:auto;aspect-ratio:auto;grid-auto-flow:column;gap:10px;padding:8px 16px;border-radius:16px}
@@ -679,7 +688,11 @@ tr.cur td{background:#fff6d6}
 
 <main class="wrap">
   <div class="hero">
-    <aside class="pcard" id="pcard" aria-label="Uras'ın oyuncu kartı"></aside>
+    <!-- Left column: player card, and the game menu right under it -->
+    <div class="side">
+      <aside class="pcard" id="pcard" aria-label="Uras'ın oyuncu kartı"></aside>
+      <nav class="menu" id="menu" aria-label="Games"></nav>
+    </div>
     <section class="card mission" aria-live="polite">
       <div id="mission"></div>
       <!-- Opens from the WEEK badge: week numbers, then that week's sub-tabs -->
@@ -696,8 +709,7 @@ tr.cur td{background:#fff6d6}
     </section>
   </div>
 
-  <!-- Simple home: one menu; each part opens only when its button is tapped -->
-  <nav class="menu" id="menu" aria-label="Menü"></nav>
+  <!-- Each game opens here, full width, when its menu tile (left column) is tapped -->
 
   <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
   <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
