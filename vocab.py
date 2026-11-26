@@ -66,6 +66,59 @@ def parse(block):
         out.append(dict(en=parts[0], tr=parts[1], e=parts[2] if len(parts) > 2 else ''))
     return out
 
+# Turkish for game words that appear only in Typing Turbo (no translation stored on the site)
+EXTRA_TR = {
+ 'goal': 'gol / kale', 'red car': 'kırmızı araba', 'big ball': 'büyük top', 'blue bus': 'mavi otobüs', 'my dog': 'benim köpeğim',
+ 'go left': 'sola git', 'run fast': 'hızlı koş', 'green apple': 'yeşil elma', 'two goals': 'iki gol', 'hello Uras': 'merhaba Uras',
+ 'I like cars.': 'Arabaları severim.', 'Kick the ball!': 'Topa vur!', 'I am seven.': 'Yedi yaşındayım.', 'My car is red.': 'Arabam kırmızı.',
+ 'Hello, I am Uras.': 'Merhaba, ben Uras.', 'Ready, set, go!': 'Hazır, işaret, başla!', 'I can jump.': 'Zıplayabilirim.', 'Open the door.': 'Kapıyı aç.',
+}
+EXTRA_EMOJI = {'goal': '🥅', 'red car': '🚗', 'big ball': '⚽', 'blue bus': '🚌', 'my dog': '🐶', 'go left': '⬅️', 'run fast': '🏃', 'green apple': '🍏',
+ 'two goals': '⚽', 'hello Uras': '👋', 'I like cars.': '🏎️', 'Kick the ball!': '🦵', 'I am seven.': '7️⃣', 'My car is red.': '🚗',
+ 'Hello, I am Uras.': '👋', 'Ready, set, go!': '🏁', 'I can jump.': '🦘', 'Open the door.': '🚪'}
+
+COLOR_EMOJI = {'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡', 'black': '⚫', 'white': '⚪', 'orange': '🟠', 'pink': '🩷'}
+DPAD_EMOJI = {'up': '⬆️', 'down': '⬇️', 'left': '⬅️', 'right': '➡️'}
+KEYCAP = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
+
+def unq(s):
+    return s[1:-1].replace("\\'", "'")
+
+def parse_weeks(src):
+    block = src[src.index('const WEEKS=['):src.index('const NW=')]
+    weeks = []
+    for ch in re.split(r"\n \{n:", block)[1:]:
+        h = re.match(r"(\d+),lv:(\d),tr:'([^']*)',en:'([^']*)',src:'([^']*)',chunk:(\"[^\"]*\"|'[^']*'),chunkTr:'([^']*)'", ch)
+        wk = dict(n=int(h.group(1)), lv=int(h.group(2)), tr=h.group(3), en=h.group(4), chunk=unq(h.group(6)), chunkTr=h.group(7), words=[])
+        for en, tr, p, ex in re.findall(r"W\('([^']*)','([^']*)',(\{[^}]*\}|'[^']*'),(\"[^\"]*\"|'(?:[^'\\]|\\.)*')\)", ch):
+            if p.startswith("'"):
+                e = unq(p)
+            elif 'car' in p:
+                e = COLOR_EMOJI.get(en, '🚗')
+            elif 'dpad' in p:
+                e = DPAD_EMOJI.get(en, '🎮')
+            else:
+                e = ''
+            wk['words'].append(dict(en=en, tr=tr, e=e, ex=unq(ex)))
+        for i, (en, tr, ex) in enumerate(re.findall(r"\['(\w+)','([^']*)',(\"[^\"]*\"|'[^']*')\]", ch)):
+            wk['words'].append(dict(en=en, tr=tr, e=KEYCAP[i] if i < 10 else '', ex=unq(ex)))
+        weeks.append(wk)
+    return weeks
+
+def parse_tower(src):
+    m = re.search(r"const TOWER_EXTRA=TX\((.*?)\);\n", src, re.S)
+    tx = re.sub(r"'\s*\+\s*'", '', m.group(1)).strip().strip("'")
+    out = []
+    for x in tx.split('|'):
+        if x:
+            p = x.split(':')
+            out.append(dict(en=p[0], tr=p[1] if len(p) > 1 else '', e=p[2] if len(p) > 2 else ''))
+    return out
+
+def parse_typing(src):
+    m = re.search(r"const TYPE_POOLS=\[(.*?)\n\];", src, re.S)
+    return re.findall(r"'([^']+)'", m.group(1))
+
 def existing_words(src):
     words = set(w.lower() for w in re.findall(r"W\('([^']+)'", src))
     m = re.search(r"const TOWER_EXTRA=TX\((.*?)\);\n", src, re.S)
@@ -109,18 +162,62 @@ def main():
     src = re.sub(r"/\* VOCAB:BEGIN.*?/\* VOCAB:END \*/", lambda _: block, src, flags=re.S)
     SITE.write_text(src, encoding='utf-8', newline='\n')
 
-    # 2) printable word list (+ the 12 weekly units already on the site)
-    weeks = re.findall(r"\{n:(\d+),lv:\d,tr:'([^']*)',en:'([^']*)'", src)
-    rows = []
+    # 2) printable list of EVERY word the site uses, in three parts
+    weeks = parse_weeks(src)
+    tower = parse_tower(src)
+    typing = parse_typing(src)
+    tr_of, e_of = {}, {}
+    for wk in weeks:
+        for w in wk['words']:
+            tr_of.setdefault(w['en'].lower(), w['tr']); e_of.setdefault(w['en'].lower(), w['e'])
     for L in levels:
-        cells = ''.join(
-            f"<div class='row'><span class='e'>{html.escape(w['e'])}</span><span class='en'>{html.escape(w['en'])}</span>"
-            f"<span class='tr'>{html.escape(w['tr'])}</span><span class='ck'></span></div>" for w in L['words'])
-        rows.append(f"<section class='lvl'><h2>Level {L['n']} · {html.escape(L['name'])} "
-                    f"<span>({html.escape(L['tr'])})</span></h2><p class='sub'>{html.escape(L['sub'])} · "
-                    f"{len(L['words'])} kelime · öğrendiğin kelimenin kutusuna ✓ koy</p><div class='cols'>{cells}</div></section>")
-    total = sum(len(L['words']) for L in levels)
-    week_list = ''.join(f"<li><b>Week {n}</b> · {html.escape(en)} <span>({html.escape(tr)})</span></li>" for n, tr, en in weeks)
+        for w in L['words']:
+            tr_of.setdefault(w['en'].lower(), w['tr']); e_of.setdefault(w['en'].lower(), w['e'])
+    for w in tower:
+        tr_of.setdefault(w['en'].lower(), w['tr']); e_of.setdefault(w['en'].lower(), w['e'])
+    for k, v in EXTRA_TR.items():
+        tr_of.setdefault(k.lower(), v)
+    for k, v in EXTRA_EMOJI.items():
+        if not e_of.get(k.lower()):
+            e_of[k.lower()] = v
+
+    taken = set(w['en'].lower() for wk in weeks for w in wk['words']) | set(w['en'].lower() for L in levels for w in L['words'])
+    others, seen_o = [], set()
+    for en in [w['en'] for w in tower] + typing:
+        k = en.lower()
+        if k in taken or k in seen_o:
+            continue
+        seen_o.add(k)
+        others.append(dict(en=en, tr=tr_of.get(k, ''), e=e_of.get(k, '')))
+    missing = [w['en'] for w in others if not w['tr']]
+    groups = [
+        ('Kısa kelimeler', '3–4 harf', [w for w in others if ' ' not in w['en'] and len(w['en']) <= 4]),
+        ('Orta kelimeler', '5–6 harf', [w for w in others if ' ' not in w['en'] and 5 <= len(w['en']) <= 6]),
+        ('Uzun kelimeler', '7+ harf', [w for w in others if ' ' not in w['en'] and len(w['en']) >= 7]),
+        ('İkili ifadeler', 'iki kelime', [w for w in others if ' ' in w['en'] and not re.search(r'[.?!]$', w['en'])]),
+        ('Cümleler', 'tam cümle', [w for w in others if re.search(r'[.?!]$', w['en'])]),
+    ]
+
+    def row(w, ex=''):
+        exh = f"<small class='ex'>{html.escape(ex)}</small>" if ex else ''
+        return (f"<div class='row'><span class='e'>{html.escape(w['e'])}</span><span class='w'><b>{html.escape(w['en'])}</b> "
+                f"<span class='tr'>{html.escape(w['tr'])}</span>{exh}</span><span class='ck'></span></div>")
+
+    part1 = ''.join(
+        f"<div class='wk'><h3>Week {wk['n']} · {html.escape(wk['en'])} <span>({html.escape(wk['tr'])})</span> "
+        f"<em>Level {wk['lv']}</em></h3><p class='chunk'>🗣️ {html.escape(wk['chunk'])} <span>· {html.escape(wk['chunkTr'])}</span></p>"
+        f"<div class='cols'>{''.join(row(w, w['ex']) for w in wk['words'])}</div></div>" for wk in weeks)
+    part2 = ''.join(
+        f"<div class='wk'><h3>Level {L['n']} · {html.escape(L['name'])} <span>({html.escape(L['tr'])})</span></h3>"
+        f"<p class='sub'>{html.escape(L['sub'])} · {len(L['words'])} kelime</p>"
+        f"<div class='cols'>{''.join(row(w) for w in L['words'])}</div></div>" for L in levels)
+    part3 = ''.join(
+        f"<div class='wk'><h3>{html.escape(t)} <span>({html.escape(s)})</span></h3><p class='sub'>{len(ws)} kelime / ifade</p>"
+        f"<div class='cols'>{''.join(row(w) for w in ws)}</div></div>" for t, s, ws in groups if ws)
+    n1 = sum(len(wk['words']) for wk in weeks)
+    n2 = sum(len(L['words']) for L in levels)
+    n3 = len(others)
+    total = n1 + n2 + n3
     page = f"""<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>Uras English Cup · Kelime Listesi</title>
 <style>
 @page {{ size: A4; margin: 14mm 12mm; }}
@@ -139,25 +236,43 @@ h2 span {{ color: #55665c; font-size: 12pt; font-weight: 600 }}
 .cols {{ columns: 2; column-gap: 18px; border-top: 2px solid #132029; padding-top: 4px }}
 .row {{ display: flex; align-items: center; gap: 8px; padding: 3px 4px; border-bottom: 1px solid #e2e8f0; break-inside: avoid }}
 .row .e {{ width: 20px; flex: none; font-size: 11pt; text-align: center; font-family: "Segoe UI Emoji", "Segoe UI", sans-serif }}
-.row .en {{ font-weight: 700; font-size: 11.5pt }}
-.row .tr {{ flex: 1; color: #334155; font-size: 10pt }}
+.row .w {{ flex: 1; min-width: 0 }}
+.row .w b {{ font-size: 11.5pt }}
+.row .tr {{ color: #334155; font-size: 10pt }}
+.row .ex {{ display: block; color: #64748b; font-size: 8.5pt; font-style: italic }}
 .row .ck {{ width: 13px; height: 13px; flex: none; border: 1.5px solid #94a3b8; border-radius: 3px }}
-.weeks {{ break-before: page }}
-.weeks ul {{ columns: 2; padding-left: 18px }}
-.weeks span {{ color: #55665c }}
+.part {{ break-before: page }}
+.part:first-of-type {{ break-before: auto }}
+.part > h2 {{ font-size: 18pt; margin: 4px 0 2px; color: #7a1f7a; border-bottom: 3px solid #ff2e88; padding-bottom: 2px }}
+.part > p {{ margin: 2px 0 8px; color: #55665c }}
+.wk {{ break-inside: avoid; margin: 10px 0 12px }}
+.wk h3 {{ margin: 0 0 2px; font-size: 13.5pt; color: #132029 }}
+.wk h3 span {{ color: #55665c; font-weight: 600; font-size: 11pt }}
+.wk h3 em {{ font-style: normal; font-size: 9pt; background: #fff3c4; border-radius: 6px; padding: 1px 6px; margin-left: 4px }}
+.chunk {{ margin: 0 0 4px; font-size: 10pt }}
+.chunk span {{ color: #55665c }}
+.toc {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px }}
+.toc div {{ border: 2px solid #132029; border-radius: 10px; padding: 8px 10px; background: #fffdf5 }}
+.toc b {{ display: block; font-size: 18pt; color: #7a1f7a }}
 footer {{ margin-top: 10px; font-size: 9pt; color: #64748b }}
 </style></head><body>
-<header><h1>Uras English Cup · Kelime Listesi</h1><p>Yeni kelime bankası: {total} kelime ve ifade, 4 seviye · ozgencilimge-prog.github.io/UrasWebSite</p></header>
+<header><h1>Uras English Cup · Tüm Kelimeler</h1><p>Sitede kullanılan {total} kelime ve ifade · ozgencilimge-prog.github.io/UrasWebSite</p></header>
+<div class="toc"><div><b>{n1}</b>Bölüm 1 · 12 haftalık görevlerin kelimeleri</div><div><b>{n2}</b>Bölüm 2 · Word Bank (4 seviye)</div><div><b>{n3}</b>Bölüm 3 · Oyun kelimeleri (Word Tower, Typing Turbo)</div></div>
 <div class="how"><b>Nasıl kullanılır?</b><ul>
-<li>Her gün aynı seviyeden 5 kelime seçin. Önce sesli okuyun, sonra Uras tekrar etsin.</li>
-<li>Kelimeyi bilince sağdaki kutuya ✓ koyun. Bir seviye bitince bir sonrakine geçin.</li>
-<li>Sitede <b>Word Bank</b> bölümünde bu kelimelere dokunup dinleyebilirsiniz; Typing Turbo ve Word Tower da bu kelimeleri kullanır.</li></ul></div>
-{''.join(rows)}
-<section class="weeks"><h2>Sitedeki 12 haftalık konu</h2><p class="sub">Bu kelimeler haftalık görevlerde zaten var; listede tekrar edilmedi.</p><ul>{week_list}</ul></section>
-<footer>Kelimeler 1.–2. sınıf düzeyine ve Uras'ın ilgi alanlarına (futbol, arabalar, oyunlar) göre seçildi.</footer>
+<li>Her gün 5 kelime seçin. Önce sesli okuyun, sonra Uras tekrar etsin.</li>
+<li>Kelimeyi bilince sağdaki kutuya ✓ koyun.</li>
+<li>Bölüm 1 haftalık görevlerle aynı sırada. Bölüm 2 ve 3'teki kelimeler Word Bank, Typing Turbo ve Word Tower oyunlarında çıkar.</li>
+<li>Her kelime listede bir kez yazıldı; birden fazla oyunda geçse de tekrar edilmedi.</li></ul></div>
+<section class="part"><h2>Bölüm 1 · 12 haftalık görevler</h2><p>Listen &amp; Find, Penalty, Memory, Letter Race ve Fill the Gap bu kelimeleri kullanır. Altındaki italik cümle, sitede kelimeyle birlikte okunan örnek cümledir.</p>{part1}</section>
+<section class="part"><h2>Bölüm 2 · Word Bank</h2><p>Sitenin Word Bank bölümündeki yeni kelimeler, kolaydan zora 4 seviye.</p>{part2}</section>
+<section class="part"><h2>Bölüm 3 · Oyun kelimeleri</h2><p>Word Tower ve Typing Turbo'da çıkan diğer kelime, ifade ve cümleler, uzunluğa göre.</p>{part3}</section>
+<footer>Kelimeler 1.–2. sınıf düzeyine ve Uras'ın ilgi alanlarına (futbol, arabalar, oyunlar) göre seçildi. Hikaye cümleleri (Sentence Builder) bu listede yok.</footer>
 </body></html>"""
     (HERE / 'kelime-listesi.html').write_text(page, encoding='utf-8')
-    print(f"levels: {[len(L['words']) for L in levels]} | total new: {total} | skipped (already on site): {len(dropped)} -> {', '.join(dropped)}")
+    print(f"word bank levels: {[len(L['words']) for L in levels]} | skipped (already on site): {', '.join(dropped)}")
+    print(f"PDF parts: weekly={n1} word bank={n2} game words={n3} | total={total}")
+    if missing:
+        print('MISSING TURKISH:', ' | '.join(missing))
 
 if __name__ == '__main__':
     main()
