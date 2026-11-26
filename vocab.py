@@ -16,7 +16,7 @@ SITE = HERE / 'uras-english-cup.html'
 
 # en : tr : emoji (emoji optional)
 LEVELS = [
- dict(n=1, name='Starter', tr='Başlangıç', sub='1. sınıf · kısa ve somut kelimeler (3–4 harf)', words='''
+ dict(n=1, name='Starter', tr='Başlangıç', sub='1. sınıf · kısa ve somut kelimeler, temel fiiller (3–5 harf)', words='''
 ant:karınca:🐜|hen:tavuk:🐔|goat:keçi:🐐|lamb:kuzu:🐑|van:minibüs:🚐|jet:jet uçağı:✈️|cap:kasket:🧢|mug:kupa bardak:☕
 pot:tencere:🍲|jam:reçel:🍓|nut:fındık:🥜|pie:turta:🥧|tea:çay:🍵|zoo:hayvanat bahçesi:🦁|mum:anne:👩|dad:baba:👨
 lip:dudak:👄|toe:ayak parmağı:🦶|hug:sarılmak:🤗|sit:oturmak:🪑|eat:yemek yemek:🍽️|see:görmek:👀|new:yeni:🆕|old:eski / yaşlı:👴
@@ -26,7 +26,7 @@ roof:çatı:🏠|desk:sıra / masa:🪑|rice:pirinç:🍚|soup:çorba:🍲|corn:
 neck:boyun|hair:saç:💇|face:yüz:🙂|head:baş:🗣️|ring:yüzük:💍|bell:zil:🔔|gift:hediye:🎁|doll:oyuncak bebek:🪆
 drum:davul:🥁|race:yarış:🏁|taxi:taksi:🚕|fast:hızlı:💨|gold:altın:🥇|shop:dükkan:🏪|farm:çiftlik:🚜|nest:yuva:🪺
 '''),
- dict(n=2, name='Explorer', tr='Kaşif', sub='1.–2. sınıf · günlük hayat, okul ve oyun (4–6 harf)', words='''
+ dict(n=2, name='Explorer', tr='Kaşif', sub='1.–2. sınıf · günlük hayat, duygular, zaman ve yer (4–7 harf)', words='''
 jersey:forma:👕|coach:antrenör:📋|match:maç:⚽|boots:krampon:👟|wheel:tekerlek:🛞|brake:fren:🛑|driver:sürücü:🧑‍✈️|petrol:benzin:⛽
 scooter:scooter:🛴|tractor:traktör:🚜|puzzle:yapboz:🧩|guitar:gitar:🎸|piano:piyano:🎹|paper:kağıt:📄|glue:yapıştırıcı:🧴|eraser:silgi:🧽
 lesson:ders:📚|class:sınıf:🏫|laugh:gülmek:😂|cry:ağlamak:😢|angry:kızgın:😠|tired:yorgun:🥱|hungry:aç:🍽️|thirsty:susamış:🥤
@@ -36,7 +36,7 @@ potato:patates:🥔|tomato:domates:🍅|onion:soğan:🧅|butter:tereyağı:🧈
 glass:bardak:🥛|soap:sabun:🧼|brush:fırça:🪥|mirror:ayna:🪞|pillow:yastık:🛏️|watch:kol saati:⌚|tablet:tablet:📱|screen:ekran:🖥️
 button:düğme:🔘|level:seviye:🆙|bread:ekmek:🍞|uncle:amca / dayı:👨|aunt:teyze / hala:👩|cousin:kuzen:🧒|garden:bahçe:🌳|street:sokak:🏘️
 '''),
- dict(n=3, name='Player', tr='Oyuncu', sub='2. sınıf · fiiller, sıfatlar, futbol ve araba kelimeleri (5–8 harf)', words='''
+ dict(n=3, name='Player', tr='Oyuncu', sub='2. sınıf · fiiller, sıfatlar, aylar, futbol ve araba kelimeleri (5–10 harf)', words='''
 referee:hakem:🧑‍⚖️|whistle:düdük:📯|corner:korner:🚩|penalty:penaltı:⚽|striker:forvet:⚽|defender:defans oyuncusu:🛡️|captain:kaptan:©️|trophy:kupa / ödül:🏆
 medal:madalya:🏅|engine:motor:⚙️|helmet:kask:⛑️|traffic:trafik:🚦|bridge:köprü:🌉|tunnel:tünel:🚇|station:istasyon:🚉|airport:havalimanı:🛫
 island:ada:🏝️|forest:orman:🌲|mountain:dağ:⛰️|river:nehir:🏞️|beach:plaj:🏖️|desert:çöl:🏜️|ocean:okyanus:🌊|planet:gezegen:🪐
@@ -55,6 +55,41 @@ I scored a goal!:Gol attım!:⚽|Can I play, please?:Oynayabilir miyim lütfen?:
 We are the champions!:Biz şampiyonuz!:🏆|I can ride a bike.:Bisiklete binebilirim.:🚲|What time is it?:Saat kaç?:⏰|It is my turn.:Sıra bende.:🙋|Good night, Mum.:İyi geceler anne.:🌙|The car is very fast.:Araba çok hızlı.:🏎️|I like to play games.:Oyun oynamayı severim.:🎮|Pass the ball, please.:Topu pas ver lütfen.:⚽
 '''),
 ]
+
+# Extra words picked by hand from "english words/1-A1 A1 Beginner.pdf".
+# That PDF is the 1000 most frequent dwyl words, so it also has adult, violent and swear words;
+# only concrete, everyday words that suit a 7-year-old are taken. Added to the Word Bank level shown.
+A1_ADD = {
+ 1: '''
+air:hava:🌬️|art:sanat:🎨|card:kart:🃏|city:şehir:🏙️|day:gün:☀️|fire:ateş:🔥|food:yiyecek:🍔|kids:çocuklar:🧒
+man:adam:👨|mom:anne:👩|name:isim:📛|news:haber:📰|night:gece:🌙|page:sayfa:📄|rock:kaya:🪨|room:oda:🚪
+son:oğul:👦|song:şarkı:🎵|time:zaman:⏰|town:kasaba:🏘️|TV:televizyon:📺|week:hafta:📅|word:kelime:🔤|year:yıl:🗓️
+hour:saat:⏱️|bank:banka:🏦|club:kulüp:⚽|cool:havalı:😎|dark:karanlık:🌑|easy:kolay:👌|hard:zor:🧱|nice:güzel / hoş:😊
+good:iyi:👍|bad:kötü:👎|love:sevmek:❤️|like:hoşlanmak:👍|play:oynamak:▶️|walk:yürümek:🚶|talk:konuşmak:💬|call:aramak:📞
+come:gelmek:👋|give:vermek:🎁|take:almak:✋|make:yapmak:🛠️|buy:satın almak:🛒|pay:ödemek:💳|hit:vurmak:🏏|cut:kesmek:✂️
+add:eklemek:➕|open:açmak:📂|save:kurtarmak / kaydetmek:💾|send:göndermek:📤|find:bulmak:🔍|ask:sormak:❓|want:istemek:🙏|need:ihtiyaç duymak:🆘
+try:denemek:💪|top:üst / tepe:🔝|end:son:🔚|half:yarım:🌓|side:yan / taraf:↔️
+''',
+ 2: '''
+answer:cevap:💬|learn:öğrenmek:📚|know:bilmek:🧠|feel:hissetmek:🤗|hear:duymak:👂|look:bakmak:👀|move:hareket etmek:🏃|turn:dönmek:🔄
+show:göstermek:👀|lose:kaybetmek:😞|movie:film:🎬|video:video:📹|radio:radyo:📻|heart:kalp:❤️|earth:dünya / yeryüzü:🌍|space:uzay:🚀
+ground:zemin / yer:🟫|sound:ses:🔊|voice:insan sesi:🗣️|story:hikaye:📖|idea:fikir:💡|party:parti:🎉|price:fiyat:🏷️|store:mağaza:🏬
+police:polis:👮|child:çocuk:🧒|woman:kadın:👩|parents:anne baba:👨‍👩‍👦|young:genç:🧒|little:küçük:🤏|huge:kocaman:🐘|funny:komik:😂
+crazy:çılgın:🤪|amazing:harika:🤩|super:süper:🦸|ready:hazır:✅|sure:emin:👍|safe:güvenli:🦺|free:serbest / bedava:🆓|true:doğru:✔️
+wrong:yanlış:❌|first:birinci:🥇|second:ikinci:🥈|third:üçüncü:🥉|early:erken:🌅|late:geç:🌙|today:bugün:📅|tonight:bu gece:🌃
+soon:yakında:⏳|again:tekrar:🔁|always:her zaman:♾️|never:asla:🚫|near:yakın:📍|far:uzak:🏔️|inside:içeride:🏠|outside:dışarıda:🌳
+above:üstünde:⬆️|below:altında:⬇️|behind:arkasında:🔙|front:ön:⏩
+''',
+ 3: '''
+January:ocak:❄️|February:şubat:❄️|March:mart:🌱|April:nisan:🌷|May:mayıs:🌸|June:haziran:☀️|July:temmuz:🏖️|August:ağustos:🍉
+September:eylül:🍂|October:ekim:🎃|November:kasım:🍁|December:aralık:🎄
+season:mevsim / sezon:🍂|league:lig:🏆|record:rekor:📀|track:pist:🛤️|training:antrenman:🏋️|history:tarih:📜|science:bilim:🔬|language:dil:🗣️
+English:İngilizce:🇬🇧|internet:internet:🌐|online:çevrim içi:💻|student:öğrenci:🧑‍🎓|question:soru:❓|problem:sorun:🧩|example:örnek:💡|number:sayı:🔢
+important:önemli:⭐|different:farklı:🔀|difficult:zor:🧗|perfect:mükemmel:💯|popular:popüler:🌟|together:birlikte:🤝|everyone:herkes:👨‍👩‍👧‍👦|everything:her şey:🌈
+something:bir şey:❓|remember:hatırlamak:🧠|understand:anlamak:💡|believe:inanmak:🙏|happen:olmak / gerçekleşmek:⚡|visit:ziyaret etmek:🏠|enjoy:keyfini çıkarmak:😄|follow:takip etmek:👣
+forget:unutmak:🤷|please:lütfen:🙏|sorry:özür dilerim:😔|thanks:teşekkürler:🙏|okay:tamam:👌|hey:hey:👋
+''',
+}
 
 def parse(block):
     out = []
@@ -138,7 +173,7 @@ def main():
     dropped = []
     for L in LEVELS:
         kept = []
-        for w in parse(L['words']):
+        for w in parse(L['words'] + '\n' + A1_ADD.get(L['n'], '')):
             k = w['en'].lower()
             if k in have or k in seen:
                 dropped.append(w['en'])
