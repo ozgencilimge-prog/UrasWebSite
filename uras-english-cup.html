@@ -179,8 +179,8 @@ button{font:inherit;color:inherit}
 .finish{position:absolute;right:0;top:0;bottom:0;width:26px;background:conic-gradient(#fff 25%,#132029 0 50%,#fff 0 75%,#132029 0) 0 0/13px 13px}
 .racer{position:absolute;bottom:14px;width:96px;transition:left .45s ease-out}
 .racer svg{width:100%;height:auto;display:block}
-.slots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.slot{width:48px;height:62px;border-bottom:5px solid var(--ink);display:grid;place-items:center;font-family:var(--display);font-size:36px}
+.slots{display:flex;gap:clamp(3px,1vw,8px);justify-content:center;flex-wrap:nowrap}
+.slot{width:clamp(22px,7vw,48px);height:clamp(40px,10vw,62px);border-bottom:5px solid var(--ink);display:grid;place-items:center;font-family:var(--display);font-size:clamp(22px,6vw,36px)}
 .slot em{font-style:normal;color:#c5d3ca}
 .slot.filled{color:var(--ok)}
 .tiles{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
@@ -198,15 +198,19 @@ button{font:inherit;color:inherit}
 .mcard.up .back{display:none}
 .mcard.match{background:#bbf7d0;border-color:var(--ok)}
 .mcard .face{width:100%}
-.mcard .face b{font-family:var(--display);font-weight:400;font-size:clamp(16px,4.2vw,28px);word-break:break-word}
+.mcard .face b{font-family:var(--display);font-weight:400;font-size:clamp(16px,4.2vw,28px);word-break:normal;overflow-wrap:normal;hyphens:none}
+.mcard .face b.lg{font-size:clamp(11px,2.9vw,19px)}
+.opt.word.lg{font-size:clamp(15px,3.6vw,24px)}
+.opt.word{min-width:0;overflow-wrap:normal;word-break:normal}
 .mcard .pic svg{width:90%}
 .mcard .pic.emo{font-size:clamp(30px,8vw,52px)}
 .mcard .pic.count{height:auto;aspect-ratio:1}
 
 /* Fill the Gap (writing) */
-.gapword{display:inline-flex;gap:6px;vertical-align:middle;flex-wrap:wrap;justify-content:center}
+.gapword{display:inline-flex;gap:clamp(3px,1vw,6px);vertical-align:middle;flex-wrap:nowrap;justify-content:center;max-width:100%}
+.gapword .gapfix,.gapword .gapbox{min-width:0;flex:0 1 auto}
 .gapword.big{display:flex;margin:0 auto}
-.gapfix,.gapbox{width:48px;height:58px;border:3px solid var(--ink);border-radius:12px;font-family:var(--display);font-size:32px;text-align:center;display:inline-grid;place-items:center;background:var(--paper-2);color:var(--ink);padding:0;line-height:1}
+.gapfix,.gapbox{width:clamp(22px,7vw,48px);height:clamp(34px,9vw,58px);font-size:clamp(18px,5vw,32px) !important;border:3px solid var(--ink);border-radius:12px;font-family:var(--display);font-size:32px;text-align:center;display:inline-grid;place-items:center;background:var(--paper-2);color:var(--ink);padding:0;line-height:1}
 .gapbox{background:#fff;border-style:dashed;box-shadow:0 3px 0 var(--ink);font-family:var(--display)}
 .gapbox:focus{outline:4px solid var(--sun);outline-offset:2px}
 .gapbox.ok{border-style:solid;background:#bbf7d0;color:var(--ok)}
@@ -239,6 +243,7 @@ button{font:inherit;color:inherit}
 .tt-word span.c{color:var(--ink);border-bottom-color:var(--sun)}
 .tt-word span.x{animation:shake .35s;color:var(--no)}
 .tt-word span.sp{min-width:.5em}
+.tt-word .tt-grp{display:inline-flex;white-space:nowrap;padding:0;border:0}
 .kb{display:grid;gap:6px;max-width:620px;margin:0 auto;width:100%}
 .kb-row{display:flex;gap:5px;justify-content:center}
 .key{flex:1 1 0;max-width:54px;min-width:0;height:52px;border:2px solid var(--ink);border-radius:10px;background:var(--paper-2);font-family:var(--display);font-size:22px;cursor:pointer;box-shadow:0 3px 0 var(--ink);padding:0}
@@ -246,7 +251,6 @@ button{font:inherit;color:inherit}
 .key.space{max-width:320px;flex:6 1 0;font-family:var(--body);font-weight:900;font-size:16px}
 @media (max-width:640px){
   .typing-card{grid-template-columns:1fr}
-  .gapfix,.gapbox{width:40px;height:50px;font-size:27px}
   .key{height:46px;font-size:19px}
 }
 
@@ -517,9 +521,6 @@ body::before{background:#0d0420}
 .golt.pc-good{color:#4ade80;font-size:clamp(34px,7vw,58px);text-align:center}
 .golt.pc-bad{color:#ff4d6d;font-size:clamp(34px,7vw,58px);text-align:center}
 .hero{align-items:start}
-.main-col{display:grid;gap:16px;min-width:0}
-.main-col .panel{scroll-margin-top:90px}
-.main-col .typing-card > .tt-levels{grid-column:1 / -1}
 /* Game menu in the left column, under the player card */
 .side{display:grid;gap:14px;align-content:start;min-width:0}
 /* Desktop: games listed top to bottom under the player card (icon left, name + status right) */
@@ -734,8 +735,6 @@ tr.cur td{background:#fff6d6}
       <aside class="pcard" id="pcard" aria-label="Uras'ın oyuncu kartı"></aside>
       <nav class="menu" id="menu" aria-label="Games"></nav>
     </div>
-    <!-- Right column: mission card, and the game that was tapped in the left menu opens right under it -->
-    <div class="main-col">
     <section class="card mission" aria-live="polite">
       <div id="mission"></div>
       <!-- Opens from the WEEK badge: week numbers, then that week's sub-tabs -->
@@ -750,13 +749,15 @@ tr.cur td{background:#fff6d6}
         </div>
       </div>
     </section>
-    <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
-    <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
-    <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
-    <div class="panel" data-panel="cup" hidden><section class="card typing-card" id="cup-card"></section></div>
-    <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
-    </div>
   </div>
+
+  <!-- Each game opens here, full width, when its menu tile (left column) is tapped -->
+
+  <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
+  <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
+  <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
+  <div class="panel" data-panel="cup" hidden><section class="card typing-card" id="cup-card"></section></div>
+  <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
 </main>
 
 <div class="overlay" id="play" hidden>
@@ -830,7 +831,7 @@ const WEEKS=[
   W('shirt','tişört / gömlek','👕',"I've got a red shirt."),W('shoes','ayakkabı','👟','My football shoes are new.'),W('hat','şapka','🧢','A blue hat.'),W('coat','mont','🧥','Wear your coat.'),
   W('sunny','güneşli','☀️',"It's sunny. Let's play!"),W('rainy','yağmurlu','🌧️',"It's rainy. Play at home."),W('snowy','karlı','❄️',"It's snowy!"),W('cold','soğuk','🥶',"It's cold today.")]}
 ];
-const NW=WEEKS.length, ND=5;
+const NW=WEEKS.length;
 const TASKS={
  listen:{name:'Listen & Find',ic:'🎧',desc:'Dinle, doğru resme dokun.'},
  penalty:{name:'Penalty Shoot-out',ic:'⚽',desc:'Resme bak, kelimeyi seç, golü at!'},
@@ -842,10 +843,10 @@ const TASKS={
 const PLAN=[
  [{t:'listen',part:'a'},{t:'memory',part:'a'},{t:'write',part:'all'}],
  [{t:'listen',part:'b'},{t:'write',part:'a'}],
- [{t:'penalty',part:'all'},{t:'race',part:'a'},{t:'write',part:'all'}],
  [{t:'memory',part:'b'},{t:'write',part:'b'}],
  [{t:'listen',part:'all',hard:true},{t:'penalty',part:'all',hard:true},{t:'write',part:'all',hard:true}]
 ];
+const ND=PLAN.length, FIN=ND-1;
 const TOTAL=WEEKS.length*PLAN.reduce((s,d)=>s+d.length,0);
 /* Original car designs: 5 body styles x 12 neon colours x 3 trims = 60 unique cars */
 const CAR_COLORS=[['Neon Pink','#ff2e88'],['Ocean Blue','#2f6fed'],['Sunset Orange','#ff8c1a'],['Lime','#a3e635'],['Purple','#8e44ad'],['Gold','#e0b13a'],['Midnight','#1f2329'],['Pearl','#f4f4f4'],['Aqua','#22d3ee'],['Racing Red','#e63946'],['Silver','#aeb6bf'],['Mint','#64dfdf']];
@@ -873,7 +874,9 @@ if(!S.sb)S.sb={};
 if(S.points==null)S.points=(S.stars||0)*10+Math.max(0,(S.typing.best||1)-1)*20+Math.floor((S.tower.best||0)/5)*2;
 if(!S.badges)S.badges={};
 if(!S.vbSeen)S.vbSeen={};
-if(!S.vq)S.vq={}; /* Word Quest: best stars per pack, key "level-pack" */
+if(!S.vq)S.vq={};
+/* Old Mission 3 (Penalty Shoot-out, same game as Penalty Cup) was removed: move saved progress of old Missions 4-5 down one */
+if(!S.plan2){const mv=o=>{const n={};Object.keys(o||{}).forEach(k=>{const m=k.match(/^w(\d+)d(\d+)(.*)$/);if(!m){n[k]=o[k];return}const d=+m[2];if(d===2)return;n[`w${m[1]}d${d>2?d-1:d}${m[3]}`]=o[k]});return n};S.done=mv(S.done);S.dayDone=mv(S.dayDone);S.plan2=1} /* Word Quest: best stars per pack, key "level-pack" */
 if(!S.pcup)S.pcup={}; /* Penalty Cup per week: {won, best:"3–1"} */
 if(!S.chant)S.chant={}; /* Chant Time per week: best stars */
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
@@ -907,6 +910,15 @@ function fillTo(a,n){let out=[];while(out.length<n)out=out.concat(shuffle(a));re
 function partOf(Wk,part){const h=Math.ceil(Wk.words.length/2);return part==='a'?Wk.words.slice(0,h):part==='b'?Wk.words.slice(h):Wk.words}
 /* Turkish keyboards: the "I" key types dotless ı (and İ for capitals). Treat both as English i. */
 const normKey=k=>(k==='ı'||k==='İ')?'i':String(k).toLowerCase();
+/* Letters of a word/sentence for the typing games. Each word is kept in one no-wrap group,
+   so a line can only break at a space ("park" never becomes "pa" / "rk"). */
+function lettersHTML(L,pos){
+ let h='',grp='';const flush=()=>{if(grp){h+=`<span class="tt-grp">${grp}</span>`;grp=''}};
+ L.forEach((c,k)=>{const cls=k<pos?'d':k===pos?'c':'';if(c===' '){flush();h+=`<span class="${cls} sp" data-k="${k}">&nbsp;</span>`}else grp+=`<span class="${cls}" data-k="${k}">${esc(c)}</span>`});
+ flush();return h;
+}
+/* Long words get a smaller font on word buttons so they never overflow or split */
+const wcls=s=>String(s).length>8?' lg':'';
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function findWord(en){for(const x of WEEKS)for(const w of x.words)if(w.en===en)return w;
  for(const w of VOCAB_ALL.concat(TOWER_EXTRA))if(w.p&&w.en.toLowerCase()===en)return w;return null}
@@ -1165,16 +1177,16 @@ function renderHome(){
  /* Mission card: WEEK badge (tap = open the weeks) + mission steps + Kick off + prize */
  const prize=lbl=>`<span class="m-prize">${carSVG(nc.color,ci+1,nc.v)}<span><small>${lbl}</small><b>${esc(nc.name)}</b></span></span>`;
  const badge=`<button class="m-week" data-act="weekpick" aria-expanded="${weekPick}" title="Choose a week"><small>WEEK</small><b>${view}</b><span>${esc(Wk.en)} ${weekPick?'▴':'▾'}</span></button>`;
- const dots=`<div class="m-dots" aria-label="Missions this week">${PLAN.map((_,d)=>`<span class="m-dot${dayComplete(view,d)?' done':''}${d===nd?' cur':''}">${dayComplete(view,d)?'✓':d===4?'★':d+1}</span>`).join('')}</div>`;
+ const dots=`<div class="m-dots" aria-label="Missions this week">${PLAN.map((_,d)=>`<span class="m-dot${dayComplete(view,d)?' done':''}${d===nd?' cur':''}">${dayComplete(view,d)?'✓':d===FIN?'★':d+1}</span>`).join('')}</div>`;
  let body;
  if(nd===-1){
-  body=`<p class="eyebrow">All 5 missions done</p>${dots}<h1>Week complete! 🏆</h1><p class="m-sub">${view<NW?'Tap the WEEK badge and choose a new week.':'Season complete. You are the champion!'}</p>
+  body=`<p class="eyebrow">All ${ND} missions done</p>${dots}<h1>Week complete! 🏆</h1><p class="m-sub">${view<NW?'Tap the WEEK badge and choose a new week.':'Season complete. You are the champion!'}</p>
    <div class="m-go"><button class="btn big" data-act="weekpick">Choose a week ▶</button><button class="btn ghost" data-act="garage">🚗 Garage</button></div>`;
  }else if(waitsTomorrow(view,nd)){
-  body=`<p class="eyebrow">${nd===4?'Final Mission':'Mission '+(nd+1)} · tomorrow</p>${dots}<h1>Done for today. Great job, Uras!</h1><p class="m-sub">Mission ${nd+1} is waiting for you tomorrow.</p><div class="m-go">${prize("Tomorrow's prize")}</div>`;
+  body=`<p class="eyebrow">${nd===FIN?'Final Mission':'Mission '+(nd+1)} · tomorrow</p>${dots}<h1>Done for today. Great job, Uras!</h1><p class="m-sub">Mission ${nd+1} is waiting for you tomorrow.</p><div class="m-go">${prize("Tomorrow's prize")}</div>`;
  }else{
   const started=dayStarted(view,nd);
-  body=`<p class="eyebrow">${nd===4?'Final Mission':'Mission '+(nd+1)+' of 5'}</p>${dots}<h1>${started?"Let's keep going, Uras!":"Today's mission is ready!"}</h1>
+  body=`<p class="eyebrow">${nd===FIN?'Final Mission':'Mission '+(nd+1)+' of '+ND}</p>${dots}<h1>${started?"Let's keep going, Uras!":"Today's mission is ready!"}</h1>
    <div class="m-tasks">${PLAN[nd].map((s,t)=>`<span class="m-chip${S.done[tk(view,nd,t)]?' done':''}">${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div>
    <div class="m-go"><button class="btn big" data-act="start">${started?'Continue ▶':'Kick off ▶'}</button>${prize('Prize')}</div>`;
  }
@@ -1189,7 +1201,7 @@ function renderHome(){
   const cls=done?'done':cur?'cur':open?'open':'lock';
   const st=done?'Completed ✓':cur?'Up next':open?'Open':(d===nd?'Tomorrow':'Locked');
   const btn=done?`<button class="btn small ghost" data-act="replay" data-d="${d}">Replay</button>`:(cur||open)?`<button class="btn small${open?' ghost':''}" data-act="playday" data-d="${d}">Play</button>`:`<span aria-hidden="true" style="font-size:24px">🔒</span>`;
-  return `<div class="fx ${cls}${d===4?' boss':''}"><span class="mnum" aria-hidden="true">${d===4?'★':d+1}</span><h3>${d===4?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('')+chantCard();
+  return `<div class="fx ${cls}${d===FIN?' boss':''}"><span class="mnum" aria-hidden="true">${d===FIN?'★':d+1}</span><h3>${d===FIN?'Final Mission':'Mission '+(d+1)}</h3><div class="ti">${day.map(s=>`<span>${TASKS[s.t].ic} ${TASKS[s.t].name}</span>`).join('')}</div><span class="st">${st}</span>${btn}</div>`}).join('')+chantCard();
 
  $('#wall').innerHTML=Wk.words.map((w,i)=>`<button class="wcard" data-say="${i}">${pic(w.p)}<b>${esc(w.en)}</b><small>${esc(w.tr)}</small>${lv.n>=2?`<em>${esc(w.ex)}</em>`:''}</button>`).join('');
 }
@@ -1201,11 +1213,11 @@ function renderMenu(){
  const ps=vqPacks(VOCAB_LEVELS[vbLevel-1]),pd=ps.filter((_,p)=>vqStars(vbLevel,p)>0).length;
  const ST=storyOf(view),sd=Math.min(sbDone(view),ST.length);
  const items=[
+  ['tower','🏔','Word Tower',`Best: ${S.tower.best} m`],
   ['quest','🗺️','Word Quest',`Level ${vbLevel} · ${pd}/${ps.length} packs`],
   ['typing','⌨️','Typing Turbo',`Level ${S.typing.level}`],
-  ['tower','🏔','Word Tower',`Best: ${S.tower.best} m`],
   ['cup','🏆','Penalty Cup',`${Object.values(S.pcup).filter(x=>x&&x.won).length} / ${NW} cups`],
-  ['story','📖','Story Time',`Week ${sbWeek||view} · ${Math.min(sbDone(sbWeek||view),storyOf(sbWeek||view).length)}/${storyOf(sbWeek||view).length}`]
+  ['story','📖','Story Time',`Week ${view} · ${sd}/${ST.length}`]
  ];
  $('#menu').innerHTML=items.map(([id,ic,t,s])=>`<button class="mtile${openPanel===id?' on':''}" data-panel="${id}" aria-expanded="${openPanel===id}"><span class="mt-ic" aria-hidden="true">${ic}</span><b>${t}</b><small>${esc(s)}</small></button>`).join('');
  document.querySelectorAll('.panel').forEach(p=>{p.hidden=p.dataset.panel!==openPanel});
@@ -1238,7 +1250,6 @@ document.addEventListener('click',e=>{
  else if(b.dataset.ttlv){S.typing.level=+b.dataset.ttlv;save();renderTypingCard();tick()}
  else if(a==='tower')startTower();
  else if(a==='sb')startSb();
- else if(b.dataset.sbw){sbWeek=+b.dataset.sbw;renderSbCard();renderMenu();tick()}
 });
 $('#open-garage').onclick=openGarage;
 $('#open-parent').onclick=openGate;
@@ -1283,7 +1294,7 @@ function startDay(w,d,replay){
 function runTask(t){
  const {w,d}=session;const spec=PLAN[d][t];const Wk=WEEKS[w-1];
  session.t=t;
- $('#play-title').textContent=`Week ${w} · ${d===4?'Final Mission':'Mission '+(d+1)} · ${TASKS[spec.t].name}`;
+ $('#play-title').textContent=`Week ${w} · ${d===FIN?'Final Mission':'Mission '+(d+1)} · ${TASKS[spec.t].name}`;
  const ctx={words:partOf(Wk,spec.part),all:Wk.words,hard:!!spec.hard,lv:lvOf(w),wk:Wk};
  GAMES[spec.t](ctx,()=>finishTask());
 }
@@ -1361,7 +1372,7 @@ const GAMES={
    const opts=shuffle([t,...sample(ctx.all.filter(w=>w!==t),n-1)]);
    stage.innerHTML=`<div class="pen"><div class="goal"><div class="keeper" id="keeper">${KEEPER}</div></div><div class="spot"></div><div class="ball" id="ball">⚽</div><div class="score">GOL ${goals}</div><div class="golt" id="golt">GOL!</div></div>
     <div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Bu ne? Doğru kelimeyi seç!</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
-    <div class="opts">${opts.map((o,k)=>`<button class="opt word" data-k="${k}">${esc(o.en)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+    <div class="opts">${opts.map((o,k)=>`<button class="opt word${wcls(o.en)}" data-k="${k}">${esc(o.en)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
    $('#g-hint').onclick=()=>say(t.en);
    let locked=false;
    stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
@@ -1413,7 +1424,7 @@ const GAMES={
   const cards=shuffle(ws.flatMap((w,id)=>[{id,kind:'p'},{id,kind:'w'}]));
   let open=[],matched=0,busy=false;
   setProg(0,ws.length);
-  stage.innerHTML=`<p class="hint center">Kartları çevir: resim ile kelimeyi eşleştir!</p><div class="mem ${ws.length>4?'many':''}">${cards.map((c,k)=>`<button class="mcard" data-k="${k}" aria-label="Kart ${k+1}"><span class="back">?</span><span class="face">${c.kind==='p'?pic(ws[c.id].p):`<b>${esc(ws[c.id].en)}</b>`}</span></button>`).join('')}</div><div class="fb" id="fb"></div>`;
+  stage.innerHTML=`<p class="hint center">Kartları çevir: resim ile kelimeyi eşleştir!</p><div class="mem ${ws.length>4?'many':''}">${cards.map((c,k)=>`<button class="mcard" data-k="${k}" aria-label="Kart ${k+1}"><span class="back">?</span><span class="face">${c.kind==='p'?pic(ws[c.id].p):`<b class="${wcls(ws[c.id].en).trim()}">${esc(ws[c.id].en)}</b>`}</span></button>`).join('')}</div><div class="fb" id="fb"></div>`;
   stage.querySelectorAll('.mcard').forEach(b=>b.onclick=()=>{
    if(busy||b.classList.contains('up'))return;const c=cards[+b.dataset.k];b.classList.add('up');tick();
    if(c.kind==='w')say(ws[c.id].en);
@@ -1479,14 +1490,14 @@ function renderCupCard(){
  if(!cupWeek||!cupOpen(cupWeek))cupWeek=cupOpen(view)?view:(WEEKS.find(x=>cupOpen(x.n))||{n:0}).n;
  $('#cup-card').innerHTML=`<div><p class="eyebrow">Football Game · <span lang="tr">futbol oyunu</span></p><h2>Penalty Cup</h2></div>
   <div class="tt-badges"><span class="lvl-badge">🏆 ${won} / ${NW}</span><small>Cups won</small></div>
-  ${cupWeek?`<button class="btn" data-act="cupplay">Play Week ${cupWeek} ▶</button>`:'<span class="note">Finish a week\'s 5 missions to open its cup</span>'}
+  ${cupWeek?`<button class="btn" data-act="cupplay">Play Week ${cupWeek} ▶</button>`:'<span class="note">Finish a week\'s '+ND+' missions to open its cup</span>'}
   <div class="tt-levels cup-weeks" role="group" aria-label="Choose a week">${WEEKS.map(x=>{const op=cupOpen(x.n),r=S.pcup[x.n];
    return `<button class="tt-lv${x.n===cupWeek?' on':''}" data-cupw="${x.n}" ${op?'':'disabled'}><b>${op?'':'🔒 '}Week ${x.n}</b><small>${r&&r.won?'🏆 '+esc(r.best):esc(x.en)}</small></button>`}).join('')}</div>`;
 }
 const cupOpen=w=>S.openAll||weekComplete(w);
 function cupCard(){
  const w=view,r=S.pcup[w],op=cupOpen(w),won=!!(r&&r.won);
- const st=won?`Won 🏆 ${r.best}`:op?'Bonus':'After 5 missions';
+ const st=won?`Won 🏆 ${r.best}`:op?'Bonus':`After ${ND} missions`;
  const btn=op?`<button class="btn small${won?' ghost':''}" data-act="cup">${won?'Replay':'Play'}</button>`:'<span aria-hidden="true" style="font-size:24px">🔒</span>';
  return `<div class="fx cupfx ${won?'done':op?'cur':'lock'}"><span class="mnum" aria-hidden="true">🏆</span><h3>Penalty Cup</h3><div class="ti"><span>⚽ 5 kicks</span><span>🧤 5 saves</span></div><span class="st">${st}</span>${btn}</div>`;
 }
@@ -1513,7 +1524,7 @@ function startCup(w){
  function kick(){
   const t=kicks[ki++%kicks.length],opts=shuffle([t,...sample(words.filter(x=>x!==t),2)]);
   stage.innerHTML=board('kick')+scene(KEEPER)+`<div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Bu ne? Doğru kelimeyi seç ve şutunu çek!</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
-   <div class="opts">${opts.map((o,k)=>`<button class="opt word" data-k="${k}">${esc(o.en)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
+   <div class="opts">${opts.map((o,k)=>`<button class="opt word${wcls(o.en)}" data-k="${k}">${esc(o.en)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
   $('#g-hint').onclick=()=>say(t.en);
   let locked=false;
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
@@ -1555,8 +1566,7 @@ function startCup(w){
 }
 
 /* ---------- Chant Time: 6th (bonus) card of every week ----------
-   10 rounds: the sentence of the week, then the example sentences of the week's words (shuffled);
-   short weeks end with the sentence of the week again. Rounds 7-10 have 2 gaps.
+   4 rounds: the sentence of the week, then example sentences of 3 week words (last round has 2 gaps).
    The sentence is read, then a drum beat lights the words one by one; at a gap the beat waits until
    the right word is tapped (no time pressure). At the end the whole sentence is read: "Chant it!" */
 function chantCard(){
@@ -1566,11 +1576,8 @@ function chantCard(){
 function startChant(w){
  const Wk=WEEKS[w-1];session={chant:true};openPlay();stage.classList.add('neon');
  const BEAT=650,clean=t=>t.replace(/[^A-Za-z']/g,'').toLowerCase();
- const CH_ROUNDS=10;
- const exs=shuffle(Wk.words.filter(x=>x.ex)).slice(0,CH_ROUNDS-1);
- const rounds=[{text:Wk.chunk,key:null}].concat(exs.map(x=>({text:x.ex,key:x.en})));
- while(rounds.length<CH_ROUNDS)rounds.push({text:Wk.chunk,key:null});
- rounds.forEach((r,i)=>{r.gaps=i>=6&&r.text.split(' ').length>=4?2:1});
+ const exs=sample(Wk.words.filter(x=>x.ex),3);
+ const rounds=[{text:Wk.chunk,key:null,gaps:1}].concat(exs.map((x,i)=>({text:x.ex,key:x.en,gaps:i===2?2:1})));
  let ri=0,mist=0;
  function beat(){const d=$('#ch-drum');if(d){d.classList.remove('hit');void d.offsetWidth;d.classList.add('hit')}tone(110,.14,'sine',.35);tone(220,.05,'triangle',.08)}
  function round(){
@@ -1597,7 +1604,7 @@ function startChant(w){
    const pool=[...new Set(Wk.words.map(x=>x.en).concat(T.map(t=>t.replace(/[.,!?]/g,''))).filter(x=>clean(x)!==rc&&clean(x).length>1))];
    const opts=shuffle([right,...sample(pool,2)]);
    const box=$('#ch-opts');
-   box.innerHTML=opts.map((o,k)=>`<button class="opt word" data-k="${k}">${esc(o)}</button>`).join('');
+   box.innerHTML=opts.map((o,k)=>`<button class="opt word${wcls(o)}" data-k="${k}">${esc(o)}</button>`).join('');
    box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     if(clean(opts[+b.dataset.k])===rc){b.classList.add('ok');good();const el=w_(i);el.textContent=T[i];el.classList.add('filled');box.innerHTML='';pos++;later(pos<T.length?step:finishRound,BEAT)}
     else{b.classList.add('no');bad();mist++;later(()=>b.classList.remove('no'),450)}
@@ -1660,13 +1667,13 @@ function startTyping(){
   stage.innerHTML=`<div class="tt-top"><span class="lvl-badge">Level ${level}</span><span class="tt-count">Word ${wi+1} / ${WPL}</span><button class="speak" id="tt-say" aria-label="Dinle">🔊 Listen</button></div>
    <div class="road"><div class="tw-snow"></div><div class="lane"></div><div class="finish"></div><div class="racer" id="racer" style="left:${carPos()}">${carSVG('#2f6fed',level)}</div></div>
    ${fw?`<div class="tt-pic">${pic(fw.p)}</div>`:''}
-   <div class="tt-word" id="tt-word" aria-live="polite">${letters.map((c,k)=>`<span class="${k<pos?'d':k===pos?'c':''}${c===' '?' sp':''}">${c===' '?'&nbsp;':esc(c)}</span>`).join('')}</div>
+   <div class="tt-word" id="tt-word" aria-live="polite">${lettersHTML(letters,pos)}</div>
    <p class="hint center">Klavyeden ya da aşağıdaki tuşlardan yaz.</p>
    <div class="kb">${['qwertyuiop','asdfghjkl','zxcvbnm'].map(r=>`<div class="kb-row">${r.split('').map(ch=>`<button class="key" data-key="${ch}" tabindex="-1">${ch}</button>`).join('')}</div>`).join('')}<div class="kb-row"><button class="key space" data-key=" " tabindex="-1">space</button></div></div>`;
   $('#tt-say').onclick=()=>say(w);
   stage.querySelectorAll('.key').forEach(b=>b.onclick=()=>press(b.dataset.key));
  }
- function paint(){const sp=$('#tt-word').children;for(let k=0;k<sp.length;k++)sp[k].className=(k<pos?'d':k===pos?'c':'')+(letters[k]===' '?' sp':'');$('#racer').style.left=carPos()}
+ function paint(){$('#tt-word').querySelectorAll('[data-k]').forEach(s=>{const k=+s.dataset.k;s.className=(k<pos?'d':k===pos?'c':'')+(letters[k]===' '?' sp':'')});$('#racer').style.left=carPos()}
  function press(ch){
   if(!$('#tt-word')||pos>=letters.length)return;
   if(normKey(ch)===normKey(letters[pos])){
@@ -1697,10 +1704,10 @@ const TOWER_EXTRA=TX('sun:güneş:☀️|moon:ay:🌙|star:yıldız:⭐|tree:ağ
  'I can run fast.:Hızlı koşabilirim.:🏃|Pass me the ball.:Topu bana pas ver.:⚽|I like football.:Futbolu severim.:⚽|My team is the best.:Benim takımım en iyisi.:🏆|Where is my bag?:Çantam nerede?:🎒|I have a red bike.:Kırmızı bir bisikletim var.:🚲|The cat is under the table.:Kedi masanın altında.:🐱|It is sunny today.:Bugün hava güneşli.:☀️|Can you swim?:Yüzebilir misin?:🏊|I am happy.:Mutluyum.:😀|We won the cup!:Kupayı kazandık!:🏆|Kick the ball to me.:Topu bana at.:🦵|This is my best friend.:Bu benim en iyi arkadaşım.:🤝|I want an apple.:Bir elma istiyorum.:🍎|Open the window, please.:Lütfen pencereyi aç.:🪟|The goalkeeper is tall.:Kaleci uzun boylu.:🧤|I play with my brother.:Kardeşimle oynarım.:👦|The dog can jump high.:Köpek yükseğe zıplayabilir.:🐶');
 /* VOCAB:BEGIN (generated by vocab.py - edit the list there, then run it) */
 const VOCAB_LEVELS=[
- {n:1,name:"Starter",tr:"Başlangıç",sub:"1. sınıf · kısa ve somut kelimeler, temel fiiller (3–5 harf)",words:TX("ant:karınca:🐜|hen:tavuk:🐔|goat:keçi:🐐|lamb:kuzu:🐑|van:minibüs:🚐|jet:jet uçağı:✈️|cap:kasket:🧢|mug:kupa bardak:☕|pot:tencere:🍲|jam:reçel:🍓|nut:fındık:🥜|pie:turta:🥧|tea:çay:🍵|zoo:hayvanat bahçesi:🦁|mum:anne:👩|dad:baba:👨|lip:dudak:👄|toe:ayak parmağı:🦶|hug:sarılmak:🤗|sit:oturmak:🪑|eat:yemek yemek:🍽️|see:görmek:👀|new:yeni:🆕|old:eski / yaşlı:👴|wet:ıslak:💦|dry:kuru:☀️|fun:eğlence:🎉|net:file:🥅|fan:taraftar:📣|hop:sekmek:🐇|tap:dokunmak:👆|hill:tepe:⛰️|lake:göl:🏞️|park:park:🛝|road:yol:🛣️|tyre:lastik:🛞|seat:koltuk:💺|horn:korna:📯|lamp:lamba:💡|wall:duvar:🧱|roof:çatı:🏠|desk:sıra / masa:🪑|rice:pirinç:🍚|soup:çorba:🍲|corn:mısır:🌽|pear:armut:🍐|kiwi:kivi:🥝|knee:diz:🦵|neck:boyun|hair:saç:💇|face:yüz:🙂|head:baş:🗣️|ring:yüzük:💍|bell:zil:🔔|gift:hediye:🎁|doll:oyuncak bebek:🪆|drum:davul:🥁|race:yarış:🏁|taxi:taksi:🚕|gold:altın:🥇|shop:dükkan:🏪|farm:çiftlik:🚜|nest:yuva:🪺|air:hava:🌬️|art:sanat:🎨|card:kart:🃏|city:şehir:🏙️|day:gün:☀️|fire:ateş:🔥|food:yiyecek:🍔|kids:çocuklar:🧒|man:adam:👨|mom:anne:👩|name:isim:📛|news:haber:📰|night:gece:🌙|page:sayfa:📄|rock:kaya:🪨|room:oda:🚪|son:oğul:👦|song:şarkı:🎵|time:zaman:⏰|town:kasaba:🏘️|TV:televizyon:📺|week:hafta:📅|word:kelime:🔤|year:yıl:🗓️|hour:saat:⏱️|bank:banka:🏦|club:kulüp:⚽|cool:havalı:😎|dark:karanlık:🌑|easy:kolay:👌|hard:zor:🧱|nice:güzel / hoş:😊|good:iyi:👍|bad:kötü:👎|love:sevmek:❤️|like:hoşlanmak:👍|play:oynamak:▶️|walk:yürümek:🚶|talk:konuşmak:💬|call:aramak:📞|come:gelmek:👋|give:vermek:🎁|take:almak:✋|make:yapmak:🛠️|buy:satın almak:🛒|pay:ödemek:💳|hit:vurmak:🏏|cut:kesmek:✂️|add:eklemek:➕|open:açmak:📂|save:kurtarmak / kaydetmek:💾|send:göndermek:📤|find:bulmak:🔍|ask:sormak:❓|want:istemek:🙏|need:ihtiyaç duymak:🆘|try:denemek:💪|top:üst / tepe:🔝|end:son:🔚|half:yarım:🌓|side:yan / taraf:↔️")},
- {n:2,name:"Explorer",tr:"Kaşif",sub:"1.–2. sınıf · günlük hayat, duygular, zaman ve yer (4–7 harf)",words:TX("jersey:forma:👕|coach:antrenör:📋|match:maç:⚽|boots:krampon:👟|wheel:tekerlek:🛞|brake:fren:🛑|driver:sürücü:🧑‍✈️|petrol:benzin:⛽|scooter:scooter:🛴|tractor:traktör:🚜|puzzle:yapboz:🧩|guitar:gitar:🎸|piano:piyano:🎹|paper:kağıt:📄|glue:yapıştırıcı:🧴|eraser:silgi:🧽|lesson:ders:📚|class:sınıf:🏫|laugh:gülmek:😂|cry:ağlamak:😢|angry:kızgın:😠|tired:yorgun:🥱|hungry:aç:🍽️|thirsty:susamış:🥤|scared:korkmuş:😨|brave:cesur:🦸|strong:güçlü:💪|tall:uzun boylu:🦒|short:kısa:📏|clean:temiz:🧼|dirty:kirli:🧹|quiet:sessiz:🤫|loud:gürültülü:📢|cookie:kurabiye:🍪|candy:şeker:🍬|pasta:makarna:🍝|salad:salata:🥗|cherry:kiraz:🍒|melon:kavun:🍈|peach:şeftali:🍑|potato:patates:🥔|tomato:domates:🍅|onion:soğan:🧅|butter:tereyağı:🧈|salt:tuz:🧂|spoon:kaşık:🥄|fork:çatal:🍴|plate:tabak:🍽️|glass:bardak:🥛|soap:sabun:🧼|brush:fırça:🪥|mirror:ayna:🪞|pillow:yastık:🛏️|watch:kol saati:⌚|tablet:tablet:📱|screen:ekran:🖥️|button:düğme:🔘|level:seviye:🆙|uncle:amca / dayı:👨|aunt:teyze / hala:👩|cousin:kuzen:🧒|street:sokak:🏘️|answer:cevap:💬|learn:öğrenmek:📚|know:bilmek:🧠|feel:hissetmek:🤗|hear:duymak:👂|look:bakmak:👀|move:hareket etmek:🏃|turn:dönmek:🔄|show:göstermek:👀|lose:kaybetmek:😞|movie:film:🎬|video:video:📹|radio:radyo:📻|heart:kalp:❤️|earth:dünya / yeryüzü:🌍|space:uzay:🚀|ground:zemin / yer:🟫|sound:ses:🔊|voice:insan sesi:🗣️|story:hikaye:📖|idea:fikir:💡|party:parti:🎉|price:fiyat:🏷️|store:mağaza:🏬|police:polis:👮|child:çocuk:🧒|woman:kadın:👩|parents:anne baba:👨‍👩‍👦|young:genç:🧒|little:küçük:🤏|huge:kocaman:🐘|funny:komik:😂|crazy:çılgın:🤪|amazing:harika:🤩|super:süper:🦸|ready:hazır:✅|sure:emin:👍|safe:güvenli:🦺|free:serbest / bedava:🆓|true:doğru:✔️|wrong:yanlış:❌|first:birinci:🥇|second:ikinci:🥈|third:üçüncü:🥉|early:erken:🌅|late:geç:🌙|today:bugün:📅|tonight:bu gece:🌃|soon:yakında:⏳|again:tekrar:🔁|always:her zaman:♾️|never:asla:🚫|near:yakın:📍|far:uzak:🏔️|inside:içeride:🏠|outside:dışarıda:🌳|above:üstünde:⬆️|below:altında:⬇️|behind:arkasında:🔙|front:ön:⏩")},
- {n:3,name:"Player",tr:"Oyuncu",sub:"2. sınıf · fiiller, sıfatlar, aylar, futbol ve araba kelimeleri (5–10 harf)",words:TX("referee:hakem:🧑‍⚖️|whistle:düdük:📯|corner:korner:🚩|penalty:penaltı:⚽|striker:forvet:⚽|defender:defans oyuncusu:🛡️|captain:kaptan:©️|trophy:kupa / ödül:🏆|medal:madalya:🏅|engine:motor:⚙️|helmet:kask:⛑️|traffic:trafik:🚦|bridge:köprü:🌉|tunnel:tünel:🚇|station:istasyon:🚉|airport:havalimanı:🛫|island:ada:🏝️|forest:orman:🌲|mountain:dağ:⛰️|river:nehir:🏞️|beach:plaj:🏖️|desert:çöl:🏜️|ocean:okyanus:🌊|planet:gezegen:🪐|dragon:ejderha:🐉|octopus:ahtapot:🐙|dolphin:yunus:🐬|shark:köpekbalığı:🦈|whale:balina:🐳|parrot:papağan:🦜|camel:deve:🐫|puppy:yavru köpek:🐶|kitten:yavru kedi:🐱|controller:oyun kolu:🎮|joystick:joystick:🕹️|practice:antrenman:🏋️|swim:yüzmek:🏊|ride:binmek:🚲|drive:araba sürmek:🚗|push:itmek:👐|pull:çekmek:🪢|carry:taşımak:🎒|build:inşa etmek:🏗️|draw:çizmek:✏️|read:okumak:📖|sing:şarkı söylemek:🎤|listen:dinlemek:👂|speak:konuşmak:🗣️|think:düşünmek:🤔|help:yardım etmek:🤝|share:paylaşmak:🤲|wait:beklemek:⏳|hurry:acele etmek:🏃|finish:bitirmek:🏁|start:başlamak:▶️|quick:çabuk:⚡|heavy:ağır:🏋️|light:hafif:🪶|empty:boş:🫙|full:dolu:🍽️|round:yuvarlak:⚪|square:kare:🟦|circle:daire:⭕|triangle:üçgen:🔺|Monday:pazartesi|Tuesday:salı|Wednesday:çarşamba|Thursday:perşembe|Friday:cuma|January:ocak:❄️|February:şubat:❄️|March:mart:🌱|April:nisan:🌷|May:mayıs:🌸|June:haziran:☀️|July:temmuz:🏖️|August:ağustos:🍉|September:eylül:🍂|October:ekim:🎃|November:kasım:🍁|December:aralık:🎄|season:mevsim / sezon:🍂|league:lig:🏆|record:rekor:📀|track:pist:🛤️|training:antrenman:🏋️|history:tarih:📜|science:bilim:🔬|language:dil:🗣️|English:İngilizce:🇬🇧|internet:internet:🌐|online:çevrim içi:💻|student:öğrenci:🧑‍🎓|question:soru:❓|problem:sorun:🧩|example:örnek:💡|number:sayı:🔢|important:önemli:⭐|different:farklı:🔀|difficult:zor:🧗|perfect:mükemmel:💯|popular:popüler:🌟|together:birlikte:🤝|everyone:herkes:👨‍👩‍👧‍👦|everything:her şey:🌈|something:bir şey:❓|remember:hatırlamak:🧠|understand:anlamak:💡|believe:inanmak:🙏|happen:olmak / gerçekleşmek:⚡|visit:ziyaret etmek:🏠|enjoy:keyfini çıkarmak:😄|follow:takip etmek:👣|forget:unutmak:🤷|please:lütfen:🙏|sorry:özür dilerim:😔|thanks:teşekkürler:🙏|okay:tamam:👌|hey:hey:👋")},
- {n:4,name:"Champion",tr:"Şampiyon",sub:"2.–3. sınıf · iki kelimelik ifadeler ve kısa cümleler",words:TX("seat belt:emniyet kemeri:🚗|traffic light:trafik ışığı:🚦|police car:polis arabası:🚓|fire truck:itfaiye aracı:🚒|free kick:serbest vuruş:⚽|corner kick:korner atışı:🚩|game over:oyun bitti:🎮|next level:sonraki seviye:🆙|press start:başlata bas:▶️|high score:en yüksek skor:🏆|best friend:en iyi arkadaş:🤝|ice cream:dondurma:🍦|hot dog:sosisli sandviç:🌭|swimming pool:yüzme havuzu:🏊|summer holiday:yaz tatili:🏖️|race car:yarış arabası:🏎️|football match:futbol maçı:🏟️|golden cup:altın kupa:🏆|bus stop:otobüs durağı:🚏|birthday cake:doğum günü pastası:🎂|good night:iyi geceler:🌙|see you soon:yakında görüşürüz:👋|well played:iyi oynadın:👏|my turn:sıra bende:🙋|I scored a goal!:Gol attım!:⚽|Can I play, please?:Oynayabilir miyim lütfen?:🙋|Let's go to the park.:Hadi parka gidelim.:🛝|My favourite colour is blue.:En sevdiğim renk mavi.:🔵|I am faster than you!:Senden daha hızlıyım!:🏃|The referee blows the whistle.:Hakem düdüğü çalar.:📯|Put on your seat belt.:Emniyet kemerini tak.:🚗|Press start to play.:Oynamak için başlata bas.:▶️|We are the champions!:Biz şampiyonuz!:🏆|I can ride a bike.:Bisiklete binebilirim.:🚲|What time is it?:Saat kaç?:⏰|It is my turn.:Sıra bende.:🙋|Good night, Mum.:İyi geceler anne.:🌙|The car is very fast.:Araba çok hızlı.:🏎️|I like to play games.:Oyun oynamayı severim.:🎮|Pass the ball, please.:Topu pas ver lütfen.:⚽")}
+ {n:1,name:"Starter",tr:"Başlangıç",sub:"1. sınıf · kısa ve somut kelimeler, temel fiiller (3–5 harf)",words:TX("ant:karınca:🐜|hen:tavuk:🐔|goat:keçi:🐐|lamb:kuzu:🐑|van:minibüs:🚐|jet:jet uçağı:✈️|cap:kasket:🧢|mug:kupa bardak:☕|pot:tencere:🍲|jam:reçel:🍓|nut:fındık:🥜|pie:turta:🥧|tea:çay:🍵|zoo:hayvanat bahçesi:🦁|mum:anne:👩|dad:baba:👨|lip:dudak:👄|toe:ayak parmağı:🦶|hug:sarılmak:🤗|sit:oturmak:🪑|eat:yemek yemek:🍽️|see:görmek:👀|new:yeni:🆕|old:eski / yaşlı:👴|wet:ıslak:💦|dry:kuru:☀️|fun:eğlence:🎉|net:file:🥅|fan:taraftar:📣|hop:sekmek:🐇|tap:dokunmak:👆|hill:tepe:⛰️|lake:göl:🏞️|park:park:🛝|road:yol:🛣️|tyre:lastik:🛞|seat:koltuk:💺|horn:korna:📯|lamp:lamba:💡|wall:duvar:🧱|roof:çatı:🏠|desk:sıra / masa:🪑|rice:pirinç:🍚|soup:çorba:🍲|corn:mısır:🌽|pear:armut:🍐|kiwi:kivi:🥝|knee:diz:🦵|neck:boyun|hair:saç:💇|face:yüz:🙂|head:baş:🗣️|ring:yüzük:💍|bell:zil:🔔|gift:hediye:🎁|doll:oyuncak bebek:🪆|drum:davul:🥁|race:yarış:🏁|taxi:taksi:🚕|gold:altın:🥇|shop:dükkan:🏪|farm:çiftlik:🚜|nest:yuva:🪺|air:hava:🌬️|art:sanat:🎨|card:kart:🃏|city:şehir:🏙️|day:gün:☀️|fire:ateş:🔥|food:yiyecek:🍔|kids:çocuklar:🧒|man:adam:👨|mom:anne:👩|name:isim:📛|news:haber:📰|night:gece:🌙|page:sayfa:📄|rock:kaya:🪨|room:oda:🚪|son:oğul:👦|song:şarkı:🎵|time:zaman:⏰|town:kasaba:🏘️|TV:televizyon:📺|week:hafta:📅|word:kelime:🔤|year:yıl:🗓️|hour:saat:⏱️|bank:banka:🏦|club:kulüp:⚽|cool:havalı:😎|dark:karanlık:🌑|easy:kolay:👌|hard:zor:🧱|nice:güzel / hoş:😊|good:iyi:👍|bad:kötü:👎|love:sevmek:❤️|like:hoşlanmak:👍|play:oynamak:▶️|walk:yürümek:🚶|talk:konuşmak:💬|call:aramak:📞|come:gelmek:👋|give:vermek:🎁|take:almak:✋|make:yapmak:🛠️|buy:satın almak:🛒|pay:ödemek:💳|hit:vurmak:🏏|cut:kesmek:✂️|add:eklemek:➕|open:açmak:📂|save:kurtarmak / kaydetmek:💾|send:göndermek:📤|find:bulmak:🔍|ask:sormak:❓|want:istemek:🙏|need:ihtiyaç duymak:🆘|try:denemek:💪")},
+ {n:2,name:"Explorer",tr:"Kaşif",sub:"1.–2. sınıf · günlük hayat, duygular, zaman ve yer (4–7 harf)",words:TX("top:üst / tepe:🔝|end:son:🔚|half:yarım:🌓|side:yan / taraf:↔️|jersey:forma:👕|coach:antrenör:📋|match:maç:⚽|boots:krampon:👟|wheel:tekerlek:🛞|brake:fren:🛑|driver:sürücü:🧑‍✈️|petrol:benzin:⛽|scooter:scooter:🛴|tractor:traktör:🚜|puzzle:yapboz:🧩|guitar:gitar:🎸|piano:piyano:🎹|paper:kağıt:📄|glue:yapıştırıcı:🧴|eraser:silgi:🧽|lesson:ders:📚|class:sınıf:🏫|laugh:gülmek:😂|cry:ağlamak:😢|angry:kızgın:😠|tired:yorgun:🥱|hungry:aç:🍽️|thirsty:susamış:🥤|scared:korkmuş:😨|brave:cesur:🦸|strong:güçlü:💪|tall:uzun boylu:🦒|short:kısa:📏|clean:temiz:🧼|dirty:kirli:🧹|quiet:sessiz:🤫|loud:gürültülü:📢|cookie:kurabiye:🍪|candy:şeker:🍬|pasta:makarna:🍝|salad:salata:🥗|cherry:kiraz:🍒|melon:kavun:🍈|peach:şeftali:🍑|potato:patates:🥔|tomato:domates:🍅|onion:soğan:🧅|butter:tereyağı:🧈|salt:tuz:🧂|spoon:kaşık:🥄|fork:çatal:🍴|plate:tabak:🍽️|glass:bardak:🥛|soap:sabun:🧼|brush:fırça:🪥|mirror:ayna:🪞|pillow:yastık:🛏️|watch:kol saati:⌚|tablet:tablet:📱|screen:ekran:🖥️|button:düğme:🔘|level:seviye:🆙|uncle:amca / dayı:👨|aunt:teyze / hala:👩|cousin:kuzen:🧒|street:sokak:🏘️|answer:cevap:💬|learn:öğrenmek:📚|know:bilmek:🧠|feel:hissetmek:🤗|hear:duymak:👂|look:bakmak:👀|move:hareket etmek:🏃|turn:dönmek:🔄|show:göstermek:👀|lose:kaybetmek:😞|movie:film:🎬|video:video:📹|radio:radyo:📻|heart:kalp:❤️|earth:dünya / yeryüzü:🌍|space:uzay:🚀|ground:zemin / yer:🟫|sound:ses:🔊|voice:insan sesi:🗣️|story:hikaye:📖|idea:fikir:💡|party:parti:🎉|price:fiyat:🏷️|store:mağaza:🏬|police:polis:👮|child:çocuk:🧒|woman:kadın:👩|parents:anne baba:👨‍👩‍👦|young:genç:🧒|little:küçük:🤏|huge:kocaman:🐘|funny:komik:😂|crazy:çılgın:🤪|amazing:harika:🤩|super:süper:🦸|ready:hazır:✅|sure:emin:👍|safe:güvenli:🦺|free:serbest / bedava:🆓|true:doğru:✔️|wrong:yanlış:❌|first:birinci:🥇|second:ikinci:🥈|third:üçüncü:🥉|early:erken:🌅|late:geç:🌙|today:bugün:📅|tonight:bu gece:🌃|soon:yakında:⏳|again:tekrar:🔁|always:her zaman:♾️|never:asla:🚫|near:yakın:📍|far:uzak:🏔️")},
+ {n:3,name:"Player",tr:"Oyuncu",sub:"2. sınıf · fiiller, sıfatlar, aylar, futbol ve araba kelimeleri (5–10 harf)",words:TX("inside:içeride:🏠|outside:dışarıda:🌳|above:üstünde:⬆️|below:altında:⬇️|behind:arkasında:🔙|front:ön:⏩|referee:hakem:🧑‍⚖️|whistle:düdük:📯|corner:korner:🚩|penalty:penaltı:⚽|striker:forvet:⚽|defender:defans oyuncusu:🛡️|captain:kaptan:©️|trophy:kupa / ödül:🏆|medal:madalya:🏅|engine:motor:⚙️|helmet:kask:⛑️|traffic:trafik:🚦|bridge:köprü:🌉|tunnel:tünel:🚇|station:istasyon:🚉|airport:havalimanı:🛫|island:ada:🏝️|forest:orman:🌲|mountain:dağ:⛰️|river:nehir:🏞️|beach:plaj:🏖️|desert:çöl:🏜️|ocean:okyanus:🌊|planet:gezegen:🪐|dragon:ejderha:🐉|octopus:ahtapot:🐙|dolphin:yunus:🐬|shark:köpekbalığı:🦈|whale:balina:🐳|parrot:papağan:🦜|camel:deve:🐫|puppy:yavru köpek:🐶|kitten:yavru kedi:🐱|controller:oyun kolu:🎮|joystick:joystick:🕹️|practice:antrenman:🏋️|swim:yüzmek:🏊|ride:binmek:🚲|drive:araba sürmek:🚗|push:itmek:👐|pull:çekmek:🪢|carry:taşımak:🎒|build:inşa etmek:🏗️|draw:çizmek:✏️|read:okumak:📖|sing:şarkı söylemek:🎤|listen:dinlemek:👂|speak:konuşmak:🗣️|think:düşünmek:🤔|help:yardım etmek:🤝|share:paylaşmak:🤲|wait:beklemek:⏳|hurry:acele etmek:🏃|finish:bitirmek:🏁|start:başlamak:▶️|quick:çabuk:⚡|heavy:ağır:🏋️|light:hafif:🪶|empty:boş:🫙|full:dolu:🍽️|round:yuvarlak:⚪|square:kare:🟦|circle:daire:⭕|triangle:üçgen:🔺|Monday:pazartesi|Tuesday:salı|Wednesday:çarşamba|Thursday:perşembe|Friday:cuma|January:ocak:❄️|February:şubat:❄️|March:mart:🌱|April:nisan:🌷|May:mayıs:🌸|June:haziran:☀️|July:temmuz:🏖️|August:ağustos:🍉|September:eylül:🍂|October:ekim:🎃|November:kasım:🍁|December:aralık:🎄|season:mevsim / sezon:🍂|league:lig:🏆|record:rekor:📀|track:pist:🛤️|training:antrenman:🏋️|history:tarih:📜|science:bilim:🔬|language:dil:🗣️|English:İngilizce:🇬🇧|internet:internet:🌐|online:çevrim içi:💻|student:öğrenci:🧑‍🎓|question:soru:❓|problem:sorun:🧩|example:örnek:💡|number:sayı:🔢|important:önemli:⭐|different:farklı:🔀|difficult:zor:🧗|perfect:mükemmel:💯|popular:popüler:🌟|together:birlikte:🤝|everyone:herkes:👨‍👩‍👧‍👦|everything:her şey:🌈|something:bir şey:❓|remember:hatırlamak:🧠|understand:anlamak:💡|believe:inanmak:🙏|happen:olmak / gerçekleşmek:⚡|visit:ziyaret etmek:🏠|enjoy:keyfini çıkarmak:😄|follow:takip etmek:👣|forget:unutmak:🤷")},
+ {n:4,name:"Champion",tr:"Şampiyon",sub:"2.–3. sınıf · iki kelimelik ifadeler ve kısa cümleler",words:TX("please:lütfen:🙏|sorry:özür dilerim:😔|thanks:teşekkürler:🙏|okay:tamam:👌|hey:hey:👋|seat belt:emniyet kemeri:🚗|traffic light:trafik ışığı:🚦|police car:polis arabası:🚓|fire truck:itfaiye aracı:🚒|free kick:serbest vuruş:⚽|corner kick:korner atışı:🚩|game over:oyun bitti:🎮|next level:sonraki seviye:🆙|press start:başlata bas:▶️|high score:en yüksek skor:🏆|best friend:en iyi arkadaş:🤝|ice cream:dondurma:🍦|hot dog:sosisli sandviç:🌭|swimming pool:yüzme havuzu:🏊|summer holiday:yaz tatili:🏖️|race car:yarış arabası:🏎️|football match:futbol maçı:🏟️|golden cup:altın kupa:🏆|bus stop:otobüs durağı:🚏|birthday cake:doğum günü pastası:🎂|good night:iyi geceler:🌙|see you soon:yakında görüşürüz:👋|well played:iyi oynadın:👏|my turn:sıra bende:🙋|I scored a goal!:Gol attım!:⚽|Can I play, please?:Oynayabilir miyim lütfen?:🙋|Let's go to the park.:Hadi parka gidelim.:🛝|My favourite colour is blue.:En sevdiğim renk mavi.:🔵|I am faster than you!:Senden daha hızlıyım!:🏃|The referee blows the whistle.:Hakem düdüğü çalar.:📯|Put on your seat belt.:Emniyet kemerini tak.:🚗|Press start to play.:Oynamak için başlata bas.:▶️|We are the champions!:Biz şampiyonuz!:🏆|I can ride a bike.:Bisiklete binebilirim.:🚲|What time is it?:Saat kaç?:⏰|It is my turn.:Sıra bende.:🙋|Good night, Mum.:İyi geceler anne.:🌙|The car is very fast.:Araba çok hızlı.:🏎️|I like to play games.:Oyun oynamayı severim.:🎮|Pass the ball, please.:Topu pas ver lütfen.:⚽|goal kick:kale vuruşu:🥅|penalty kick:penaltı vuruşu:⚽|kick off:başlama vuruşu:⚽|half time:devre arası:⏱️|full time:maç sonu:🏁|extra time:uzatma:⏰|team captain:takım kaptanı:©️|home team:ev sahibi takım:🏠|away team:deplasman takımı:🚌|score a goal:gol at:⚽|save the ball:topu kurtar:🧤|throw in:taç atışı:🙌|golden boot:altın ayakkabı:👟|player of the match:maçın oyuncusu:🌟|race track:yarış pisti:🏁|pit stop:pit stop:🔧|car wash:araba yıkama:🧽|gas station:benzin istasyonu:⛽|parking lot:otopark:🅿️|speed limit:hız sınırı:🚦|sports car:spor araba:🏎️|school bus:okul otobüsü:🚌|fire station:itfaiye istasyonu:🚒|police station:karakol:🚓|video game:video oyunu:🎮|new game:yeni oyun:🆕|save game:oyunu kaydet:💾|level up:seviye atla:🆙|bonus level:bonus seviye:⭐|extra life:ekstra can:❤️|power up:güçlendirme:⚡|start button:başlat düğmesi:▶️|pause button:durdur düğmesi:⏸️|good luck:iyi şanslar:🍀|happy new year:mutlu yıllar:🎆|thank you very much:çok teşekkürler:🙏|excuse me:afedersiniz:🙋|I'm sorry:özür dilerim:😔|no problem:sorun değil:👌|come on:hadi:💪|let's go:hadi gidelim:🚀|watch out:dikkat et:⚠️|be careful:dikkatli ol:⚠️|hurry up:acele et:⏩|slow down:yavaşla:🐢|sit down:otur:🪑|stand up:ayağa kalk:🧍|line up:sıraya gir:🚶|clean up:topla / temizle:🧹|I scored two goals.:İki gol attım.:⚽|My team won the match.:Takımım maçı kazandı.:🏆|The goalkeeper saved the ball.:Kaleci topu kurtardı.:🧤|The referee shows a yellow card.:Hakem sarı kart gösteriyor.:🟨|We play football after school.:Okuldan sonra futbol oynarız.:⚽|My favourite team is red and white.:En sevdiğim takım kırmızı beyaz.:🔴|The race car is very fast.:Yarış arabası çok hızlı.:🏎️|Dad washes the car.:Babam arabayı yıkar.:🧽|We stop at the red light.:Kırmızı ışıkta dururuz.:🚦|The bus is full of children.:Otobüs çocuklarla dolu.:🚌|I want to be a racing driver.:Yarış pilotu olmak istiyorum.:🏁|Can I play a video game?:Video oyunu oynayabilir miyim?:🎮|I am on level ten!:Onuncu seviyedeyim!:🆙|Press the button to jump.:Zıplamak için düğmeye bas.:🔘|I won the game!:Oyunu kazandım!:🏆|Let's play together.:Hadi birlikte oynayalım.:🤝|It is my birthday today.:Bugün benim doğum günüm.:🎂|I have a new red ball.:Yeni kırmızı bir topum var.:⚽|My sister likes to read.:Ablam okumayı sever.:📖|My dad is a good cook.:Babam iyi yemek yapar.:🍳|I brush my teeth every morning.:Her sabah dişlerimi fırçalarım.:🪥|I go to bed at nine.:Saat dokuzda yatarım.:🛏️|It is time for school.:Okul zamanı.:🏫|Open your English book.:İngilizce kitabını aç.:📘|Listen and repeat.:Dinle ve tekrar et.:👂|Raise your hand, please.:Lütfen elini kaldır.:✋")}
 ];
 /* VOCAB:END */
 const VOCAB_ALL=VOCAB_LEVELS.flatMap(L=>L.words);
@@ -1752,7 +1759,7 @@ function startPack(n,p){
   $('#play-title').textContent=title()+' · Quiz';setProg(qi,qs.length);
   const t=qs[qi],opts=shuffle([t,...sample(pack.filter(w=>w!==t),2)]),usePics=opts.every(o=>o.p);
   stage.innerHTML=`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="saytxt" lang="en">${esc(t.en)}</p><p class="hint">${usePics?'Doğru resme dokun!':'Doğru Türkçe anlamı seç!'}</p></div>
-   <div class="opts">${opts.map((o,k)=>`<button class="opt${usePics?'':' word'}" data-k="${k}">${usePics?pic(o.p):esc(o.tr)}</button>`).join('')}</div><div class="fb" id="fb"></div><p class="center vq-count">Question ${qi+1} / ${qs.length}</p>`;
+   <div class="opts">${opts.map((o,k)=>`<button class="opt${usePics?'':' word'+wcls(o.tr)}" data-k="${k}">${usePics?pic(o.p):esc(o.tr)}</button>`).join('')}</div><div class="fb" id="fb"></div><p class="center vq-count">Question ${qi+1} / ${qs.length}</p>`;
   $('#g-speak').onclick=()=>say(t.en);later(()=>say(t.en),300);
   let locked=false;
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
@@ -1820,7 +1827,7 @@ function startTower(){
  function place(){const c=plats[floor].x+PW/2;kid.style.left=`calc(${c}% - 23px)`;kid.style.bottom=surf(floor)+'px';world.style.transform=`translateY(${Math.max(0,surf(floor)-60)}px)`;
   world.querySelectorAll('.tw-plat.next').forEach(e=>e.classList.remove('next'));const n=$('#tw-p'+(floor+1));if(n)n.classList.add('next');const o=$('#tw-p'+floor);if(o)o.classList.add('done')}
  const skip=()=>{while(pos<letters.length&&!typable(letters[pos]))pos++};
- function paint(){const el=$('#tw-word');el.classList.toggle('long',letters.length>10);el.innerHTML=letters.map((c,k)=>`<span class="${k<pos?'d':k===pos?'c':''}${c===' '?' sp':''}">${c===' '?'&nbsp;':esc(c)}</span>`).join('')}
+ function paint(){const el=$('#tw-word');el.classList.toggle('long',letters.length>10);el.innerHTML=lettersHTML(letters,pos)}
  function load(){
   if(!$('#tw-word'))return;const w=plats[floor+1].w;const s=stageOf(floor+1);
   letters=w.en.split('');pos=0;skip();
@@ -1948,18 +1955,14 @@ const STORIES={
 };
 const storyOf=w=>STORIES[w]||[];
 const sbDone=w=>{const v=S.sb&&S.sb[w];return v===true?1:(+v||0)};
-/* Story Time: pick any week's story (defaults to the current week) */
-let sbWeek=0;
 function renderSbCard(){
- const sw=sbWeek||view,ST=storyOf(sw),n=ST.length,d=sbDone(sw);
- $('#sb-card').innerHTML=`<div><p class="eyebrow">Sentence Builder · <span lang="tr">cümle kurma</span></p><h2>Week ${sw} Story</h2></div>
-  <div class="tt-badges"><span class="lvl-badge">${d>=n?'✓ Story done':`Paragraph ${d+1} / ${n}`}</span><small>${esc(WEEKS[sw-1].en)}</small><span class="sb-dots">${ST.map((_,k)=>`<i class="${k<d?'on':''}"></i>`).join('')}</span></div>
-  <button class="btn" data-act="sb">${d>=n?'Play again':d?'Continue':'Play'} ▶</button>
-  <div class="tt-levels cup-weeks" role="group" aria-label="Choose a week">${WEEKS.map(x=>{const sn=storyOf(x.n).length,sd=Math.min(sbDone(x.n),sn);
-   return `<button class="tt-lv${x.n===sw?' on':''}" data-sbw="${x.n}"><b>Week ${x.n}</b><small>${sd>=sn&&sn?'✓ Done':sd+' / '+sn}</small></button>`}).join('')}</div>`;
+ const ST=storyOf(view),n=ST.length,d=sbDone(view);
+ $('#sb-card').innerHTML=`<div><p class="eyebrow">Sentence Builder · <span lang="tr">cümle kurma</span></p><h2>Week ${view} Story</h2></div>
+  <div class="tt-badges"><span class="lvl-badge">${d>=n?'✓ Story done':`Paragraph ${d+1} / ${n}`}</span><small>${esc(WEEKS[view-1].en)}</small><span class="sb-dots">${ST.map((_,k)=>`<i class="${k<d?'on':''}"></i>`).join('')}</span></div>
+  <button class="btn" data-act="sb">${d>=n?'Play again':d?'Continue':'Play'} ▶</button>`;
 }
 function startSb(){
- const w=sbWeek||view,ST=storyOf(w);if(!ST[0])return;
+ const w=view,ST=storyOf(w);if(!ST[0])return;
  let pi=sbDone(w)>=ST.length?0:sbDone(w),si=0,drag=null;
  session={sb:true};openPlay();
  const P=()=>ST[pi];
@@ -2111,7 +2114,7 @@ function renderParent(){
 
   <div><h3>12-Week Plan · kolaydan zora</h3>
    <div class="tablewrap"><table><thead><tr><th>Week</th><th>Topic</th><th>Curriculum · müfredat</th><th>Words</th><th>Progress</th></tr></thead><tbody>
-   ${WEEKS.map(x=>`<tr class="${x.n===cur?'cur':''}"><td>${x.n}<br><small>Level ${x.lv}</small></td><td><b>${esc(x.en)}</b> <small>(${esc(x.tr)})</small><br><small>${esc(x.chunk)}</small></td><td>${esc(x.src)}</td><td>${x.words.map(w=>esc(w.en)).join(', ')}</td><td>${PLAN.filter((_,dd)=>dayComplete(x.n,dd)).length}/5</td></tr>`).join('')}
+   ${WEEKS.map(x=>`<tr class="${x.n===cur?'cur':''}"><td>${x.n}<br><small>Level ${x.lv}</small></td><td><b>${esc(x.en)}</b> <small>(${esc(x.tr)})</small><br><small>${esc(x.chunk)}</small></td><td>${esc(x.src)}</td><td>${x.words.map(w=>esc(w.en)).join(', ')}</td><td>${PLAN.filter((_,dd)=>dayComplete(x.n,dd)).length}/${ND}</td></tr>`).join('')}
    </tbody></table></div>
    <p class="note" style="margin-top:8px">Zorluk: Seviye 1'de 3 seçenek ve silik harf ipuçları var. Seviye 2'de "Find the ..." gibi kısa yönergeler gelir ve ipuçları azalır. Seviye 3'te 4 seçenek ve 6 kart çifti var. Kelime tam cümle içinde dinlenir, harf ipucu verilmez.</p></div>
 

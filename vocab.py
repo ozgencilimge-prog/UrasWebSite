@@ -91,6 +91,28 @@ forget:unutmak:🤷|please:lütfen:🙏|sorry:özür dilerim:😔|thanks:teşekk
 ''',
 }
 
+# More Level 4 (Champion) phrases and short sentences, so every level has 12 packs of 10.
+CHAMPION_ADD = '''
+goal kick:kale vuruşu:🥅|penalty kick:penaltı vuruşu:⚽|kick off:başlama vuruşu:⚽|half time:devre arası:⏱️|full time:maç sonu:🏁|extra time:uzatma:⏰|team captain:takım kaptanı:©️|home team:ev sahibi takım:🏠
+away team:deplasman takımı:🚌|score a goal:gol at:⚽|save the ball:topu kurtar:🧤|throw in:taç atışı:🙌|golden boot:altın ayakkabı:👟|player of the match:maçın oyuncusu:🌟|race track:yarış pisti:🏁|pit stop:pit stop:🔧
+car wash:araba yıkama:🧽|gas station:benzin istasyonu:⛽|parking lot:otopark:🅿️|speed limit:hız sınırı:🚦|sports car:spor araba:🏎️|school bus:okul otobüsü:🚌|fire station:itfaiye istasyonu:🚒|police station:karakol:🚓
+video game:video oyunu:🎮|new game:yeni oyun:🆕|save game:oyunu kaydet:💾|level up:seviye atla:🆙|bonus level:bonus seviye:⭐|extra life:ekstra can:❤️|power up:güçlendirme:⚡|start button:başlat düğmesi:▶️
+pause button:durdur düğmesi:⏸️|good luck:iyi şanslar:🍀|happy new year:mutlu yıllar:🎆|thank you very much:çok teşekkürler:🙏|excuse me:afedersiniz:🙋|I'm sorry:özür dilerim:😔|no problem:sorun değil:👌|come on:hadi:💪
+let's go:hadi gidelim:🚀|watch out:dikkat et:⚠️|be careful:dikkatli ol:⚠️|hurry up:acele et:⏩|slow down:yavaşla:🐢|sit down:otur:🪑|stand up:ayağa kalk:🧍|line up:sıraya gir:🚶|clean up:topla / temizle:🧹
+I scored two goals.:İki gol attım.:⚽|My team won the match.:Takımım maçı kazandı.:🏆|The goalkeeper saved the ball.:Kaleci topu kurtardı.:🧤|The referee shows a yellow card.:Hakem sarı kart gösteriyor.:🟨
+We play football after school.:Okuldan sonra futbol oynarız.:⚽|My favourite team is red and white.:En sevdiğim takım kırmızı beyaz.:🔴|The race car is very fast.:Yarış arabası çok hızlı.:🏎️|Dad washes the car.:Babam arabayı yıkar.:🧽
+We stop at the red light.:Kırmızı ışıkta dururuz.:🚦|The bus is full of children.:Otobüs çocuklarla dolu.:🚌|I want to be a racing driver.:Yarış pilotu olmak istiyorum.:🏁|Can I play a video game?:Video oyunu oynayabilir miyim?:🎮
+I am on level ten!:Onuncu seviyedeyim!:🆙|Press the button to jump.:Zıplamak için düğmeye bas.:🔘|I won the game!:Oyunu kazandım!:🏆|Let's play together.:Hadi birlikte oynayalım.:🤝|It is my birthday today.:Bugün benim doğum günüm.:🎂
+I have a new red ball.:Yeni kırmızı bir topum var.:⚽|My sister likes to read.:Ablam okumayı sever.:📖|My dad is a good cook.:Babam iyi yemek yapar.:🍳|I brush my teeth every morning.:Her sabah dişlerimi fırçalarım.:🪥
+I go to bed at nine.:Saat dokuzda yatarım.:🛏️|It is time for school.:Okul zamanı.:🏫|Open your English book.:İngilizce kitabını aç.:📘|Listen and repeat.:Dinle ve tekrar et.:👂|Raise your hand, please.:Lütfen elini kaldır.:✋
+Can I go to the toilet?:Tuvalete gidebilir miyim?:🚻|I am hungry. Let's eat!:Acıktım. Hadi yiyelim!:🍽️|I like pizza and juice.:Pizza ve meyve suyu severim.:🍕|The cat is on the sofa.:Kedi kanepenin üstünde.:🐱|The dog is under the bed.:Köpek yatağın altında.:🐶
+Look at the big plane!:Şu büyük uçağa bak!:✈️|The sun is hot today.:Bugün güneş sıcak.:☀️|Put on your hat and coat.:Şapkanı ve montunu giy.:🧥|How are you today?:Bugün nasılsın?:🙂|I am fine, thank you.:İyiyim, teşekkür ederim.:👍
+What is your favourite colour?:En sevdiğin renk ne?:🎨|How old is your sister?:Ablan kaç yaşında?:👧|Where do you live?:Nerede yaşıyorsun?:🏠|I live in a big city.:Büyük bir şehirde yaşıyorum.:🏙️|My friend has a blue bike.:Arkadaşımın mavi bir bisikleti var.:🚲
+The train goes very fast.:Tren çok hızlı gider.:🚂|I can count to twenty.:Yirmiye kadar sayabilirim.:🔢|Monday is my football day.:Pazartesi benim futbol günüm.:📅|We have English on Friday.:Cuma günü İngilizce dersimiz var.:📘|I love my family very much.:Ailemi çok seviyorum.:❤️
+The game starts at five.:Maç beşte başlıyor.:⏰|Kick the ball into the goal!:Topu kaleye vur!:🥅|Run fast and catch the ball!:Hızlı koş ve topu yakala!:🏃|Good game, everyone!:Herkese iyi oyunlar!:👏
+'''
+LEVEL_SIZE = 120   # 12 packs of 10 words in every Word Quest level
+
 def parse(block):
     out = []
     for item in re.split(r'[|\n]', block):
@@ -173,7 +195,7 @@ def main():
     dropped = []
     for L in LEVELS:
         kept = []
-        for w in parse(L['words'] + '\n' + A1_ADD.get(L['n'], '')):
+        for w in parse(L['words'] + '\n' + A1_ADD.get(L['n'], '') + '\n' + (CHAMPION_ADD if L['n'] == 4 else '')):
             k = w['en'].lower()
             if k in have or k in seen:
                 dropped.append(w['en'])
@@ -181,6 +203,17 @@ def main():
             seen.add(k)
             kept.append(w)
         levels.append(dict(n=L['n'], name=L['name'], tr=L['tr'], sub=L['sub'], words=kept))
+
+    # Balance: every level gets exactly LEVEL_SIZE words; extra words move up to the next level
+    for i in range(len(levels) - 1):
+        if len(levels[i]['words']) > LEVEL_SIZE:
+            extra = levels[i]['words'][LEVEL_SIZE:]
+            levels[i]['words'] = levels[i]['words'][:LEVEL_SIZE]
+            levels[i + 1]['words'] = extra + levels[i + 1]['words']
+    short = [L['n'] for L in levels if len(L['words']) < LEVEL_SIZE]
+    if short:
+        print('WARNING: levels with fewer than', LEVEL_SIZE, 'words:', short)
+    levels[-1]['words'] = levels[-1]['words'][:LEVEL_SIZE]
 
     # 1) JS block for the site
     js_levels = []
