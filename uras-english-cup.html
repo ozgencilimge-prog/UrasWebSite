@@ -517,6 +517,9 @@ body::before{background:#0d0420}
 .golt.pc-good{color:#4ade80;font-size:clamp(34px,7vw,58px);text-align:center}
 .golt.pc-bad{color:#ff4d6d;font-size:clamp(34px,7vw,58px);text-align:center}
 .hero{align-items:start}
+.main-col{display:grid;gap:16px;min-width:0}
+.main-col .panel{scroll-margin-top:90px}
+.main-col .typing-card > .tt-levels{grid-column:1 / -1}
 /* Game menu in the left column, under the player card */
 .side{display:grid;gap:14px;align-content:start;min-width:0}
 /* Desktop: games listed top to bottom under the player card (icon left, name + status right) */
@@ -731,6 +734,8 @@ tr.cur td{background:#fff6d6}
       <aside class="pcard" id="pcard" aria-label="Uras'ın oyuncu kartı"></aside>
       <nav class="menu" id="menu" aria-label="Games"></nav>
     </div>
+    <!-- Right column: mission card, and the game that was tapped in the left menu opens right under it -->
+    <div class="main-col">
     <section class="card mission" aria-live="polite">
       <div id="mission"></div>
       <!-- Opens from the WEEK badge: week numbers, then that week's sub-tabs -->
@@ -745,15 +750,13 @@ tr.cur td{background:#fff6d6}
         </div>
       </div>
     </section>
+    <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
+    <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
+    <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
+    <div class="panel" data-panel="cup" hidden><section class="card typing-card" id="cup-card"></section></div>
+    <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
+    </div>
   </div>
-
-  <!-- Each game opens here, full width, when its menu tile (left column) is tapped -->
-
-  <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
-  <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
-  <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
-  <div class="panel" data-panel="cup" hidden><section class="card typing-card" id="cup-card"></section></div>
-  <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
 </main>
 
 <div class="overlay" id="play" hidden>
@@ -1202,7 +1205,7 @@ function renderMenu(){
   ['typing','⌨️','Typing Turbo',`Level ${S.typing.level}`],
   ['tower','🏔','Word Tower',`Best: ${S.tower.best} m`],
   ['cup','🏆','Penalty Cup',`${Object.values(S.pcup).filter(x=>x&&x.won).length} / ${NW} cups`],
-  ['story','📖','Story Time',`Week ${view} · ${sd}/${ST.length}`]
+  ['story','📖','Story Time',`Week ${sbWeek||view} · ${Math.min(sbDone(sbWeek||view),storyOf(sbWeek||view).length)}/${storyOf(sbWeek||view).length}`]
  ];
  $('#menu').innerHTML=items.map(([id,ic,t,s])=>`<button class="mtile${openPanel===id?' on':''}" data-panel="${id}" aria-expanded="${openPanel===id}"><span class="mt-ic" aria-hidden="true">${ic}</span><b>${t}</b><small>${esc(s)}</small></button>`).join('');
  document.querySelectorAll('.panel').forEach(p=>{p.hidden=p.dataset.panel!==openPanel});
@@ -1235,6 +1238,7 @@ document.addEventListener('click',e=>{
  else if(b.dataset.ttlv){S.typing.level=+b.dataset.ttlv;save();renderTypingCard();tick()}
  else if(a==='tower')startTower();
  else if(a==='sb')startSb();
+ else if(b.dataset.sbw){sbWeek=+b.dataset.sbw;renderSbCard();renderMenu();tick()}
 });
 $('#open-garage').onclick=openGarage;
 $('#open-parent').onclick=openGate;
@@ -1944,14 +1948,18 @@ const STORIES={
 };
 const storyOf=w=>STORIES[w]||[];
 const sbDone=w=>{const v=S.sb&&S.sb[w];return v===true?1:(+v||0)};
+/* Story Time: pick any week's story (defaults to the current week) */
+let sbWeek=0;
 function renderSbCard(){
- const ST=storyOf(view),n=ST.length,d=sbDone(view);
- $('#sb-card').innerHTML=`<div><p class="eyebrow">Sentence Builder · <span lang="tr">cümle kurma</span></p><h2>Week ${view} Story</h2></div>
-  <div class="tt-badges"><span class="lvl-badge">${d>=n?'✓ Story done':`Paragraph ${d+1} / ${n}`}</span><small>${esc(WEEKS[view-1].en)}</small><span class="sb-dots">${ST.map((_,k)=>`<i class="${k<d?'on':''}"></i>`).join('')}</span></div>
-  <button class="btn" data-act="sb">${d>=n?'Play again':d?'Continue':'Play'} ▶</button>`;
+ const sw=sbWeek||view,ST=storyOf(sw),n=ST.length,d=sbDone(sw);
+ $('#sb-card').innerHTML=`<div><p class="eyebrow">Sentence Builder · <span lang="tr">cümle kurma</span></p><h2>Week ${sw} Story</h2></div>
+  <div class="tt-badges"><span class="lvl-badge">${d>=n?'✓ Story done':`Paragraph ${d+1} / ${n}`}</span><small>${esc(WEEKS[sw-1].en)}</small><span class="sb-dots">${ST.map((_,k)=>`<i class="${k<d?'on':''}"></i>`).join('')}</span></div>
+  <button class="btn" data-act="sb">${d>=n?'Play again':d?'Continue':'Play'} ▶</button>
+  <div class="tt-levels cup-weeks" role="group" aria-label="Choose a week">${WEEKS.map(x=>{const sn=storyOf(x.n).length,sd=Math.min(sbDone(x.n),sn);
+   return `<button class="tt-lv${x.n===sw?' on':''}" data-sbw="${x.n}"><b>Week ${x.n}</b><small>${sd>=sn&&sn?'✓ Done':sd+' / '+sn}</small></button>`}).join('')}</div>`;
 }
 function startSb(){
- const w=view,ST=storyOf(w);if(!ST[0])return;
+ const w=sbWeek||view,ST=storyOf(w);if(!ST[0])return;
  let pi=sbDone(w)>=ST.length?0:sbDone(w),si=0,drag=null;
  session={sb:true};openPlay();
  const P=()=>ST[pi];
