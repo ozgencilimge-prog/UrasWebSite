@@ -523,6 +523,8 @@ body::before{background:#0d0420}
 .hero{align-items:start}
 /* Game menu in the left column, under the player card */
 .side{display:grid;gap:14px;align-content:start;min-width:0}
+.main-col{display:grid;gap:20px;align-content:start;min-width:0}
+.main-col > .panel[hidden]{display:none}
 /* Desktop: games listed top to bottom under the player card (icon left, name + status right) */
 .side .menu{grid-template-columns:1fr;gap:12px}
 .side .mtile{grid-template-columns:48px 1fr;justify-items:start;align-items:center;text-align:left;column-gap:12px;row-gap:2px;padding:14px 16px;border-radius:16px}
@@ -735,6 +737,8 @@ tr.cur td{background:#fff6d6}
       <aside class="pcard" id="pcard" aria-label="Uras'ın oyuncu kartı"></aside>
       <nav class="menu" id="menu" aria-label="Games"></nav>
     </div>
+    <!-- Right column: mission/weeks card, and the open game right under it -->
+    <div class="main-col">
     <section class="card mission" aria-live="polite">
       <div id="mission"></div>
       <!-- Opens from the WEEK badge: week numbers, then that week's sub-tabs -->
@@ -749,15 +753,15 @@ tr.cur td{background:#fff6d6}
         </div>
       </div>
     </section>
+
+    <!-- Each game opens here, right under the weeks card, when its menu tile (left column) is tapped -->
+    <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
+    <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
+    <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
+    <div class="panel" data-panel="cup" hidden><section class="card typing-card" id="cup-card"></section></div>
+    <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
+    </div>
   </div>
-
-  <!-- Each game opens here, full width, when its menu tile (left column) is tapped -->
-
-  <div class="panel" data-panel="quest" hidden><section class="card" id="vbank"></section></div>
-  <div class="panel" data-panel="typing" hidden><section class="card typing-card" id="typing-card"></section></div>
-  <div class="panel" data-panel="tower" hidden><section class="card typing-card" id="tower-card"></section></div>
-  <div class="panel" data-panel="cup" hidden><section class="card typing-card" id="cup-card"></section></div>
-  <div class="panel" data-panel="story" hidden><section class="card typing-card" id="sb-card"></section></div>
 </main>
 
 <div class="overlay" id="play" hidden>
