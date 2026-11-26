@@ -389,6 +389,9 @@ tr.cur td{background:#fff6d6}
 const $=s=>document.querySelector(s);
 document.documentElement.lang='en';
 const KEY='urasEnglishCup.v2';
+/* Parent password: only its SHA-256 hash is in the page. build.ps1 sets it from parent-password.txt (kept out of git). */
+const PARENT_SALT='uras-english-cup:';
+const PARENT_HASH='76a70a217160837e5adc51f2593e17d71c7cbb6f790d8f6ee24cfdfd573c6816';
 
 /* ---------- Curriculum ----------
    Level 1-2: MEB Özel İlkokul 1. Sınıf İngilizce programı temaları (Hello!, My Classroom, Colours, Math, Toys, Animals, Senses...)
@@ -928,11 +931,17 @@ function openGarage(){
 }
 
 /* ---------- Parent ---------- */
+let parentOk=false;
+async function sha256hex(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 function openGate(){
- const a=6+Math.floor(Math.random()*4),b=6+Math.floor(Math.random()*4);
+ if(parentOk){openSheet('');renderParent();return}
  openSheet(`<div class="sheet-h"><h2>Parent Login</h2><button class="xbtn" data-close>✕ Close</button></div>
-  <form id="gate" class="field" style="max-width:320px"><label for="gate-in">${a} × ${b} kaç eder?</label><input id="gate-in" inputmode="numeric" autocomplete="off"><button class="btn small" type="submit">Aç</button><p class="note" id="gate-msg"></p></form>`);
- $('#gate').addEventListener('submit',e=>{e.preventDefault();if(+$('#gate-in').value===a*b)renderParent();else $('#gate-msg').textContent='Yanlış cevap, tekrar deneyin.'});
+  <form id="gate" class="field" style="max-width:320px"><label for="gate-in">Veli şifresi</label><input id="gate-in" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false"><button class="btn small" type="submit">Aç</button><p class="note" id="gate-msg"></p></form>`);
+ $('#gate').addEventListener('submit',async e=>{
+  e.preventDefault();let ok=false;
+  try{ok=(await sha256hex(PARENT_SALT+$('#gate-in').value.trim()))===PARENT_HASH}catch(err){}
+  if(ok){parentOk=true;renderParent()}else{$('#gate-msg').textContent='Şifre yanlış.';$('#gate-in').value='';$('#gate-in').focus()}
+ });
  setTimeout(()=>{const i=$('#gate-in');if(i)i.focus()},50);
 }
 function renderParent(){

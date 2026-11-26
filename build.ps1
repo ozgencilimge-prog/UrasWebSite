@@ -6,8 +6,20 @@ $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $here
 
+# 0) Parent password -> SHA-256 hash in the page (the password file itself stays out of git)
+$pwFile = Join-Path $here 'parent-password.txt'
+if (-not (Test-Path $pwFile)) { throw "parent-password.txt bulunamadi. Bu klasore olusturup ilk satirina veli sifresini yazin." }
+$pw = ([IO.File]::ReadAllLines($pwFile, [Text.Encoding]::UTF8) | Where-Object { $_.Trim() } | Select-Object -First 1)
+if (-not $pw) { throw "parent-password.txt bos. Ilk satira veli sifresini yazin." }
+$pw = $pw.Trim()
+$sha = [System.Security.Cryptography.SHA256]::Create()
+$hash = -join ($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes('uras-english-cup:' + $pw)) | ForEach-Object { $_.ToString('x2') })
+$srcPath = Join-Path $here 'uras-english-cup.html'
+$src = [IO.File]::ReadAllText($srcPath, [Text.Encoding]::UTF8)
+$src = [regex]::Replace($src, "const PARENT_HASH='[^']*';", "const PARENT_HASH='$hash';")
+[IO.File]::WriteAllText($srcPath, $src, (New-Object Text.UTF8Encoding $false))
+
 # 1) index.html
-$src = [IO.File]::ReadAllText((Join-Path $here 'uras-english-cup.html'), [Text.Encoding]::UTF8)
 $head = @'
 <!doctype html>
 <html lang="en">

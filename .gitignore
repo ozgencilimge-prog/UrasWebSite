@@ -1,4 +1,6 @@
 # Original class photo shows other children: keep it on this computer only, never publish it.
 uras.jpg
+# Parent password (only its hash goes into the site): never publish it.
+parent-password.txt
 # Local tool settings
 .claude/
