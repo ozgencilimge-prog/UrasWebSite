@@ -6,3 +6,8 @@ parent-password.txt
 .claude/
 # Full profile artwork (contains a game logo): keep local, only the cropped sticker is published
 uras-profile-original.jpg
+# Photos dropped into this folder from WhatsApp or the camera stay local unless added on purpose
+WhatsApp Image*
+IMG_*
+*.jpeg
+*.heic
