@@ -393,9 +393,62 @@ body::before{background:#0d0420}
 .fw-msg b{font-size:clamp(28px,6.5vw,44px) !important}
 .fw-msg small{font-size:19px !important}
 .sb-para{text-align:center}
-/* Result screens sit in the middle of the screen */
-.play-in:has(.res){min-height:100vh;min-height:100dvh;grid-template-rows:auto 1fr}
-.play-in:has(.res) #stage{align-self:center}
+/* Every game screen (and result screen) sits in the middle of the screen */
+.play-in{min-height:100vh;min-height:100dvh;grid-template-rows:auto 1fr;grid-template-columns:minmax(0,1fr);box-sizing:border-box}
+.phead > *{min-width:0}
+.phead h2{overflow-wrap:anywhere}
+.play-in #stage{align-self:center;width:100%;box-sizing:border-box;grid-template-columns:minmax(0,1fr)}
+.mem{grid-template-columns:repeat(4,minmax(0,1fr))}
+/* Phones: compact header, picture and question side by side, so the answers are visible without scrolling */
+@media (max-width:640px){
+ .phead{gap:8px}
+ .phead h2{font-size:16px;flex:1 1 60%}
+ .qrow{flex-wrap:nowrap;gap:10px}
+ .qpic{width:110px;height:90px;flex:none}
+ #stage .qrow .pic.emo{font-size:54px}
+ .pen{height:150px}
+ #stage{padding:14px;gap:12px}
+ .pc-board b{font-size:28px}
+ .pc-board{padding:2px 12px}
+ .pc-role{font-size:16px;padding:4px 12px}
+ .road{height:84px !important}
+ .tower{height:clamp(180px,27vh,300px)}
+}
+/* Short screens (laptops): smaller pictures and gaps so the game fits without scrolling */
+@media (max-height:880px){
+ #stage{padding:16px;gap:12px}
+ .play-in{gap:10px}
+ .vq-card{min-height:0;padding:12px;gap:6px}
+ .vq-card .vq-pic .pic{height:96px}
+ .vq-card .vq-pic .pic.emo{font-size:80px}
+ .vq-card .vq-q{font-size:44px}
+ .road{height:80px !important}
+ .tt-pic{height:60px}
+ .tt-pic .pic.emo{font-size:46px}
+ .tt-word{font-size:clamp(30px,6vh,52px)}
+ .tt-word.long{font-size:clamp(20px,4vh,32px)}
+ #stage .hint{font-size:15px}
+ .kb{gap:4px}
+ .key{height:40px;font-size:19px}
+ .tower{height:clamp(180px,31vh,300px)}
+ .tw-q .tt-pic{width:80px}
+ .opts{gap:10px}
+ .mcard{aspect-ratio:4/3}
+ .mem.many .mcard{aspect-ratio:4/3}
+ .mem{gap:10px}
+ .pen{height:124px}
+ #stage .opt.word{padding-block:8px;min-height:0}
+ #stage .pc-role{margin-block:-4px}
+ .qpic{width:130px;height:90px}
+ #stage .qrow .pic.emo{font-size:56px}
+ .play-in{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px)}
+ .key{height:36px}
+ .pc-marks{min-height:20px;font-size:15px}
+ .pc-board{padding:2px 14px}
+ .pc-board b{font-size:28px}
+ .pc-role{font-size:17px;padding:4px 14px}
+ .fb{min-height:28px;font-size:19px}
+}
 .tw-banner{left:0;right:0;margin:0 auto;width:max-content;top:auto;bottom:18px;transform:none}
 /* Word Tower level-up: dim the whole screen and show one clear card (trophy, praise, next level) */
 .tw-next{position:fixed;inset:0;z-index:85;display:grid;place-items:center;padding:16px;background:rgba(13,4,32,.84)}
