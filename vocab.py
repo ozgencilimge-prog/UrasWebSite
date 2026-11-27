@@ -133,7 +133,7 @@ EXTRA_TR = {
 }
 EXTRA_EMOJI = {'goal': '🥅', 'red car': '🚗', 'big ball': '⚽', 'blue bus': '🚌', 'my dog': '🐶', 'go left': '⬅️', 'run fast': '🏃', 'green apple': '🍏',
  'two goals': '⚽', 'hello Uras': '👋', 'I like cars.': '🏎️', 'Kick the ball!': '🦵', 'I am seven.': '7️⃣', 'My car is red.': '🚗',
- 'Hello, I am Uras.': '👋', 'Ready, set, go!': '🏁', 'I can jump.': '🤸', 'Open the door.': '🚪'}
+ 'Hello, I am Uras.': '👋', 'Ready, set, go!': '🏁', 'I can jump.': '🧒', 'Open the door.': '🚪'}
 
 COLOR_EMOJI = {'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡', 'black': '⚫', 'white': '⚪', 'orange': '🟠', 'pink': '🩷', 'purple': '🟣', 'brown': '🟤', 'grey': '⚪'}
 DPAD_EMOJI = {'up': '⬆️', 'down': '⬇️', 'left': '⬅️', 'right': '➡️'}
@@ -151,6 +151,8 @@ def parse_weeks(src):
         for en, tr, p, ex in re.findall(r"W\('([^']*)','([^']*)',(\{[^}]*\}|'[^']*'),(\"[^\"]*\"|'(?:[^'\\]|\\.)*')\)", ch):
             if p.startswith("'"):
                 e = unq(p)
+            elif "e:'" in p:
+                e = re.search(r"e:'([^']*)'", p).group(1)
             elif 'car' in p:
                 e = COLOR_EMOJI.get(en, '🚗')
             elif 'dpad' in p:
