@@ -1591,7 +1591,7 @@ let cupWeek=0;
 function renderCupCard(){
  const won=Object.values(S.pcup).filter(x=>x&&x.won).length;
  if(!cupWeek||!cupOpen(cupWeek))cupWeek=cupOpen(view)?view:(WEEKS.find(x=>cupOpen(x.n))||{n:0}).n;
- $('#cup-card').innerHTML=`<div><p class="eyebrow">Football Game · <span lang="tr">futbol oyunu</span></p><h2>Penalty Cup</h2></div>
+ $('#cup-card').innerHTML=`<div><p class="eyebrow">Football Game</p><h2>Penalty Cup</h2></div>
   <div class="tt-badges"><span class="lvl-badge">🏆 ${won} / ${NW}</span><small>Cups won</small></div>
   ${cupWeek?`<button class="btn" data-act="cupplay">Play Week ${cupWeek} ▶</button>`:'<span class="note">Finish a week\'s '+ND+' missions to open its cup</span>'}
   <div class="tt-levels cup-weeks" role="group" aria-label="Choose a week">${WEEKS.map(x=>{const op=cupOpen(x.n),r=S.pcup[x.n];
@@ -1612,7 +1612,7 @@ function startCup(w){
  const boardInner=()=>`<div class="pc-board"><span class="pc-team">URAS</span><b>${me}</b><span class="pc-dash">–</span><b>${rival}</b><span class="pc-team">RIVAL</span></div>
   <div class="pc-marks"><span>${mk.map(x=>x?'⚽':'❌').join(' ')||'&nbsp;'}</span><span>${rk.map(x=>x?'⚽':'🧤').join(' ')||'&nbsp;'}</span></div>`;
  /* Role banner says clearly whose turn it is, so "save" never looks like a miss */
- const board=role=>`<div id="pc-bw">${boardInner()}</div><div class="pc-role ${role==='kick'?'kick':'keep'}">${role==='kick'?'⚽ YOUR KICK · şut sende':'🧤 YOU ARE THE GOALKEEPER · kaleci sensin'}</div>`;
+ const board=role=>`<div id="pc-bw">${boardInner()}</div><div class="pc-role ${role==='kick'?'kick':'keep'}">${role==='kick'?'⚽ YOUR KICK':'🧤 YOU ARE THE GOALKEEPER'}</div>`;
  const updBoard=()=>{const b=$('#pc-bw');if(b)b.innerHTML=boardInner()};
  const label=()=>turn>=10?'Sudden death':`${turn%2===0?'Kick':'Save'} ${Math.floor(turn/2)+1} / 5`;
  const scene=keeper=>`<div class="pen"><div class="goal"><div class="keeper" id="keeper">${keeper}</div></div><div class="spot"></div><div class="ball" id="ball">⚽</div><div class="golt" id="golt"></div></div>`;
@@ -1623,34 +1623,35 @@ function startCup(w){
   turn%2===0?kick():keep();
  }
  /* Big result text: green when Uras did well, red when not */
+ const cupFb=en=>{const f=$('#fb');if(f){f.innerHTML=`<span><b>${esc(en)}</b></span>`;f.classList.add('show')}};
  function flash(t,sub,ok){const g=$('#golt');if(g){g.innerHTML=`<span>${t}<small>${sub}</small></span>`;g.className='golt '+(ok?'pc-good':'pc-bad');void g.offsetWidth;g.classList.add('on')}}
  function kick(){
   const t=kicks[ki++%kicks.length],opts=shuffle([t,...others(t,words,2)]);
-  stage.innerHTML=board('kick')+scene(KEEPER)+`<div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">Bu ne? Doğru kelimeyi seç ve şutunu çek!</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
+  stage.innerHTML=board('kick')+scene(KEEPER)+`<div class="qrow"><div class="qpic">${pic(t.p)}</div><div><p class="hint">What is it? Pick the word and shoot!</p><button class="speak" id="g-hint">🔊 Hint</button></div></div>
    <div class="opts">${opts.map((o,k)=>`<button class="opt word${wcls(o.en)}" data-k="${k}">${esc(o.en)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
   $('#g-hint').onclick=()=>say(t.en);
   let locked=false;
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
    if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
    if(ok){b.classList.add('ok');me++;mk.push(1);ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;
-    later(()=>{flash('✓ GOAL! ⚽','Doğru! Gol attın',true);updBoard();cheer();say(t.en);showFb(t,null)},450)}
+    later(()=>{flash('✓ GOAL! ⚽','Right word!',true);updBoard();cheer();say(t.en);cupFb(t.en)},450)}
    else{b.classList.add('no');mk.push(0);miss(t);bad();ball.style.transform=`translate(calc(-50% + ${side*60}px),-120px) scale(.65)`;k.style.transform=`translateX(calc(-50% + ${side*60}px))`;
-    later(()=>{flash('✗ MISSED','Yanlış kelime, gol olmadı',false);updBoard();f.innerHTML=`<span>The keeper stopped it. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+    later(()=>{flash('✗ MISSED','Wrong word',false);updBoard();f.innerHTML=`<span>The keeper stopped it. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
    later(()=>{turn++;next()},2100);
   });
  }
  function keep(){
   const t=saves[si++%saves.length],opts=shuffle([t,...others(t,words,2)]);
-  stage.innerHTML=board('keep')+scene(KEEPER_BLUE)+`<div class="q"><button class="speak big" id="g-speak" aria-label="Tekrar dinle">🔊</button><p class="hint">Rakip şut çekiyor! Dinle, doğru resme dokun ve topu tut!</p></div>
+  stage.innerHTML=board('keep')+scene(KEEPER_BLUE)+`<div class="q"><button class="speak big" id="g-speak" aria-label="Listen again">🔊</button><p class="hint">Listen and tap the picture to save the ball!</p></div>
    <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${pic(o.p)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
   $('#g-speak').onclick=()=>say(t.en);later(()=>say(t.en),350);
   let locked=false;
   stage.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
    if(locked)return;locked=true;const ok=opts[+b.dataset.k]===t,side=Math.random()<.5?-1:1,ball=$('#ball'),k=$('#keeper'),f=$('#fb');
    if(ok){b.classList.add('ok');rk.push(0);k.style.transform=`translateX(calc(-50% + ${side*60}px))`;ball.style.transform=`translate(calc(-50% + ${side*60}px),-110px) scale(.7)`;
-    later(()=>{flash('✓ SAVED! 🧤','Doğru! Topu tuttun',true);updBoard();good();say(t.en);showFb(t,null)},450)}
+    later(()=>{flash('✓ SAVED! 🧤','Right picture!',true);updBoard();good();say(t.en);cupFb(t.en)},450)}
    else{b.classList.add('no');rival++;rk.push(1);miss(t);bad();k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;
-    later(()=>{flash('✗ RIVAL SCORES','Yanlış resim, rakip gol attı',false);updBoard();f.innerHTML=`<span>The rival scored. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+    later(()=>{flash('✗ RIVAL SCORES','Wrong picture',false);updBoard();f.innerHTML=`<span>The rival scored. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
    later(()=>{turn++;next()},2100);
   });
  }
@@ -1662,7 +1663,7 @@ function startCup(w){
   const pts=won?(prev&&prev.won?10:50):5;addPoints(pts);
   stage.innerHTML=`<div class="res">${won?'<div class="fw-space"></div>':''}<h2>${won?'You won the Penalty Cup!':draw?'Draw!':'So close!'}</h2><p class="pc-final">URAS ${me} – ${rival} RIVAL</p><p>${won?'Champion of Week '+w+'!':'Try again, you can do it!'} · +${pts} points</p>
    <div class="row"><button class="btn" id="pc-again">${won?'Play again':'Try again'}</button><button class="btn ghost" id="pc-back">Back to week</button></div></div>`;
-  if(won)celebrate(['Champion! You won the cup, Uras!','Şampiyon! Kupayı kazandın Uras!']);else say(draw?'Draw! Try again!':'So close! Try again!');
+  if(won)celebrate(['Champion! You won the cup, Uras!','']);else say(draw?'Draw! Try again!':'So close! Try again!');
   $('#pc-again').onclick=()=>startCup(w);$('#pc-back').onclick=closePlay;
  }
  next();
