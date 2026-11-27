@@ -24,6 +24,7 @@ wet:ıslak:💦|dry:kuru:☀️|fun:eğlence:🎉|net:file:🥅|fan:taraftar:�
 lake:göl:🏞️|park:park:🛝|road:yol:🛣️|tyre:lastik:🛞|seat:koltuk:💺|kite:uçurtma:🪁|lamp:lamba:💡|wall:duvar:🧱
 roof:çatı:🏠|tent:çadır:⛺|rice:pirinç:🍚|soup:çorba:🍲|corn:mısır:🌽|pear:armut:🍐|kiwi:kivi:🥝|knee:diz:🦵
 neck:boyun|hair:saç:💇|face:yüz:🙂|snail:salyangoz:🐌|ring:yüzük:💍|bell:zil:🔔|gift:hediye:🎁|doll:oyuncak bebek:🪆
+bubble:baloncuk:🫧|bone:kemik:🦴|flower:çiçek:🌻
 drum:davul:🥁|race:yarış:🏁|taxi:taksi:🚕|fast:hızlı:💨|gold:altın:🥇|shop:dükkan:🏪|farm:çiftlik:🚜|nest:yuva:🪺
 '''),
  dict(n=2, name='Explorer', tr='Kaşif', sub='1.–2. sınıf · günlük hayat, duygular, zaman ve yer (4–7 harf)', words='''
@@ -78,7 +79,7 @@ police:polis:👮|child:çocuk:🧒|woman:kadın:👩|parents:anne baba:👨‍�
 crazy:çılgın:🤪|amazing:harika:🤩|super:süper:🦸|ready:hazır:✅|sure:emin:👍|safe:güvenli:🦺|free:serbest / bedava:🆓|true:doğru:✔️
 wrong:yanlış:❌|first:birinci:🥇|second:ikinci:🥈|third:üçüncü:🥉|early:erken:🌅|late:geç:🌙|today:bugün:📅|tonight:bu gece:🌃
 soon:yakında:⏳|again:tekrar:🔁|always:her zaman:♾️|never:asla:🚫|near:yakın:📍|far:uzak:🏔️|inside:içeride:🏠|outside:dışarıda:🌳
-above:üstünde:⬆️|below:altında:⬇️|behind:arkasında:🔙|next to:yanında:👫
+in:içinde|on:üstünde|under:altında|above:yukarısında:⬆️|below:aşağısında:⬇️|behind:arkasında:🔙|next to:yanında:👫
 ''',
  3: '''
 January:ocak:❄️|February:şubat:❄️|March:mart:🌱|April:nisan:🌷|May:mayıs:🌸|June:haziran:☀️|July:temmuz:🏖️|August:ağustos:🍉
@@ -134,7 +135,7 @@ EXTRA_EMOJI = {'goal': '🥅', 'red car': '🚗', 'big ball': '⚽', 'blue bus':
  'two goals': '⚽', 'hello Uras': '👋', 'I like cars.': '🏎️', 'Kick the ball!': '🦵', 'I am seven.': '7️⃣', 'My car is red.': '🚗',
  'Hello, I am Uras.': '👋', 'Ready, set, go!': '🏁', 'I can jump.': '🤸', 'Open the door.': '🚪'}
 
-COLOR_EMOJI = {'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡', 'black': '⚫', 'white': '⚪', 'orange': '🟠', 'pink': '🩷'}
+COLOR_EMOJI = {'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡', 'black': '⚫', 'white': '⚪', 'orange': '🟠', 'pink': '🩷', 'purple': '🟣', 'brown': '🟤', 'grey': '⚪'}
 DPAD_EMOJI = {'up': '⬆️', 'down': '⬇️', 'left': '⬅️', 'right': '➡️'}
 KEYCAP = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
 
