@@ -878,31 +878,33 @@ const LEVELS=[
  {n:2,name:'League Matches',sub:'From Grade 1 to Grade 2',opts:3,rounds:5,ghost:1,pairs:4,prompt:'find',hint:'Dinle: "Find the ..." ve resmi bul'},
  {n:3,name:'Championship',sub:'Grade 2 topics',opts:4,rounds:6,ghost:0,pairs:6,prompt:'sentence',hint:'Cümleyi dinle, içindeki kelimenin resmine dokun'}
 ];
+/* Uras's classmates in 2/A: first names only (parent's choice), used as friends in sentences and as Penalty Cup rivals */
+const FRIENDS=['Pars','Deniz','Kuzey','Beyazıt','Defne','Yiğit','Asel','Mirel','Kaan','Dora','Zeynep','Oğuz','Aras','Ali','Elisa','Eslem','Güner'];
 const W=(en,tr,p,ex)=>({en,tr,p:typeof p==='string'?{e:p}:p,ex});
 const WEEKS=[
  {n:1,lv:1,tr:'Merhaba!',en:'Hello!',src:'1. sınıf: Hello! · 2. sınıf: School Life',chunk:"Hello! I'm Uras. What's your name?",chunkTr:'Merhaba! Ben Uras. Senin adın ne?',noFind:true,words:[
-  W('hello','merhaba','👋',"Hello! I'm Uras."),W('boy','erkek çocuk','👦','Uras is a boy.'),W('girl','kız çocuk','👧','She is a girl.'),W('friend','arkadaş','🤝','My friend likes football.'),
+  W('hello','merhaba','👋',"Hello! I'm Uras."),W('boy','erkek çocuk','👦','Uras is a boy.'),W('girl','kız çocuk','👧','Defne is a girl.'),W('friend','arkadaş','🤝','Kuzey is my friend.'),
   W('teacher','öğretmen','🧑‍🏫','This is my teacher.'),W('school','okul','🏫','I go to school.'),W('yes','evet','👍','Yes, I like cars!'),W('no','hayır','👎','No, thank you.'),
   W('goodbye','hoşça kal / güle güle','🚶','Goodbye, teacher!'),W('fine','iyi','😊',"How are you? I'm fine, thank you.")]},
  {n:2,lv:1,tr:'Renkler',en:'Colours',src:'1. sınıf: Colours · 2. sınıf: Classroom Life',chunk:"What colour is it? It's red.",chunkTr:'Ne renk? Kırmızı.',words:[
   W('red','kırmızı',{car:'#e63946'},'The red car is fast.'),W('blue','mavi',{car:'#2f6fed'},'I have a blue car.'),W('green','yeşil',{car:'#2a9d4b'},'The green car wins!'),W('yellow','sarı',{car:'#ffd23f'},'Yellow car, go go go!'),
   W('black','siyah',{car:'#1f2329'},'The black car is cool.'),W('white','beyaz',{car:'#ffffff'},'White car, stop!'),W('orange','turuncu',{car:'#ff8c1a'},'Orange car, turn left!'),W('pink','pembe',{car:'#ff6fae'},"Ela's bag is pink."),
-  W('purple','mor',{car:'#8e44ad'},'A purple car!'),W('brown','kahverengi',{car:'#8b5a2b'},'The bear is brown.'),W('grey','gri',{car:'#9aa0a6'},'A grey car is fast.')]},
+  W('purple','mor',{car:'#8e44ad'},'Elisa likes purple.'),W('brown','kahverengi',{car:'#8b5a2b'},'The bear is brown.'),W('grey','gri',{car:'#9aa0a6'},'A grey car is fast.')]},
  {n:3,lv:1,tr:'Sayılar 1–10',en:'Numbers 1–10',src:'1. sınıf: Math · 2. sınıf: Classroom Life (1–20)',chunk:'How many balls? Five balls.',chunkTr:'Kaç top? Beş top.',noFind:true,words:
   [['one','bir','I have one ball.'],['two','iki','Two goals for Uras!'],['three','üç','Three red cars.'],['four','dört','A car has four wheels.'],['five','beş','Five players.'],
    ['six','altı','Six balls in the bag.'],['seven','yedi',"I'm seven!"],['eight','sekiz','Eight cars in a race.'],['nine','dokuz','Number nine scores!'],['ten','on','Ten points! Great!']].map((x,i)=>W(x[0],x[1],{count:i+1},x[2]))},
  {n:4,lv:1,tr:'Sınıfım',en:'My Classroom',src:'1. sınıf: My Classroom · 2. sınıf: Classroom Life',chunk:"What's this? It's a pencil.",chunkTr:'Bu ne? Bu bir kalem.',words:[
   W('book','kitap','📚','I like books.'),W('pencil','kurşun kalem','✏️','My pencil is red.'),W('bag','çanta','🎒','My ball is in my bag.'),W('chair','sandalye','🪑','Sit on your chair.'),
   W('ruler','cetvel','📏','A long ruler.'),W('scissors','makas','✂️','Scissors cut paper.'),W('notebook','defter','📓','Draw a car in your notebook.'),W('crayon','boya kalemi','🖍️','A green crayon.'),
-  W('pen','tükenmez kalem','🖊️','I write with a pen.'),W('open','aç','📖','Open your book.'),W('close','kapat','📕','Close your book.'),W('stand up','ayağa kalk','🧍','Stand up, please.')]},
+  W('pen','tükenmez kalem','🖊️','Dora has a pen.'),W('open','aç','📖','Open your book.'),W('close','kapat','📕','Close your book.'),W('stand up','ayağa kalk','🧍','Stand up, please.')]},
  {n:5,lv:2,tr:'Oyuncaklar & Oyunlar',en:'Toys & Games',src:'1. sınıf: Toys, Hobbies',chunk:'I have a ball. I like games!',chunkTr:'Bir topum var. Oyunları severim!',words:[
   W('ball','top','⚽','Kick the ball!'),W('car','araba','🚗','My car is fast.'),W('bike','bisiklet','🚲','I ride my bike.'),W('train','tren','🚂','The train is long.'),
   W('robot','robot','🤖','The robot can dance.'),W('kite','uçurtma','🪁','Fly the kite!'),W('teddy','oyuncak ayı','🧸','A brown teddy.'),W('game','oyun','🎮',"Let's play a game!"),
-  W('slide','kaydırak','🛝',"Let's go down the slide!"),W('puzzle','yapboz','🧩','I like puzzles.')]},
+  W('slide','kaydırak','🛝',"Let's go down the slide, Pars!"),W('puzzle','yapboz','🧩','Aras likes puzzles.')]},
  {n:6,lv:2,tr:'Hayvanlar',en:'Animals',src:'1. sınıf: Animals · 2. sınıf: Homes (pets)',chunk:"What's this? It's a lion!",chunkTr:'Bu ne? Bu bir aslan!',words:[
   W('cat','kedi','🐱','The cat is sleeping.'),W('dog','köpek','🐶','My dog can run fast.'),W('bird','kuş','🐦','The bird can fly.'),W('fish','balık','🐟','A fish can swim.'),
   W('rabbit','tavşan','🐰','The rabbit can jump.'),W('lion','aslan','🦁','The lion is big.'),W('monkey','maymun','🐵','The monkey is funny.'),W('horse','at','🐴','The horse is fast.'),
-  W('elephant','fil','🐘','The elephant is big.'),W('bear','ayı','🐻','The bear is brown.'),W('duck','ördek','🦆','The duck can swim.'),W('hamster','hamster','🐹','I have a hamster.')]},
+  W('elephant','fil','🐘','The elephant is big.'),W('bear','ayı','🐻','The bear is brown.'),W('duck','ördek','🦆','The duck can swim.'),W('hamster','hamster','🐹','Asel has a hamster.')]},
  {n:7,lv:2,tr:'Vücudum',en:'My Body',src:'1. sınıf: Senses · 2. sınıf: Personal Life',chunk:'I have two eyes and two ears.',chunkTr:'İki gözüm ve iki kulağım var.',words:[
   W('eye','göz','👁️','Look with your eyes!'),W('ear','kulak','👂','Listen with your ears.'),W('nose','burun','👃','Touch your nose.'),W('mouth','ağız','👄','Open your mouth.'),
   W('hand','el','✋','Goalkeepers use their hands.'),W('arm','kol','💪','Strong arms!'),W('leg','bacak','🦵','Kick with your leg.'),W('foot','ayak','🦶','Score with your foot!'),
@@ -913,7 +915,7 @@ const WEEKS=[
  {n:9,lv:3,tr:'Yiyecekler',en:'Food',src:'1. sınıf: Fruits & Vegetables · 2. sınıf: Life in the City (food)',chunk:'Do you like apples? Yes, I do!',chunkTr:'Elma sever misin? Evet, severim!',words:[
   W('apple','elma','🍎','I like apples.'),W('banana','muz','🍌','Monkeys like bananas.'),W('strawberry','çilek','🍓','Strawberries are red.'),W('carrot','havuç','🥕','Rabbits like carrots.'),
   W('milk','süt','🥛','I drink milk.'),W('water','su','💧','I drink water after football.'),W('bread','ekmek','🍞','Bread for breakfast.'),W('egg','yumurta','🥚','I eat an egg.'),
-  W('orange','portakal','🍊','I eat an orange.'),W('grapes','üzüm','🍇','Grapes are green.'),W('watermelon','karpuz','🍉','Watermelon is red.'),W('pear','armut','🍐','A big pear.')]},
+  W('orange','portakal','🍊','I eat an orange.'),W('grapes','üzüm','🍇','Mirel likes grapes.'),W('watermelon','karpuz','🍉','Watermelon is red.'),W('pear','armut','🍐','A big pear.')]},
  {n:10,lv:3,tr:'Ailem',en:'My Family',src:'1. sınıf: Family · 2. sınıf: Family Life',chunk:'This is my father. He is tall.',chunkTr:'Bu benim babam. O uzun boylu.',words:[
   W('mother','anne','👩','This is my mother.'),W('father','baba','👨','My father likes football.'),W('sister','kız kardeş / abla','👧','My sister is nice.'),W('brother','erkek kardeş / abi','👦','My brother plays games.'),
   W('baby','bebek','👶','The baby is small.'),W('grandma','anneanne / babaanne','👵','Grandma makes cake.'),W('grandpa','dede','👴','Grandpa has a car.'),W('family','aile','👨‍👩‍👦','I love my family.')]},
@@ -1023,7 +1025,8 @@ const wcls=s=>String(s).length>8?' lg':'';
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 /* Turkish meaning of any word or phrase the games use (with or without a picture) */
 const TYPE_TR={'goal':'gol / kale','red car':'kırmızı araba','big ball':'büyük top','blue bus':'mavi otobüs','my dog':'benim köpeğim','go left':'sola git','run fast':'hızlı koş','green apple':'yeşil elma','two goals':'iki gol','fast car':'hızlı araba','hello uras':'merhaba Uras',
- 'i like cars.':'Arabaları severim.','kick the ball!':'Topa vur!','i am seven.':'Yedi yaşındayım.','my car is red.':'Arabam kırmızı.','hello, i am uras.':'Merhaba, ben Uras.','ready, set, go!':'Yerlerinize, hazır, başla!','i can jump.':'Zıplayabilirim.','open the door.':'Kapıyı aç.'};
+ 'i like cars.':'Arabaları severim.','kick the ball!':'Topa vur!','i am seven.':'Yedi yaşındayım.','my car is red.':'Arabam kırmızı.','hello, i am uras.':'Merhaba, ben Uras.','ready, set, go!':'Yerlerinize, hazır, başla!','i can jump.':'Zıplayabilirim.','open the door.':'Kapıyı aç.',
+ 'hello defne':'merhaba Defne','hi kuzey':'selam Kuzey','run aras':'koş Aras','kuzey is my friend.':'Kuzey benim arkadaşım.','pass the ball, aras!':'Topu pas ver Aras!','hello, dora!':'Merhaba Dora!','defne likes cats.':'Defne kedileri sever.','asel has a pen.':'Asel’in bir kalemi var.'};
 function trOf(en){const k=String(en).toLowerCase();for(const x of WEEKS)for(const w of x.words)if(w.en.toLowerCase()===k)return w.tr;
  for(const w of VOCAB_ALL.concat(TOWER_EXTRA))if(w.en.toLowerCase()===k)return w.tr;return TYPE_TR[k]||''}
 function findWord(en){for(const x of WEEKS)for(const w of x.words)if(w.en===en)return w;
@@ -1615,9 +1618,10 @@ function cupCard(){
 function startCup(w){
  const Wk=WEEKS[w-1],words=Wk.words;
  session={cup:true};openPlay();stage.classList.add('neon');
+ const RV=FRIENDS[Math.floor(Math.random()*FRIENDS.length)],RVU=RV.toLocaleUpperCase('tr-TR');
  let me=0,rival=0,turn=0,ki=0,si=0;const mk=[],rk=[];
  const kicks=fillTo(words,8),saves=fillTo(words,8);
- const boardInner=()=>`<div class="pc-board"><span class="pc-team">URAS</span><b>${me}</b><span class="pc-dash">–</span><b>${rival}</b><span class="pc-team">RIVAL</span></div>
+ const boardInner=()=>`<div class="pc-board"><span class="pc-team">URAS</span><b>${me}</b><span class="pc-dash">–</span><b>${rival}</b><span class="pc-team">${esc(RVU)}</span></div>
   <div class="pc-marks"><span>${mk.map(x=>x?'⚽':'❌').join(' ')||'&nbsp;'}</span><span>${rk.map(x=>x?'⚽':'🧤').join(' ')||'&nbsp;'}</span></div>`;
  /* Role banner says clearly whose turn it is, so "save" never looks like a miss */
  const board=role=>`<div id="pc-bw">${boardInner()}</div><div class="pc-role ${role==='kick'?'kick':'keep'}">${role==='kick'?'⚽ YOUR KICK':'🧤 YOU ARE THE GOALKEEPER'}</div>`;
@@ -1650,7 +1654,7 @@ function startCup(w){
  }
  function keep(){
   const t=saves[si++%saves.length],opts=shuffle([t,...others(t,words,2)]);
-  stage.innerHTML=board('keep')+scene(KEEPER_BLUE)+`<div class="q"><button class="speak big" id="g-speak" aria-label="Listen again">🔊</button><p class="hint">Listen and tap the picture to save the ball!</p></div>
+  stage.innerHTML=board('keep')+scene(KEEPER_BLUE)+`<div class="q"><button class="speak big" id="g-speak" aria-label="Listen again">🔊</button><p class="hint">${esc(RV)} kicks! Listen and tap the picture to save the ball!</p></div>
    <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${pic(o.p)}</button>`).join('')}</div><div class="fb" id="fb"></div>`;
   $('#g-speak').onclick=()=>say(t.en);later(()=>say(t.en),350);
   let locked=false;
@@ -1659,7 +1663,7 @@ function startCup(w){
    if(ok){b.classList.add('ok');rk.push(0);k.style.transform=`translateX(calc(-50% + ${side*60}px))`;ball.style.transform=`translate(calc(-50% + ${side*60}px),-110px) scale(.7)`;
     later(()=>{flash('✓ SAVED! 🧤','Right picture!',true);updBoard();good();say(t.en);cupFb(t.en)},450)}
    else{b.classList.add('no');rival++;rk.push(1);miss(t);bad();k.style.transform=`translateX(calc(-50% + ${-side*55}px))`;ball.style.transform=`translate(calc(-50% + ${side*85}px),-150px) scale(.55)`;
-    later(()=>{flash('✗ RIVAL SCORES','Wrong picture',false);updBoard();f.innerHTML=`<span>The rival scored. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
+    later(()=>{flash(`✗ ${esc(RVU)} SCORES`,'Wrong picture',false);updBoard();f.innerHTML=`<span>${esc(RV)} scored. It was <b>${esc(t.en)}</b></span>`;f.classList.add('show');say(t.en)},450)}
    later(()=>{turn++;next()},2100);
   });
  }
@@ -1669,7 +1673,7 @@ function startCup(w){
   if(won&&!(prev&&prev.won))S.pcup[w]={won:true,best:score};else if(!prev)S.pcup[w]={won:false,best:score};
   save();
   const pts=won?(prev&&prev.won?10:50):5;addPoints(pts);
-  stage.innerHTML=`<div class="res">${won?'<div class="fw-space"></div>':''}<h2>${won?'You won the Penalty Cup!':draw?'Draw!':'So close!'}</h2><p class="pc-final">URAS ${me} – ${rival} RIVAL</p><p>${won?'Champion of Week '+w+'!':'Try again, you can do it!'} · +${pts} points</p>
+  stage.innerHTML=`<div class="res">${won?'<div class="fw-space"></div>':''}<h2>${won?'You won the Penalty Cup!':draw?'Draw!':'So close!'}</h2><p class="pc-final">URAS ${me} – ${rival} ${esc(RVU)}</p><p>${won?'Champion of Week '+w+'!':'Try again, you can do it!'} · +${pts} points</p>
    <div class="row"><button class="btn" id="pc-again">${won?'Play again':'Try again'}</button><button class="btn ghost" id="pc-back">Back to week</button></div></div>`;
   if(won)celebrate(['Champion! You won the cup, Uras!','']);else say(draw?'Draw! Try again!':'So close! Try again!');
   $('#pc-again').onclick=()=>startCup(w);$('#pc-back').onclick=closePlay;
@@ -1750,8 +1754,8 @@ const TYPE_POOLS=[
  ['ball','blue','goal','fish','jump','book','bike','milk','nose','door','four','five','nine','pink','game','lion','bird','baby','coat','stop'],
  ['green','seven','apple','train','robot','horse','house','water','three','black','white','bread','mouth','sunny','teddy','eight'],
  ['orange','yellow','rabbit','monkey','father','mother','pencil','window','sister','garden','purple','school'],
- ['red car','big ball','blue bus','my dog','go left','run fast','green apple','two goals','fast car','hello Uras'],
- ['I like cars.','Kick the ball!','I am seven.','My car is red.','Hello, I am Uras.','Ready, set, go!','I can jump.','Open the door.']
+ ['red car','big ball','blue bus','my dog','go left','run fast','green apple','two goals','fast car','hello Uras','hello Defne','hi Kuzey','run Aras'],
+ ['I like cars.','Kick the ball!','I am seven.','My car is red.','Hello, I am Uras.','Ready, set, go!','I can jump.','Open the door.','Kuzey is my friend.','Pass the ball, Aras!','Hello, Dora!','Defne likes cats.','Asel has a pen.']
 ];
 const WPL=10; /* words per Typing Turbo level */
 let typingKey=null;
@@ -1986,7 +1990,7 @@ function startTower(){
 
 /* ---------- Sentence Builder (drag & drop) ---------- */
 const PARAS={
- 1:[["Hello! I am Uras.","Merhaba! Ben Uras."],["I am a boy.","Ben bir erkek çocuğum."],["My teacher is nice.","Öğretmenim çok iyi."],["I go to school with my friend.","Arkadaşımla okula giderim."]],
+ 1:[["Hello! I am Uras.","Merhaba! Ben Uras."],["I am a boy.","Ben bir erkek çocuğum."],["My teacher is nice.","Öğretmenim çok iyi."],["I go to school with Beyazıt.","Beyazıt'la okula giderim."]],
  2:[["My car is red.","Arabam kırmızı."],["The sky is blue.","Gökyüzü mavi."],["I like green apples.","Yeşil elmaları severim."],["My ball is black and white.","Topum siyah beyaz."]],
  3:[["I have two balls.","İki topum var."],["A car has four wheels.","Bir arabanın dört tekerleği var."],["I am seven.","Yedi yaşındayım."],["Ten cars are in the race.","Yarışta on araba var."]],
  4:[["This is my bag.","Bu benim çantam."],["My book is in my bag.","Kitabım çantamda."],["I have a red pencil.","Kırmızı bir kalemim var."],["Sit on your chair.","Sandalyene otur."]],
@@ -2003,51 +2007,51 @@ const PARAS={
 const STORY_MORE={
  1:[[["My friend is Ali.","Arkadaşımın adı Ali."],["We play football at school.","Okulda futbol oynarız."],["Ali is very fast.","Ali çok hızlı."]],
     [["This is my teacher.","Bu benim öğretmenim."],["She is a good teacher.","O iyi bir öğretmen."],["She says hello to us.","Bize merhaba der."]],
-    [["Do you like school?","Okulu sever misin?"],["Yes, I like school.","Evet, okulu severim."],["I like my friends too.","Arkadaşlarımı da severim."]],
+    [["Do you like school?","Okulu sever misin?"],["Yes, I like school.","Evet, okulu severim."],["I like Defne and Pars too.","Defne'yi ve Pars'ı da severim."]],
     [["It is time to go home.","Eve gitme zamanı."],["Goodbye, teacher!","Hoşça kalın öğretmenim!"],["See you tomorrow!","Yarın görüşürüz!"]]],
  2:[[["I have a yellow car.","Sarı bir arabam var."],["It is very fast.","O çok hızlı."],["My yellow car wins the race.","Sarı arabam yarışı kazanır."]],
-    [["My friend has a pink car.","Arkadaşımın pembe bir arabası var."],["Her car is slow.","Onun arabası yavaş."],["Pink and yellow are happy colours.","Pembe ve sarı mutlu renkler."]],
+    [["Asel has a pink car.","Asel'in pembe bir arabası var."],["Her car is slow.","Onun arabası yavaş."],["Pink and yellow are happy colours.","Pembe ve sarı mutlu renkler."]],
     [["What colour is your bag?","Çantan ne renk?"],["My bag is orange.","Çantam turuncu."],["I like orange.","Turuncuyu severim."]],
     [["Look at the rainbow!","Gökkuşağına bak!"],["It is red, yellow and blue.","Kırmızı, sarı ve mavi."],["I love colours!","Renkleri çok severim!"]]],
  3:[[["One, two, three, kick!","Bir, iki, üç, şut!"],["I score a goal.","Gol atarım."],["Now we have one goal.","Şimdi bir golümüz var."]],
-    [["There are five players.","Beş oyuncu var."],["Five players and one ball.","Beş oyuncu ve bir top."],["We play together.","Birlikte oynarız."]],
+    [["There are five players.","Beş oyuncu var."],["Five players and one ball.","Beş oyuncu ve bir top."],["Aras and Yiğit play with me.","Aras ve Yiğit benimle oynar."]],
     [["How old are you?","Kaç yaşındasın?"],["I am seven years old.","Yedi yaşındayım."],["My brother is ten.","Abim on yaşında."]],
     [["Let's count the cars.","Hadi arabaları sayalım."],["One, two, three, four, five!","Bir, iki, üç, dört, beş!"],["Five fast cars!","Beş hızlı araba!"]]],
  4:[[["Open your book, please.","Lütfen kitabını aç."],["Take your pencil.","Kalemini al."],["Let's write!","Hadi yazalım!"]],
     [["I have a ruler and scissors.","Bir cetvelim ve makasım var."],["I cut the paper.","Kağıdı keserim."],["I draw a car in my notebook.","Defterime bir araba çizerim."]],
-    [["Where is my crayon?","Boya kalemim nerede?"],["It is under the chair.","Sandalyenin altında."],["Here it is!","İşte burada!"]],
+    [["Dora, where is my crayon?","Dora, boya kalemim nerede?"],["It is under the chair.","Sandalyenin altında."],["Here it is!","İşte burada!"]],
     [["Close your book.","Kitabını kapat."],["Put it in your bag.","Onu çantana koy."],["Good job, class!","Aferin sınıf!"]]],
  5:[[["I have a big robot.","Büyük bir robotum var."],["My robot is blue.","Robotum mavi."],["It can walk and talk.","Yürüyebilir ve konuşabilir."]],
     [["My sister has a teddy.","Ablamın bir oyuncak ayısı var."],["Her teddy is brown.","Onun ayıcığı kahverengi."],["She loves her teddy.","Ayıcığını çok sever."]],
-    [["Let's fly a kite!","Hadi uçurtma uçuralım!"],["The kite is in the sky.","Uçurtma gökyüzünde."],["It is very high!","Çok yüksekte!"]],
+    [["Pars, let's fly a kite!","Pars, hadi uçurtma uçuralım!"],["The kite is in the sky.","Uçurtma gökyüzünde."],["It is very high!","Çok yüksekte!"]],
     [["My train is long.","Trenim uzun."],["It goes very fast.","Çok hızlı gider."],["Choo choo, here it comes!","Çuf çuf, işte geliyor!"]]],
  6:[[["The bird can fly.","Kuş uçabilir."],["The fish can swim.","Balık yüzebilir."],["The rabbit can jump.","Tavşan zıplayabilir."]],
     [["I see a monkey.","Bir maymun görüyorum."],["The monkey is funny.","Maymun komik."],["It likes bananas.","Muzları sever."]],
-    [["My cat is small.","Kedim küçük."],["It is white and black.","Beyaz ve siyah."],["It sleeps on my bed.","Yatağımda uyur."]],
+    [["Mirel has a small cat.","Mirel'in küçük bir kedisi var."],["It is white and black.","Beyaz ve siyah."],["It sleeps on her bed.","Onun yatağında uyur."]],
     [["The horse is fast.","At hızlıdır."],["I want to ride a horse.","Ata binmek istiyorum."],["Animals are my friends.","Hayvanlar benim arkadaşlarım."]]],
  7:[[["Look with your eyes.","Gözlerinle bak."],["Listen with your ears.","Kulaklarınla dinle."],["Smell with your nose.","Burnunla kokla."]],
     [["Clap your hands!","Ellerini çırp!"],["Stamp your feet!","Ayaklarını yere vur!"],["Shake your arms!","Kollarını salla!"]],
     [["A goalkeeper uses his hands.","Kaleci ellerini kullanır."],["A player uses his feet.","Oyuncu ayaklarını kullanır."],["I use my head too!","Ben kafamı da kullanırım!"]],
     [["Wash your hands.","Ellerini yıka."],["Brush your teeth.","Dişlerini fırçala."],["Now smile!","Şimdi gülümse!"]]],
- 8:[[["Ready, set, go!","Yerlerinize, hazır, başla!"],["Run, run, run!","Koş, koş, koş!"],["Now stop!","Şimdi dur!"]],
+ 8:[[["Ready, set, go!","Yerlerinize, hazır, başla!"],["Run, Kaan, run!","Koş Kaan, koş!"],["Now stop!","Şimdi dur!"]],
     [["Go up the stairs.","Merdivenlerden çık."],["Go down the stairs.","Merdivenlerden in."],["Jump to the left!","Sola zıpla!"]],
     [["Turn right at the school.","Okulda sağa dön."],["Go left at the park.","Parkta sola git."],["Stop at the red light.","Kırmızı ışıkta dur."]],
     [["Press up to jump.","Zıplamak için yukarı bas."],["Press down to sit.","Oturmak için aşağı bas."],["I win the game!","Oyunu kazanırım!"]]],
  9:[[["I am hungry.","Acıktım."],["Can I have some bread?","Biraz ekmek alabilir miyim?"],["Yes, here you are.","Evet, buyurun."]],
     [["I like strawberries.","Çilekleri severim."],["They are red and sweet.","Kırmızı ve tatlılar."],["Yummy, yummy!","Nefis, nefis!"]],
     [["I drink water after football.","Futboldan sonra su içerim."],["Water is good for me.","Su bana iyi gelir."],["I drink milk too.","Süt de içerim."]],
-    [["Do you like eggs?","Yumurta sever misin?"],["Yes, I do!","Evet, severim!"],["I eat eggs for breakfast.","Kahvaltıda yumurta yerim."]]],
- 10:[[["My grandma makes a cake.","Büyükannem pasta yapar."],["The cake is big.","Pasta büyük."],["We eat it together.","Onu birlikte yeriz."]],
-    [["My grandpa has a car.","Büyükbabamın bir arabası var."],["It is an old car.","O eski bir araba."],["He drives slowly.","Yavaş sürer."]],
-    [["My sister is a baby.","Kız kardeşim bir bebek."],["She is very small.","O çok küçük."],["She cannot walk.","Yürüyemez."]],
+    [["Elisa, do you like eggs?","Elisa, yumurta sever misin?"],["Yes, I do!","Evet, severim!"],["I eat eggs for breakfast.","Kahvaltıda yumurta yerim."]]],
+ 10:[[["My grandma makes a cake.","Anneannem pasta yapar."],["The cake is big.","Pasta büyük."],["We eat it together.","Onu birlikte yeriz."]],
+    [["My grandpa has a car.","Dedemin bir arabası var."],["It is an old car.","O eski bir araba."],["He drives slowly.","Yavaş sürer."]],
+    [["My cousin is a baby.","Kuzenim bir bebek."],["She is very small.","O çok küçük."],["She cannot walk.","Yürüyemez."]],
     [["I love my family.","Ailemi çok severim."],["We are happy together.","Birlikte mutluyuz."],["Family is the best!","Aile en iyisidir!"]]],
- 11:[[["Open the door.","Kapıyı aç."],["Come in, please.","Lütfen içeri gel."],["Welcome to my house!","Evime hoş geldin!"]],
+ 11:[[["Open the door.","Kapıyı aç."],["Come in, Zeynep!","İçeri gel Zeynep!"],["Welcome to my house!","Evime hoş geldin!"]],
     [["I sit on the sofa.","Kanepeye otururum."],["I play games there.","Orada oyun oynarım."],["It is my favourite place.","Orası en sevdiğim yer."]],
     [["Look out of the window.","Pencereden dışarı bak."],["I can see the garden.","Bahçeyi görebiliyorum."],["My dog is there.","Köpeğim orada."]],
     [["The bathroom is clean.","Banyo temiz."],["I wash my hands.","Ellerimi yıkarım."],["Now I go to bed.","Şimdi yatmaya giderim."]]],
  12:[[["It is rainy today.","Bugün hava yağmurlu."],["Take your umbrella.","Şemsiyeni al."],["Put on your coat.","Montunu giy."]],
     [["It is snowy!","Kar yağıyor!"],["Let's make a snowman.","Hadi kardan adam yapalım."],["Wear your hat.","Şapkanı tak."]],
-    [["It is hot and sunny.","Hava sıcak ve güneşli."],["Let's go to the park.","Hadi parka gidelim."],["Drink some water.","Biraz su iç."]],
+    [["It is hot and sunny.","Hava sıcak ve güneşli."],["Let's go to the park, Eslem!","Hadi parka gidelim Eslem!"],["Drink some water.","Biraz su iç."]],
     [["I put on my football shoes.","Futbol ayakkabılarımı giyerim."],["I wear my team shirt.","Takım formamı giyerim."],["Let's play!","Hadi oynayalım!"]]]
 };
 /* Week stories about Uras: 5 paragraphs x 3 sentences [English, Turkish]. (PARAS / STORY_MORE above are the older generic stories, no longer used.) */

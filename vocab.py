@@ -108,7 +108,7 @@ I have a new red ball.:Yeni kırmızı bir topum var.:⚽|My sister likes to rea
 I go to bed at nine.:Saat dokuzda yatarım.:🛏️|It is time for school.:Okul zamanı.:🏫|Open your English book.:İngilizce kitabını aç.:📘|Listen and repeat.:Dinle ve tekrar et.:👂|Raise your hand, please.:Lütfen elini kaldır.:✋
 Can I go to the toilet?:Tuvalete gidebilir miyim?:🚻|I am hungry. Let's eat!:Acıktım. Hadi yiyelim!:🍽️|I like pizza and juice.:Pizza ve meyve suyu severim.:🍕|The cat is on the sofa.:Kedi kanepenin üstünde.:🐱|The dog is under the bed.:Köpek yatağın altında.:🐶
 Look at the big plane!:Şu büyük uçağa bak!:✈️|The sun is hot today.:Bugün güneş sıcak.:☀️|Put on your hat and coat.:Şapkanı ve montunu giy.:🧥|How are you today?:Bugün nasılsın?:🙂|I am fine, thank you.:İyiyim, teşekkür ederim.:👍
-What is your favourite colour?:En sevdiğin renk ne?:🎨|How old is your sister?:Ablan kaç yaşında?:👧|Where do you live?:Nerede yaşıyorsun?:🏠|I live in a big city.:Büyük bir şehirde yaşıyorum.:🏙️|My friend has a blue bike.:Arkadaşımın mavi bir bisikleti var.:🚲
+What is your favourite colour?:En sevdiğin renk ne?:🎨|How old is your sister?:Ablan kaç yaşında?:👧|Where do you live?:Nerede yaşıyorsun?:🏠|I live in a big city.:Büyük bir şehirde yaşıyorum.:🏙️|Kaan has a blue bike.:Kaan’ın mavi bir bisikleti var.:🚲
 The train goes very fast.:Tren çok hızlı gider.:🚂|I can count to twenty.:Yirmiye kadar sayabilirim.:🔢|Monday is my football day.:Pazartesi benim futbol günüm.:📅|We have English on Friday.:Cuma günü İngilizce dersimiz var.:📘|I love my family very much.:Ailemi çok seviyorum.:❤️
 The game starts at five.:Maç beşte başlıyor.:⏰|Kick the ball into the goal!:Topu kaleye vur!:🥅|Run fast and catch the ball!:Hızlı koş ve topu yakala!:🏃|Good game, everyone!:Herkese iyi oyunlar!:👏
 '''
@@ -129,7 +129,7 @@ EXTRA_TR = {
  'goal': 'gol / kale', 'red car': 'kırmızı araba', 'big ball': 'büyük top', 'blue bus': 'mavi otobüs', 'my dog': 'benim köpeğim',
  'go left': 'sola git', 'run fast': 'hızlı koş', 'green apple': 'yeşil elma', 'two goals': 'iki gol', 'hello Uras': 'merhaba Uras',
  'I like cars.': 'Arabaları severim.', 'Kick the ball!': 'Topa vur!', 'I am seven.': 'Yedi yaşındayım.', 'My car is red.': 'Arabam kırmızı.',
- 'Hello, I am Uras.': 'Merhaba, ben Uras.', 'Ready, set, go!': 'Yerlerinize, hazır, başla!', 'I can jump.': 'Zıplayabilirim.', 'Open the door.': 'Kapıyı aç.',
+ 'Hello, I am Uras.': 'Merhaba, ben Uras.', 'Ready, set, go!': 'Yerlerinize, hazır, başla!', 'I can jump.': 'Zıplayabilirim.', 'Open the door.': 'Kapıyı aç.', 'hello Defne': 'merhaba Defne', 'hi Kuzey': 'selam Kuzey', 'run Aras': 'koş Aras', 'Kuzey is my friend.': 'Kuzey benim arkadaşım.', 'Pass the ball, Aras!': 'Topu pas ver Aras!', 'Hello, Dora!': 'Merhaba Dora!', 'Defne likes cats.': 'Defne kedileri sever.', 'Asel has a pen.': 'Asel’in bir kalemi var.',
 }
 EXTRA_EMOJI = {'goal': '🥅', 'red car': '🚗', 'big ball': '⚽', 'blue bus': '🚌', 'my dog': '🐶', 'go left': '⬅️', 'run fast': '🏃', 'green apple': '🍏',
  'two goals': '⚽', 'hello Uras': '👋', 'I like cars.': '🏎️', 'Kick the ball!': '🦵', 'I am seven.': '7️⃣', 'My car is red.': '🚗',
