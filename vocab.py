@@ -35,7 +35,7 @@ scared:korkmuş:😨|brave:cesur:🦸|strong:güçlü:💪|tall:uzun boylu:🦒|
 loud:gürültülü:📢|biscuit:bisküvi:🍪|sweets:şeker:🍬|pasta:makarna:🍝|salad:salata:🥗|cherry:kiraz:🍒|melon:kavun:🍈|peach:şeftali:🍑
 potato:patates:🥔|tomato:domates:🍅|onion:soğan:🧅|butter:tereyağı:🧈|salt:tuz:🧂|spoon:kaşık:🥄|fork:çatal:🍴|plate:tabak:🍽️
 glass:bardak:🥛|soap:sabun:🧼|brush:fırça:🪥|mirror:ayna:🪞|basket:sepet:🧺|watch:kol saati:⌚|tablet:tablet:📱|screen:ekran:🖥️
-button:düğme:🔘|level:seviye:🆙|bread:ekmek:🍞|uncle:amca / dayı:👨|aunt:teyze / hala:👩|cousin:kuzen:🧒|garden:bahçe:🌳|street:sokak:🏘️
+button:düğme:🔘|level:seviye:🆙|bread:ekmek:🍞|uncle:amca / dayı:👨|aunt:teyze / hala:👩|cousin:kuzen:🧒|garden:bahçe:🏡|street:sokak:🏘️
 '''),
  dict(n=3, name='Player', tr='Oyuncu', sub='2. sınıf · fiiller, sıfatlar, aylar, futbol ve araba kelimeleri (5–10 harf)', words='''
 referee:hakem:🟨|stadium:stadyum:🏟️|corner:korner:🚩|penalty:penaltı:⚽|striker:forvet:⚽|defender:defans oyuncusu:🛡️|captain:kaptan:🧑‍✈️|trophy:kupa / ödül:🏆
@@ -45,7 +45,7 @@ dragon:ejderha:🐉|octopus:ahtapot:🐙|dolphin:yunus:🐬|shark:köpekbalığ�
 kitten:yavru kedi:🐱|controller:oyun kolu:🎮|joystick:joystick:🕹️|practice:antrenman:🏋️|swim:yüzmek:🏊|ride:binmek:🚲|drive:araba sürmek:🚗|push:itmek:👐
 pull:çekmek:🪢|carry:taşımak:🎒|build:inşa etmek:🏗️|draw:çizmek:✏️|read:okumak:📖|sing:şarkı söylemek:🎤|listen:dinlemek:👂|speak:konuşmak:🗣️
 think:düşünmek:🤔|help:yardım etmek:🤝|share:paylaşmak:🤲|wait:beklemek:⏳|hurry:acele etmek:🏃|finish:bitirmek:🏁|start:başlamak:▶️|quick:çabuk:⚡
-heavy:ağır:🏋️|light:hafif:🪶|empty:boş:🫙|full:dolu:🍽️|round:yuvarlak:🌕|square:kare:🟦|circle:daire:⭕|triangle:üçgen:🔺
+heavy:ağır:🏋️|light:hafif:🪶|empty:boş:🫙|full:dolu:🔋|round:yuvarlak:🌕|square:kare:🟦|circle:daire:⭕|triangle:üçgen:🔺
 Monday:pazartesi|Tuesday:salı|Wednesday:çarşamba|Thursday:perşembe|Friday:cuma
 '''),
  dict(n=4, name='Champion', tr='Şampiyon', sub='2.–3. sınıf · iki kelimelik ifadeler ve kısa cümleler', words='''
@@ -66,8 +66,8 @@ air:hava:🌬️|art:sanat:🎨|card:kart:🃏|city:şehir:🏙️|day:gün:☀�
 man:adam:👨|leaf:yaprak:🍃|name:isim:📛|news:haber:📰|night:gece:🌙|page:sayfa:📄|rock:kaya:🪨|room:oda:🛋️
 son:oğul:👦|song:şarkı:🎵|time:zaman:⏰|town:kasaba:🏘️|TV:televizyon:📺|week:hafta:📅|word:kelime:🔤|year:yıl:🗓️
 hour:saat (60 dakika):⏱️|bank:banka:🏦|club:kulüp:⚽|cool:havalı:😎|dark:karanlık:🌑|easy:kolay:👌|hard:zor:🧱|nice:güzel / hoş:😊
-good:iyi:👍|bad:kötü:👎|love:sevmek:❤️|like:hoşlanmak:😍|play:oynamak:🧸|walk:yürümek:🚶|talk:konuşmak:💬|call:aramak:📞
-come:gelmek:👋|give:vermek:🎁|take:almak:✋|make:yapmak:🛠️|buy:satın almak:🛒|pay:ödemek:💳|robot:robot:🤖|cut:kesmek:✂️
+good:iyi:👍|bad:kötü:👎|love:sevmek:❤️|like:hoşlanmak:😍|play:oynamak:🤹|walk:yürümek:🚶|talk:konuşmak:💬|call:aramak:📞
+come:gelmek:👋|give:vermek:🎁|take:almak:🫴|make:yapmak:🛠️|buy:satın almak:🛒|pay:ödemek:💳|robot:robot:🤖|cut:kesmek:✂️
 add:eklemek:➕|open:açmak:📂|shell:deniz kabuğu:🐚|send:göndermek:📤|find:bulmak:🔍|ask:sormak:❓|want:istemek:🙏|need:ihtiyaç duymak:🆘
 try:denemek:💪|web:örümcek ağı:🕸️|end:son:🔚|half:yarım:🌓|side:yan / taraf:↔️
 ''',
@@ -133,7 +133,7 @@ EXTRA_TR = {
 }
 EXTRA_EMOJI = {'goal': '🥅', 'red car': '🚗', 'big ball': '⚽', 'blue bus': '🚌', 'my dog': '🐶', 'go left': '⬅️', 'run fast': '🏃', 'green apple': '🍏',
  'two goals': '⚽', 'hello Uras': '👋', 'I like cars.': '🏎️', 'Kick the ball!': '🦵', 'I am seven.': '7️⃣', 'My car is red.': '🚗',
- 'Hello, I am Uras.': '👋', 'Ready, set, go!': '🏁', 'I can jump.': '🧒', 'Open the door.': '🚪'}
+ 'Hello, I am Uras.': '👋', 'Ready, set, go!': '🏁', 'I can jump.': '🦘', 'Open the door.': '🚪'}
 
 COLOR_EMOJI = {'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡', 'black': '⚫', 'white': '⚪', 'orange': '🟠', 'pink': '🩷', 'purple': '🟣', 'brown': '🟤', 'grey': '⚪'}
 DPAD_EMOJI = {'up': '⬆️', 'down': '⬇️', 'left': '⬅️', 'right': '➡️'}
