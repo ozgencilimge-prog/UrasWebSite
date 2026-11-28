@@ -19,31 +19,31 @@ LEVELS = [
  dict(n=1, name='Starter', tr='Başlangıç', sub='1. sınıf · kısa ve somut kelimeler, temel fiiller (3–5 harf)', words='''
 ant:karınca:🐜|hen:tavuk:🐔|goat:keçi:🐐|lamb:kuzu:🐑|van:minibüs:🚐|jet:jet uçağı:✈️|cap:kep / şapka:🧢|mug:kupa bardak:☕
 pot:tencere:🍲|cheese:peynir:🧀|nut:fıstık / kuruyemiş:🥜|pie:turta:🥧|tea:çay:🍵|zoo:hayvanat bahçesi:🦁|mum:anne:👩|dad:baba:👨
-lip:dudak:👄|toe:ayak parmağı:🦶|hug:sarılmak:🤗|sit:oturmak:🪑|eat:yemek yemek:🍽️|see:görmek:👀|new:yeni:🆕|old:eski / yaşlı:👴
-wet:ıslak:💦|dry:kuru:☀️|fun:eğlence:🎉|net:file:🥅|fan:taraftar:📣|hop:sekmek:🐇|tap:dokunmak:👆|hill:tepe:⛰️
-lake:göl:🏞️|park:park:🛝|road:yol:🛣️|tyre:lastik:🛞|seat:koltuk:💺|kite:uçurtma:🪁|lamp:lamba:💡|wall:duvar:🧱
-roof:çatı:🏠|tent:çadır:⛺|rice:pirinç:🍚|soup:çorba:🍲|corn:mısır:🌽|pear:armut:🍐|kiwi:kivi:🥝|knee:diz:🦵
+lip:dudak:💋|toe:ayak parmağı|hug:sarılmak:🤗|sit:oturmak:🪑|eat:yemek yemek:🍽️|see:görmek:👀|new:yeni:🆕|old:eski / yaşlı:👴
+wet:ıslak:💦|dry:kuru:🌵|fun:eğlence:🎉|net:file:🥅|fan:taraftar:📣|hop:sekmek:🐇|tap:dokunmak:👆|hill:tepe:🌄
+lake:göl:🏞️|park:park:⛲|road:yol:🛣️|tyre:lastik:🛞|seat:koltuk:💺|kite:uçurtma:🪁|lamp:lamba:🪔|wall:duvar:🧱
+roof:çatı:🏠|tent:çadır:⛺|rice:pirinç:🍚|soup:çorba:🥣|corn:mısır:🌽|pear:armut:🍐|kiwi:kivi:🥝|knee:diz:🦵
 neck:boyun|hair:saç:💇|face:yüz:🙂|snail:salyangoz:🐌|ring:yüzük:💍|bell:zil:🔔|gift:hediye:🎁|doll:oyuncak bebek:🪆
 bubble:baloncuk:🫧|bone:kemik:🦴|flower:çiçek:🌻
 drum:davul:🥁|race:yarış:🏁|taxi:taksi:🚕|fast:hızlı:💨|gold:altın:🥇|shop:dükkan:🏪|farm:çiftlik:🚜|nest:yuva:🪺
 '''),
  dict(n=2, name='Explorer', tr='Kaşif', sub='1.–2. sınıf · günlük hayat, duygular, zaman ve yer (4–7 harf)', words='''
-jersey:forma:👕|coach:antrenör:📋|match:maç:⚽|football boots:krampon:👟|wheel:tekerlek:🛞|brake:fren:🛑|driver:sürücü:🚙|petrol:benzin:⛽
+jersey:forma:👕|coach:antrenör:📋|match:maç:⚽|football boots:krampon:👟|wheel:tekerlek:🛞|brake:fren|driver:sürücü:🚙|petrol:benzin:⛽
 scooter:scooter:🛴|tractor:traktör:🚜|puzzle:yapboz:🧩|guitar:gitar:🎸|piano:piyano:🎹|paper:kağıt:📄|glue:yapıştırıcı:🧴|sponge:sünger:🧽
-lesson:ders:📚|class:sınıf:🏫|laugh:gülmek:😂|cry:ağlamak:😢|angry:kızgın:😠|tired:yorgun:🥱|hungry:aç:🍽️|thirsty:susamış:🥤
-scared:korkmuş:😨|brave:cesur:🦸|strong:güçlü:💪|tall:uzun boylu:🦒|short:kısa:📏|clean:temiz:🧼|broom:süpürge:🧹|quiet:sessiz:🤫
+lesson:ders:📝|class:sınıf:🧑‍🤝‍🧑|laugh:gülmek:😂|cry:ağlamak:😭|angry:kızgın:😠|tired:yorgun:🥱|hungry:aç:🍽️|thirsty:susamış:🥤
+scared:korkmuş:😨|brave:cesur:🦸|strong:güçlü:💪|tall:uzun boylu:🦒|short:kısa|clean:temiz:✨|broom:süpürge:🧹|quiet:sessiz:🤫
 loud:gürültülü:📢|biscuit:bisküvi:🍪|sweets:şeker:🍬|pasta:makarna:🍝|salad:salata:🥗|cherry:kiraz:🍒|melon:kavun:🍈|peach:şeftali:🍑
 potato:patates:🥔|tomato:domates:🍅|onion:soğan:🧅|butter:tereyağı:🧈|salt:tuz:🧂|spoon:kaşık:🥄|fork:çatal:🍴|plate:tabak:🍽️
-glass:bardak:🥛|soap:sabun:🧼|brush:fırça:🪥|mirror:ayna:🪞|basket:sepet:🧺|watch:kol saati:⌚|tablet:tablet:📱|screen:ekran:🖥️
-button:düğme:🔘|level:seviye:🆙|bread:ekmek:🍞|uncle:amca / dayı:👨|aunt:teyze / hala:👩|cousin:kuzen:🧒|garden:bahçe:🏡|street:sokak:🏘️
+glass:bardak|soap:sabun:🧼|brush:fırça:🪥|mirror:ayna:🪞|basket:sepet:🧺|watch:kol saati:⌚|tablet:tablet:📱|screen:ekran:🖥️
+button:düğme:🔘|level:seviye:🆙|bread:ekmek:🍞|uncle:amca / dayı:🧔|aunt:teyze / hala:👩‍🦰|cousin:kuzen:🧒|garden:bahçe:🏡|street:sokak:🏘️
 '''),
  dict(n=3, name='Player', tr='Oyuncu', sub='2. sınıf · fiiller, sıfatlar, aylar, futbol ve araba kelimeleri (5–10 harf)', words='''
 referee:hakem:🟨|stadium:stadyum:🏟️|corner:korner:🚩|penalty:penaltı:⚽|striker:forvet:⚽|defender:defans oyuncusu:🛡️|captain:kaptan:🧑‍✈️|trophy:kupa / ödül:🏆
 medal:madalya:🏅|engine:motor:⚙️|helmet:kask:⛑️|traffic:trafik:🚦|bridge:köprü:🌉|tunnel:tünel:🚇|station:istasyon:🚉|airport:havalimanı:🛫
 island:ada:🏝️|forest:orman:🌲|mountain:dağ:⛰️|river:nehir:🏞️|beach:plaj:🏖️|desert:çöl:🏜️|ocean:okyanus:🌊|planet:gezegen:🪐
 dragon:ejderha:🐉|octopus:ahtapot:🐙|dolphin:yunus:🐬|shark:köpekbalığı:🦈|whale:balina:🐳|parrot:papağan:🦜|camel:deve:🐫|puppy:yavru köpek:🐶
-kitten:yavru kedi:🐱|controller:oyun kolu:🎮|joystick:joystick:🕹️|practice:antrenman:🏋️|swim:yüzmek:🏊|ride:binmek:🚲|drive:araba sürmek:🚗|push:itmek:👐
-pull:çekmek:🪢|carry:taşımak:🎒|build:inşa etmek:🏗️|draw:çizmek:✏️|read:okumak:📖|sing:şarkı söylemek:🎤|listen:dinlemek:👂|speak:konuşmak:🗣️
+kitten:yavru kedi:🐱|controller:oyun kolu:🎮|joystick:joystick:🕹️|practice:antrenman:🏋️|swim:yüzmek:🏊|ride:binmek:🚴|drive:araba sürmek:🚗|push:itmek:👐
+pull:çekmek:🪢|carry:taşımak:🎒|build:inşa etmek:🏗️|draw:çizmek:✏️|read:okumak:📖|sing:şarkı söylemek:🎤|listen:dinlemek:🎧|speak:konuşmak:🗣️
 think:düşünmek:🤔|help:yardım etmek:🤝|share:paylaşmak:🤲|wait:beklemek:⏳|hurry:acele etmek:🏃|finish:bitirmek:🏁|start:başlamak:▶️|quick:çabuk:⚡
 heavy:ağır:🏋️|light:hafif:🪶|empty:boş:🫙|full:dolu:🔋|round:yuvarlak:🌕|square:kare:🟦|circle:daire:⭕|triangle:üçgen:🔺
 Monday:pazartesi|Tuesday:salı|Wednesday:çarşamba|Thursday:perşembe|Friday:cuma
@@ -65,8 +65,8 @@ A1_ADD = {
 air:hava:🌬️|art:sanat:🎨|card:kart:🃏|city:şehir:🏙️|day:gün:☀️|fire:ateş:🔥|food:yiyecek:🍔|kids:çocuklar:🧒
 man:adam:👨|leaf:yaprak:🍃|name:isim:📛|news:haber:📰|night:gece:🌙|page:sayfa:📄|rock:kaya:🪨|room:oda:🛋️
 son:oğul:👦|song:şarkı:🎵|time:zaman:⏰|town:kasaba:🏘️|TV:televizyon:📺|week:hafta:📅|word:kelime:🔤|year:yıl:🗓️
-hour:saat (60 dakika):⏱️|bank:banka:🏦|club:kulüp:⚽|cool:havalı:😎|dark:karanlık:🌑|easy:kolay:👌|hard:zor:🧱|nice:güzel / hoş:😊
-good:iyi:👍|bad:kötü:👎|love:sevmek:❤️|like:hoşlanmak:😍|play:oynamak:🤹|walk:yürümek:🚶|talk:konuşmak:💬|call:aramak:📞
+hour:saat (60 dakika):⏱️|bank:banka:🏦|club:kulüp:⚽|cool:havalı:😎|dark:karanlık:🌑|easy:kolay:👌|hard:zor|nice:güzel / hoş:😊
+good:iyi:😃|bad:kötü:🙁|love:sevmek:❤️|like:hoşlanmak:😍|play:oynamak:🤹|walk:yürümek:🚶|talk:konuşmak:💬|call:aramak:📞
 come:gelmek:👋|give:vermek:🎁|take:almak:🫴|make:yapmak:🛠️|buy:satın almak:🛒|pay:ödemek:💳|robot:robot:🤖|cut:kesmek:✂️
 add:eklemek:➕|open:açmak:📂|shell:deniz kabuğu:🐚|send:göndermek:📤|find:bulmak:🔍|ask:sormak:❓|want:istemek:🙏|need:ihtiyaç duymak:🆘
 try:denemek:💪|web:örümcek ağı:🕸️|end:son:🔚|half:yarım:🌓|side:yan / taraf:↔️
@@ -75,7 +75,7 @@ try:denemek:💪|web:örümcek ağı:🕸️|end:son:🔚|half:yarım:🌓|side:
 answer:cevap:💬|learn:öğrenmek:📚|know:bilmek:🧠|feel:hissetmek:🤗|hear:duymak:👂|look:bakmak:👀|move:hareket etmek:🏃|turn:dönmek:🔄
 show:göstermek:👉|lose:kaybetmek:😞|film:film:🎬|video:video:📹|radio:radyo:📻|heart:kalp:❤️|earth:dünya / yeryüzü:🌍|space:uzay:🚀
 ground:zemin / yer:🟫|sound:ses:🔊|voice:insan sesi:🗣️|story:hikaye:📖|idea:fikir:💡|party:parti:🎉|price:fiyat:🏷️|ladder:merdiven:🪜
-police:polis:👮|child:çocuk:🧒|woman:kadın:👩|parents:anne baba:👨‍👩‍👦|young:genç:🧑|little:küçük:🤏|huge:kocaman:🐘|funny:komik:😂
+police:polis:👮|child:çocuk:🧒|woman:kadın:👩|parents:anne baba:👨‍👩‍👦|young:genç:🧑|little:küçük:🤏|huge:kocaman:🦕|funny:komik:😂
 crazy:çılgın:🤪|amazing:harika:🤩|super:süper:🦸|ready:hazır:✅|sure:emin:👍|safe:güvenli:🦺|free:serbest / bedava:🆓|true:doğru:✔️
 wrong:yanlış:❌|first:birinci:🥇|second:ikinci:🥈|third:üçüncü:🥉|early:erken:🌅|late:geç:🌙|today:bugün:📅|tonight:bu gece:🌃
 soon:yakında:⏳|again:tekrar:🔁|always:her zaman:♾️|never:asla:🚫|near:yakın:📍|far:uzak:🏔️|inside:içeride:🏠|outside:dışarıda:🌳
@@ -98,7 +98,7 @@ goal kick:kale vuruşu:🥅|penalty kick:penaltı vuruşu:⚽|kick-off:başlama 
 away team:deplasman takımı:🚌|score a goal:gol at:⚽|save the ball:topu kurtar:🧤|throw-in:taç atışı:🙌|golden boot:altın ayakkabı:👟|player of the match:maçın oyuncusu:🌟|race track:yarış pisti:🏁|pit stop:pit stop:🔧
 car wash:araba yıkama:🧽|petrol station:benzin istasyonu:⛽|car park:otopark:🅿️|speed limit:hız sınırı:🚦|sports car:spor araba:🏎️|school bus:okul otobüsü:🚌|fire station:itfaiye istasyonu:🚒|police station:karakol:🚓
 video game:video oyunu:🎮|new game:yeni oyun:🆕|save game:oyunu kaydet:💾|level up:seviye atla:🆙|bonus level:bonus seviye:⭐|extra life:ekstra can:❤️|power up:güçlendirme:⚡|start button:başlat düğmesi:▶️
-pause button:durdur düğmesi:⏸️|good luck:iyi şanslar:🍀|happy new year:mutlu yıllar:🎆|thank you very much:çok teşekkürler:🙏|excuse me:afedersiniz:🙋|I'm sorry:özür dilerim:😔|no problem:sorun değil:👌|come on:hadi:💪
+pause button:durdur düğmesi:⏸️|good luck:iyi şanslar:🍀|happy new year:mutlu yıllar:🎆|thank you very much:çok teşekkürler:🙏|excuse me:affedersiniz:🙋|I'm sorry:özür dilerim:😔|no problem:sorun değil:👌|come on:hadi:💪
 let's go:hadi gidelim:🚀|watch out:dikkat et:⚠️|be careful:dikkatli ol:⚠️|hurry up:acele et:⏩|slow down:yavaşla:🐢|sit down:otur:🪑|stand up:ayağa kalk:🧍|line up:sıraya gir:🚶|clean up:topla / temizle:🧹
 I scored two goals.:İki gol attım.:⚽|My team won the match.:Takımım maçı kazandı.:🏆|The goalkeeper saved the ball.:Kaleci topu kurtardı.:🧤|The referee shows a yellow card.:Hakem sarı kart gösteriyor.:🟨
 We play football after school.:Okuldan sonra futbol oynarız.:⚽|My favourite team is red and white.:En sevdiğim takım kırmızı beyaz.:🔴|The race car is very fast.:Yarış arabası çok hızlı.:🏎️|Dad washes the car.:Babam arabayı yıkar.:🧽
@@ -107,10 +107,10 @@ I am on level ten!:Onuncu seviyedeyim!:🆙|Press the button to jump.:Zıplamak 
 I have a new red ball.:Yeni kırmızı bir topum var.:⚽|My sister likes to read.:Ablam okumayı sever.:📖|My dad is a good cook.:Babam iyi yemek yapar.:🍳|I brush my teeth every morning.:Her sabah dişlerimi fırçalarım.:🪥
 I go to bed at nine.:Saat dokuzda yatarım.:🛏️|It is time for school.:Okul zamanı.:🏫|Open your English book.:İngilizce kitabını aç.:📘|Listen and repeat.:Dinle ve tekrar et.:👂|Raise your hand, please.:Lütfen elini kaldır.:✋
 Can I go to the toilet?:Tuvalete gidebilir miyim?:🚻|I am hungry. Let's eat!:Acıktım. Hadi yiyelim!:🍽️|I like pizza and juice.:Pizza ve meyve suyu severim.:🍕|The cat is on the sofa.:Kedi kanepenin üstünde.:🐱|The dog is under the bed.:Köpek yatağın altında.:🐶
-Look at the big plane!:Şu büyük uçağa bak!:✈️|The sun is hot today.:Bugün güneş sıcak.:☀️|Put on your hat and coat.:Şapkanı ve montunu giy.:🧥|How are you today?:Bugün nasılsın?:🙂|I am fine, thank you.:İyiyim, teşekkür ederim.:👍
+Look at the big plane!:Şu büyük uçağa bak!:✈️|The sun is hot today.:Bugün güneş sıcak.:☀️|Put on your hat and coat.:Şapkanı tak, montunu giy.:🧥|How are you today?:Bugün nasılsın?:🙂|I am fine, thank you.:İyiyim, teşekkür ederim.:👍
 What is your favourite colour?:En sevdiğin renk ne?:🎨|How old is your sister?:Ablan kaç yaşında?:👧|Where do you live?:Nerede yaşıyorsun?:🏠|I live in a big city.:Büyük bir şehirde yaşıyorum.:🏙️|Kaan has a blue bike.:Kaan’ın mavi bir bisikleti var.:🚲
 The train goes very fast.:Tren çok hızlı gider.:🚂|I can count to twenty.:Yirmiye kadar sayabilirim.:🔢|Monday is my football day.:Pazartesi benim futbol günüm.:📅|We have English on Friday.:Cuma günü İngilizce dersimiz var.:📘|I love my family very much.:Ailemi çok seviyorum.:❤️
-The game starts at five.:Maç beşte başlıyor.:⏰|Kick the ball into the goal!:Topu kaleye vur!:🥅|Run fast and catch the ball!:Hızlı koş ve topu yakala!:🏃|Good game, everyone!:Herkese iyi oyunlar!:👏
+The match starts at five.:Maç beşte başlıyor.:⏰|Kick the ball into the goal!:Topu kaleye vur!:🥅|Run fast and catch the ball!:Hızlı koş ve topu yakala!:🏃|Good game, everyone!:İyi oyundu arkadaşlar!:👏
 '''
 LEVEL_SIZE = 120   # 12 packs of 10 words in every Word Quest level
 
@@ -135,7 +135,7 @@ EXTRA_EMOJI = {'goal': '🥅', 'red car': '🚗', 'big ball': '⚽', 'blue bus':
  'two goals': '⚽', 'hello Uras': '👋', 'I like cars.': '🏎️', 'Kick the ball!': '🦵', 'I am seven.': '7️⃣', 'My car is red.': '🚗',
  'Hello, I am Uras.': '👋', 'Ready, set, go!': '🏁', 'I can jump.': '🦘', 'Open the door.': '🚪'}
 
-COLOR_EMOJI = {'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡', 'black': '⚫', 'white': '⚪', 'orange': '🟠', 'pink': '🩷', 'purple': '🟣', 'brown': '🟤', 'grey': '⚪'}
+COLOR_EMOJI = {'red': '🔴', 'blue': '🔵', 'green': '🟢', 'yellow': '🟡', 'black': '⚫', 'white': '⚪', 'orange': '🟠', 'pink': '🩷', 'purple': '🟣', 'brown': '🟤', 'grey': '🩶'}
 DPAD_EMOJI = {'up': '⬆️', 'down': '⬇️', 'left': '⬅️', 'right': '➡️'}
 KEYCAP = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
 
